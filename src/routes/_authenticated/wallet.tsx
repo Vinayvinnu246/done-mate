@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { Header } from "@/components/layout/Header";
@@ -9,11 +9,20 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { toast } from "sonner";
-import { Wallet as WalletIcon, Landmark, Clock, ArrowRight, Plus, Trash2 } from "lucide-react";
+import { Wallet as WalletIcon, Landmark, Clock, ArrowRight, Plus, Trash2, ShieldCheck, ExternalLink, AlertTriangle } from "lucide-react";
 import { getWalletData, addBankAccount, deleteBankAccount, requestPayout } from "@/lib/wallet.functions";
+import {
+  getStripeConnectStatus,
+  createStripeOnboardingLink,
+  refreshStripeConnectStatus,
+  createStripeDashboardLink,
+} from "@/lib/stripe-connect.functions";
 
 export const Route = createFileRoute("/_authenticated/wallet")({
   component: WalletPage,
+  validateSearch: (search: Record<string, unknown>) => ({
+    stripe: typeof search.stripe === "string" ? search.stripe : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Wallet · DoneToday" },
@@ -28,11 +37,37 @@ const gbp = (n: number) =>
 function WalletPage() {
   const { profile, isLoading } = useAuth();
   const qc = useQueryClient();
+  const { stripe: stripeReturn } = useSearch({ from: "/_authenticated/wallet" });
 
   const walletQuery = useQuery({
     queryKey: ["wallet"],
     queryFn: () => getWalletData(),
     enabled: profile?.type === "provider",
+  });
+
+  const connectQuery = useQuery({
+    queryKey: ["stripe-connect"],
+    queryFn: () => getStripeConnectStatus(),
+    enabled: profile?.type === "provider",
+  });
+
+  useEffect(() => {
+    if (!stripeReturn || profile?.type !== "provider") return;
+    refreshStripeConnectStatus()
+      .then(() => qc.invalidateQueries({ queryKey: ["stripe-connect"] }))
+      .catch(() => {});
+  }, [stripeReturn, profile?.type, qc]);
+
+  const startOnboarding = useMutation({
+    mutationFn: () => createStripeOnboardingLink(),
+    onSuccess: ({ url }) => { window.location.href = url; },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Could not start Stripe onboarding"),
+  });
+
+  const openDashboard = useMutation({
+    mutationFn: () => createStripeDashboardLink(),
+    onSuccess: ({ url }) => { window.open(url, "_blank"); },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Could not open Stripe dashboard"),
   });
 
   const [showBankForm, setShowBankForm] = useState(false);
@@ -90,10 +125,13 @@ function WalletPage() {
   const payouts = data?.payouts ?? [];
   const defaultBank = banks.find((b) => b.is_default) ?? banks[0];
   const available = Math.max(0, (data?.totals.paid ?? 0) - (data?.totals.pendingOut ?? 0));
+  const connect = connectQuery.data;
+  const payoutsEnabled = !!connect?.payouts_enabled;
 
   function handleWithdraw() {
     const amt = Number(withdrawAmount);
     if (!amt || amt <= 0) return toast.error("Enter a valid amount");
+    if (!payoutsEnabled) return toast.error("Complete Stripe onboarding to enable payouts");
     if (!defaultBank) return toast.error("Add a bank account first");
     if (amt > available) return toast.error("Amount exceeds available balance");
     withdraw.mutate({ amount: amt, bank_account_id: defaultBank.id });
@@ -107,6 +145,64 @@ function WalletPage() {
           <h1 className="font-display text-3xl font-semibold text-[#2e4053]">Wallet</h1>
           <p className="text-[#6b7b8c] mt-1">Add a bank account and withdraw earnings from completed jobs.</p>
         </div>
+
+        <Card className="border-[#E5E7EB]">
+          <CardHeader>
+            <CardTitle className="text-[#2e4053] flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-[#59914c]" /> Stripe payouts
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {!connect ? (
+              <>
+                <p className="text-sm text-[#6b7b8c]">
+                  Connect a Stripe Express account to receive secure payouts. Stripe verifies your identity and handles
+                  bank transfers directly to you.
+                </p>
+                <Button
+                  className="rounded-full bg-[#635bff] hover:bg-[#5148e6]"
+                  onClick={() => startOnboarding.mutate()}
+                  disabled={startOnboarding.isPending}
+                >
+                  {startOnboarding.isPending ? "Preparing…" : "Set up Stripe payouts"}
+                </Button>
+              </>
+            ) : payoutsEnabled ? (
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="text-sm">
+                  <p className="text-[#2e4053] font-medium flex items-center gap-2">
+                    <ShieldCheck className="h-4 w-4 text-[#59914c]" /> Payouts enabled
+                  </p>
+                  <p className="text-xs text-[#6b7b8c] mt-1">
+                    Your Stripe account is verified. Withdrawals go directly to your linked bank.
+                  </p>
+                </div>
+                <Button variant="outline" size="sm" className="rounded-full" onClick={() => openDashboard.mutate()} disabled={openDashboard.isPending}>
+                  <ExternalLink className="h-4 w-4 mr-1" /> Stripe dashboard
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <div className="flex items-start gap-2 text-sm rounded-lg bg-[#FFF8EC] border border-[#F0E1B8] p-3">
+                  <AlertTriangle className="h-4 w-4 text-[#7a5c1a] mt-0.5" />
+                  <div>
+                    <p className="text-[#7a5c1a] font-medium">Onboarding incomplete</p>
+                    <p className="text-xs text-[#7a5c1a]/80 mt-1">
+                      Finish verification with Stripe to enable payouts.
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  className="rounded-full bg-[#635bff] hover:bg-[#5148e6]"
+                  onClick={() => startOnboarding.mutate()}
+                  disabled={startOnboarding.isPending}
+                >
+                  {startOnboarding.isPending ? "Preparing…" : "Continue Stripe onboarding"}
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="border-[#E5E7EB]">
