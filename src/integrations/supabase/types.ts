@@ -14,16 +14,349 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      categories: {
+        Row: {
+          base_price: number | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+          slug: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          base_price?: number | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          base_price?: number | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      jobs: {
+        Row: {
+          address_line1: string | null
+          address_line2: string | null
+          budget_max: number | null
+          budget_min: number | null
+          category_id: string | null
+          city: string | null
+          created_at: string
+          customer_id: string
+          description: string
+          id: string
+          lat: number | null
+          lng: number | null
+          postcode: string | null
+          scheduled_date: string | null
+          status: string
+          title: string
+          updated_at: string
+          urgency: string
+        }
+        Insert: {
+          address_line1?: string | null
+          address_line2?: string | null
+          budget_max?: number | null
+          budget_min?: number | null
+          category_id?: string | null
+          city?: string | null
+          created_at?: string
+          customer_id: string
+          description: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          postcode?: string | null
+          scheduled_date?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          urgency?: string
+        }
+        Update: {
+          address_line1?: string | null
+          address_line2?: string | null
+          budget_max?: number | null
+          budget_min?: number | null
+          category_id?: string | null
+          city?: string | null
+          created_at?: string
+          customer_id?: string
+          description?: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          postcode?: string | null
+          scheduled_date?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          urgency?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jobs_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "jobs_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          is_available: boolean | null
+          onboarding_status: string
+          phone: string | null
+          service_radius: number | null
+          type: string
+          updated_at: string
+          user_id: string
+          verification_status: string | null
+          years_experience: number | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          is_available?: boolean | null
+          onboarding_status?: string
+          phone?: string | null
+          service_radius?: number | null
+          type?: string
+          updated_at?: string
+          user_id: string
+          verification_status?: string | null
+          years_experience?: number | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          is_available?: boolean | null
+          onboarding_status?: string
+          phone?: string | null
+          service_radius?: number | null
+          type?: string
+          updated_at?: string
+          user_id?: string
+          verification_status?: string | null
+          years_experience?: number | null
+        }
+        Relationships: []
+      }
+      provider_categories: {
+        Row: {
+          category_id: string
+          created_at: string
+          id: string
+          provider_id: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          id?: string
+          provider_id: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          id?: string
+          provider_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "provider_categories_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      provider_verifications: {
+        Row: {
+          created_at: string
+          document_type: string
+          expiry_date: string | null
+          id: string
+          notes: string | null
+          provider_id: string
+          reviewed_by: string | null
+          status: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          document_type: string
+          expiry_date?: string | null
+          id?: string
+          notes?: string | null
+          provider_id: string
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          document_type?: string
+          expiry_date?: string | null
+          id?: string
+          notes?: string | null
+          provider_id?: string
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_verifications_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quotes: {
+        Row: {
+          created_at: string
+          duration_minutes: number | null
+          id: string
+          job_id: string
+          message: string | null
+          price: number
+          provider_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          job_id: string
+          message?: string | null
+          price: number
+          provider_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          job_id?: string
+          message?: string | null
+          price?: number
+          provider_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quotes_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role:
+        | "customer"
+        | "provider"
+        | "admin"
+        | "super_admin"
+        | "support"
+        | "finance"
+        | "verification"
+        | "marketing"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +483,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: [
+        "customer",
+        "provider",
+        "admin",
+        "super_admin",
+        "support",
+        "finance",
+        "verification",
+        "marketing",
+      ],
+    },
   },
 } as const

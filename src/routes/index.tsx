@@ -1,13 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ShieldCheck, Sparkles, Clock, Star, ArrowRight, CheckCircle2,
   Wrench, Leaf, SprayCan, Zap, Hammer, Paintbrush, Truck, Home as HomeIcon,
 } from "lucide-react";
 import heroImg from "@/assets/hero-provider.png.asset.json";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
-
-
+import { Header } from "@/components/layout/Header";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -25,34 +24,11 @@ const categories = [
 ];
 
 function Index() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Nav */}
-      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Link to="/" className="flex items-center">
-            <img
-              src={logoAsset.url}
-              alt="DoneToday"
-              width={160}
-              height={56}
-              className="h-12 w-auto"
-            />
-          </Link>
-          <nav className="hidden items-center gap-8 md:flex">
-            <a href="#how" className="text-sm text-muted-foreground hover:text-foreground">How it works</a>
-            <a href="#categories" className="text-sm text-muted-foreground hover:text-foreground">Services</a>
-            <a href="#providers" className="text-sm text-muted-foreground hover:text-foreground">For pros</a>
-            <a href="#safety" className="text-sm text-muted-foreground hover:text-foreground">Trust & safety</a>
-          </nav>
-          <div className="flex items-center gap-2">
-            <button className="hidden rounded-full px-4 py-2 text-sm font-medium text-foreground hover:bg-muted md:inline-flex">Sign in</button>
-            <button className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:bg-primary/90">
-              Get a quote <ArrowRight className="h-3.5 w-3.5" />
-            </button>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero */}
       <section className="relative overflow-hidden">
@@ -86,9 +62,12 @@ function Index() {
                   placeholder="Postcode or address"
                 />
               </div>
-              <button className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition hover:bg-primary/90">
+              <Link
+                to={isAuthenticated ? "/post-job" : "/auth"}
+                className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
+              >
                 Get quotes <ArrowRight className="h-4 w-4" />
-              </button>
+              </Link>
             </div>
 
             <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
