@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type Stripe from "stripe";
 
 export const Route = createFileRoute("/api/public/webhooks/stripe-connect")({
   server: {
@@ -13,10 +14,10 @@ export const Route = createFileRoute("/api/public/webhooks/stripe-connect")({
         if (!sig) return new Response("Missing signature", { status: 400 });
         const body = await request.text();
 
-        const { default: Stripe } = await import("stripe");
-        const stripe = new Stripe(stripeKey, { apiVersion: "2024-06-20" as Stripe.LatestApiVersion });
+        const { default: StripeCtor } = await import("stripe");
+        const stripe = new StripeCtor(stripeKey, { apiVersion: "2024-06-20" as Stripe.LatestApiVersion });
 
-        let event: import("stripe").Stripe.Event;
+        let event: Stripe.Event;
         try {
           event = await stripe.webhooks.constructEventAsync(body, sig, secret);
         } catch (err) {
@@ -24,7 +25,7 @@ export const Route = createFileRoute("/api/public/webhooks/stripe-connect")({
         }
 
         if (event.type === "account.updated" || event.type === "account.application.deauthorized") {
-          const account = event.data.object as import("stripe").Stripe.Account;
+          const account = event.data.object as Stripe.Account;
           const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
           await supabaseAdmin
             .from("provider_stripe_accounts")
@@ -32,7 +33,7 @@ export const Route = createFileRoute("/api/public/webhooks/stripe-connect")({
               charges_enabled: !!account.charges_enabled,
               payouts_enabled: !!account.payouts_enabled,
               details_submitted: !!account.details_submitted,
-              requirements: account.requirements as unknown as object,
+              requirements: (account.requirements ?? null) as never,
               country: account.country ?? null,
             })
             .eq("stripe_account_id", account.id);
