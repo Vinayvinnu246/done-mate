@@ -20,6 +20,7 @@ import logoAsset from "@/assets/donetoday-logo.png.asset.json";
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>) => ({
     mode: s.mode === "signup" ? ("signup" as const) : ("login" as const),
+    role: s.role === "customer" || s.role === "provider" ? (s.role as "customer" | "provider") : undefined,
     next: typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") ? s.next : undefined,
   }),
   component: AuthPage,
@@ -39,7 +40,8 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [accountType, setAccountType] = useState<"customer" | "provider">("customer");
+  const [accountType, setAccountType] = useState<"customer" | "provider">(search.role ?? "customer");
+  const roleLocked = search.role;
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -279,28 +281,40 @@ function AuthPage() {
 
                 <div className="space-y-2">
                   <Label>I am a</Label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setAccountType("customer")}
-                      className={`flex flex-col items-center gap-2 rounded-lg border p-4 transition-colors ${
-                        accountType === "customer" ? "border-primary bg-primary/5" : "border-border hover:bg-muted"
-                      }`}
-                    >
-                      <User className="h-5 w-5" />
-                      <span className="text-sm font-medium">Customer</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setAccountType("provider")}
-                      className={`flex flex-col items-center gap-2 rounded-lg border p-4 transition-colors ${
-                        accountType === "provider" ? "border-primary bg-primary/5" : "border-border hover:bg-muted"
-                      }`}
-                    >
+                  {roleLocked === "provider" ? (
+                    <div className="flex flex-col items-center gap-2 rounded-lg border border-primary bg-primary/5 p-4">
                       <ArrowRight className="h-5 w-5" />
                       <span className="text-sm font-medium">Provider</span>
-                    </button>
-                  </div>
+                    </div>
+                  ) : roleLocked === "customer" ? (
+                    <div className="flex flex-col items-center gap-2 rounded-lg border border-primary bg-primary/5 p-4">
+                      <User className="h-5 w-5" />
+                      <span className="text-sm font-medium">Customer</span>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setAccountType("customer")}
+                        className={`flex flex-col items-center gap-2 rounded-lg border p-4 transition-colors ${
+                          accountType === "customer" ? "border-primary bg-primary/5" : "border-border hover:bg-muted"
+                        }`}
+                      >
+                        <User className="h-5 w-5" />
+                        <span className="text-sm font-medium">Customer</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAccountType("provider")}
+                        className={`flex flex-col items-center gap-2 rounded-lg border p-4 transition-colors ${
+                          accountType === "provider" ? "border-primary bg-primary/5" : "border-border hover:bg-muted"
+                        }`}
+                      >
+                        <ArrowRight className="h-5 w-5" />
+                        <span className="text-sm font-medium">Provider</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {error && (
