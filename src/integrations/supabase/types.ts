@@ -515,7 +515,9 @@ export type Database = {
           id: string
           job_id: string
           message: string | null
+          parent_quote_id: string | null
           price: number
+          proposed_by: string
           provider_id: string
           status: string
           updated_at: string
@@ -526,7 +528,9 @@ export type Database = {
           id?: string
           job_id: string
           message?: string | null
+          parent_quote_id?: string | null
           price: number
+          proposed_by?: string
           provider_id: string
           status?: string
           updated_at?: string
@@ -537,7 +541,9 @@ export type Database = {
           id?: string
           job_id?: string
           message?: string | null
+          parent_quote_id?: string | null
           price?: number
+          proposed_by?: string
           provider_id?: string
           status?: string
           updated_at?: string
@@ -548,6 +554,13 @@ export type Database = {
             columns: ["job_id"]
             isOneToOne: false
             referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_parent_quote_id_fkey"
+            columns: ["parent_quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
             referencedColumns: ["id"]
           },
           {
