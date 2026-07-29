@@ -933,6 +933,48 @@ export type Database = {
       }
     }
     Functions: {
+      get_my_profile: {
+        Args: never
+        Returns: {
+          account_status: string
+          areas_covered: string[]
+          available_today: boolean
+          avatar_url: string | null
+          bio: string | null
+          business_name: string | null
+          business_type: string | null
+          company_number: string | null
+          created_at: string
+          date_of_birth: string | null
+          display_name: string | null
+          emergency_jobs: boolean
+          holiday_dates: Json
+          home_address: string | null
+          id: string
+          is_available: boolean | null
+          notification_preferences: Json
+          onboarding_status: string
+          phone: string | null
+          postcode: string | null
+          service_radius: number | null
+          trading_name: string | null
+          type: string
+          updated_at: string
+          user_id: string
+          vat_number: string | null
+          vat_registered: boolean
+          verification_status: string | null
+          working_days: string[]
+          working_hours: Json
+          years_experience: number | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "profiles"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
