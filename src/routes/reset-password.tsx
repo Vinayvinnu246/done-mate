@@ -1,6 +1,10 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useNavigate,
+  Link,
+} from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Loader2, Lock, CheckCircle } from "lucide-react";
+import { Loader2, Lock, CheckCircle, Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +12,6 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
-import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/reset-password")({
   component: ResetPasswordPage,
