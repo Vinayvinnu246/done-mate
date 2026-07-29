@@ -18,18 +18,12 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   return (
-    <LegalPage
-      eyebrow="Contact"
-      title="We're here to help."
-      intro="Our support team typically replies within a few hours during UK business hours. For urgent booking issues, please include your job reference."
-    >
+    <LegalPage eyebrow="Contact" title="We're here to help." intro="Our support team typically replies within a few hours during UK business hours. For urgent booking issues, please include your job reference.">
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border border-border bg-card p-5">
           <Mail className="h-5 w-5 text-primary" />
           <div className="mt-3 text-sm font-semibold">Email</div>
-          <a href="mailto:support@donetoday.co.uk" className="mt-1 block text-sm text-muted-foreground hover:text-foreground">
-            support@donetoday.co.uk
-          </a>
+          <a href="mailto:support@donetoday.co.uk" className="mt-1 block text-sm text-muted-foreground hover:text-foreground">support@donetoday.co.uk</a>
         </div>
         <div className="rounded-2xl border border-border bg-card p-5">
           <Clock className="h-5 w-5 text-primary" />
@@ -42,27 +36,11 @@ function ContactPage() {
           <div className="mt-1 text-sm text-muted-foreground">EAGLERA LTD, London, United Kingdom</div>
         </div>
       </div>
-
       <Section heading="Get in touch">
-        <p>
-          Whether you have a question about a quote, need help with a booking,
-          or want to become a DoneToday pro, email us at
-          {" "}
-          <a href="mailto:support@donetoday.co.uk" className="text-primary underline">
-            support@donetoday.co.uk
-          </a>{" "}
-          and we'll get back to you as soon as we can.
-        </p>
+        <p>Whether you have a question about a quote, need help with a booking, or want to become a DoneToday pro, email us at <a href="mailto:support@donetoday.co.uk" className="text-primary underline">support@donetoday.co.uk</a> and we'll get back to you as soon as we can.</p>
       </Section>
       <Section heading="Media & partnerships">
-        <p>
-          For press enquiries or partnership opportunities, please email
-          {" "}
-          <a href="mailto:support@donetoday.co.uk" className="text-primary underline">
-            support@donetoday.co.uk
-          </a>{" "}
-          with the subject line "Press" or "Partnership".
-        </p>
+        <p>For press enquiries or partnership opportunities, please email <a href="mailto:support@donetoday.co.uk" className="text-primary underline">support@donetoday.co.uk</a> with the subject line "Press" or "Partnership".</p>
       </Section>
     </LegalPage>
   );
