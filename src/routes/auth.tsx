@@ -18,15 +18,23 @@ import { lovable } from "@/integrations/lovable";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    mode: s.mode === "signup" ? ("signup" as const) : ("login" as const),
+    next: typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") ? s.next : undefined,
+  }),
   component: AuthPage,
 });
 
 function AuthPage() {
   const navigate = useNavigate();
   const search = useSearch({ from: "/auth" });
-  const [mode, setMode] = useState<"login" | "signup">(
-    (search as { mode?: "login" | "signup" }).mode ?? "login"
-  );
+  const nextPath = search.next;
+  const [mode, setMode] = useState<"login" | "signup">(search.mode);
+
+  const goNext = () => {
+    if (nextPath) window.location.href = nextPath;
+    else navigate({ to: "/dashboard" });
+  };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -50,7 +58,7 @@ function AuthPage() {
 
       if (signInError) throw signInError;
 
-      navigate({ to: "/dashboard" });
+      goNext();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign in failed");
     } finally {
@@ -79,7 +87,9 @@ function AuthPage() {
         email,
         password,
         options: {
-          emailRedirectTo: window.location.origin,
+          emailRedirectTo: nextPath
+            ? `${window.location.origin}/auth?next=${encodeURIComponent(nextPath)}`
+            : window.location.origin,
           data: { type: accountType },
         },
       });
@@ -92,7 +102,7 @@ function AuthPage() {
       }
 
       if (data.session) {
-        navigate({ to: "/dashboard" });
+        goNext();
       } else {
         setSuccess("Check your email to confirm your account before signing in.");
       }
@@ -109,12 +119,14 @@ function AuthPage() {
 
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+        redirect_uri: nextPath
+          ? `${window.location.origin}/auth?next=${encodeURIComponent(nextPath)}`
+          : window.location.origin,
       });
 
       if (result.error) throw result.error;
       if (result.redirected) return;
-      navigate({ to: "/dashboard" });
+      goNext();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Google sign in failed");
       setLoading(false);
