@@ -62,9 +62,12 @@ function Index() {
                   placeholder="Postcode or address"
                 />
               </div>
-              <button className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition hover:bg-primary/90">
+              <Link
+                to={isAuthenticated ? "/post-job" : "/auth"}
+                className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
+              >
                 Get quotes <ArrowRight className="h-4 w-4" />
-              </button>
+              </Link>
             </div>
 
             <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
