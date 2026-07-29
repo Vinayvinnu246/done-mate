@@ -223,7 +223,7 @@ function Index() {
             <div className="text-xs font-semibold uppercase tracking-wider text-accent">For professionals</div>
             <h2 className="mt-2 font-serif text-4xl tracking-tight md:text-5xl">Grow your trade.<br />Keep your calendar full.</h2>
             <p className="mt-6 max-w-lg text-muted-foreground">
-              Free to join. Only pay a 10% platform fee on completed jobs. No lead fees, no monthly subs, no games.
+              Free to join. Only pay a 15% platform fee on completed jobs. No lead fees, no monthly subs, no games.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/auth" search={{ mode: "signup", role: "provider" }} className="inline-flex items-center gap-1.5 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90">

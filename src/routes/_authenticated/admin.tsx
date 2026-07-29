@@ -439,7 +439,7 @@ function AdminDashboard() {
                 <WalletIcon className="h-4 w-4" /> Simulate customer payment
               </h3>
               <p className="text-xs text-[#6b7b8c]">
-                Credits a provider's wallet with 90% (10% platform commission). Net enters the 3-day pending hold.
+                Credits a provider's wallet with 85% (15% platform commission). Net enters the 3-day pending hold.
               </p>
               <div className="grid gap-3 sm:grid-cols-3">
                 <div>
