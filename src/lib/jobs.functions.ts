@@ -19,6 +19,7 @@ const jobInsertSchema = z.object({
   lat: z.number().optional(),
   lng: z.number().optional(),
   images: z.array(z.string().min(1)).max(8).optional(),
+  videos: z.array(z.string().min(1)).max(4).optional(),
 });
 
 const quoteInsertSchema = z.object({
