@@ -23,7 +23,7 @@ export const getMyProfile = createServerFn({ method: "GET" })
 
 export const updateMyProfile = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: { display_name?: string; phone?: string; avatar_url?: string }) => input)
+  .validator((input: { display_name?: string; phone?: string; avatar_url?: string }) => input)
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 
