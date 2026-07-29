@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProvidersRouteImport } from './routes/providers'
 import { Route as McpRouteImport } from './routes/mcp'
+import { Route as HelpRouteImport } from './routes/help'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
@@ -44,6 +45,11 @@ const ProvidersRoute = ProvidersRouteImport.update({
 const McpRoute = McpRouteImport.update({
   id: '/mcp',
   path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -144,6 +150,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
@@ -190,6 +198,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
@@ -214,6 +223,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/contact'
+    | '/help'
     | '/mcp'
     | '/providers'
     | '/reset-password'
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/contact'
+    | '/help'
     | '/mcp'
     | '/providers'
     | '/reset-password'
@@ -259,6 +270,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/contact'
+    | '/help'
     | '/mcp'
     | '/providers'
     | '/reset-password'
@@ -283,6 +295,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
+  HelpRoute: typeof HelpRoute
   McpRoute: typeof McpRoute
   ProvidersRoute: typeof ProvidersRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -313,6 +326,13 @@ declare module '@tanstack/react-router' {
       path: '/mcp'
       fullPath: '/mcp'
       preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -496,6 +516,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
+  HelpRoute: HelpRoute,
   McpRoute: McpRoute,
   ProvidersRoute: ProvidersRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
