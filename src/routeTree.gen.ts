@@ -17,6 +17,7 @@ import { Route as ProviderAgreementRouteImport } from './routes/provider-agreeme
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PressRouteImport } from './routes/press'
 import { Route as HelpRouteImport } from './routes/help'
+import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as DisputesRouteImport } from './routes/disputes'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -82,6 +83,11 @@ const PressRoute = PressRouteImport.update({
 const HelpRoute = HelpRouteImport.update({
   id: '/help',
   path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqsRoute = FaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DisputesRoute = DisputesRouteImport.update({
@@ -225,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/disputes': typeof DisputesRoute
+  '/faqs': typeof FaqsRoute
   '/help': typeof HelpRoute
   '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
@@ -260,6 +267,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/disputes': typeof DisputesRoute
+  '/faqs': typeof FaqsRoute
   '/help': typeof HelpRoute
   '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
@@ -297,6 +305,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/disputes': typeof DisputesRoute
+  '/faqs': typeof FaqsRoute
   '/help': typeof HelpRoute
   '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
@@ -334,6 +343,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/disputes'
+    | '/faqs'
     | '/help'
     | '/press'
     | '/privacy'
@@ -369,6 +379,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/disputes'
+    | '/faqs'
     | '/help'
     | '/press'
     | '/privacy'
@@ -405,6 +416,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/disputes'
+    | '/faqs'
     | '/help'
     | '/press'
     | '/privacy'
@@ -442,6 +454,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   DisputesRoute: typeof DisputesRoute
+  FaqsRoute: typeof FaqsRoute
   HelpRoute: typeof HelpRoute
   PressRoute: typeof PressRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -509,6 +522,13 @@ declare module '@tanstack/react-router' {
       path: '/help'
       fullPath: '/help'
       preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faqs': {
+      id: '/faqs'
+      path: '/faqs'
+      fullPath: '/faqs'
+      preLoaderRoute: typeof FaqsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/disputes': {
@@ -766,6 +786,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   DisputesRoute: DisputesRoute,
+  FaqsRoute: FaqsRoute,
   HelpRoute: HelpRoute,
   PressRoute: PressRoute,
   PrivacyRoute: PrivacyRoute,
