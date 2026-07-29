@@ -8,7 +8,7 @@ import { LoadingScreen } from "@/components/ui/loading-screen";
 import { Badge } from "@/components/ui/badge";
 import { getAvailableJobs, getMyJobs } from "@/lib/jobs.functions";
 import { getMyProviderProfile } from "@/lib/onboarding.functions";
-import { Briefcase, ClipboardList, ShieldCheck, Star, Plus, Wrench, ArrowRight } from "lucide-react";
+import { ClipboardList, ShieldCheck, Star, Plus, Wrench, Wallet as WalletIcon } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
@@ -168,6 +168,14 @@ function Dashboard() {
                     <Link to="/onboarding">
                       <ShieldCheck className="h-4 w-4 mr-1.5" />
                       Complete verification
+                    </Link>
+                  </Button>
+                )}
+                {isProvider && (
+                  <Button variant="outline" className="w-full justify-start rounded-full" asChild>
+                    <Link to="/wallet">
+                      <WalletIcon className="h-4 w-4 mr-1.5" />
+                      Wallet & payouts
                     </Link>
                   </Button>
                 )}
