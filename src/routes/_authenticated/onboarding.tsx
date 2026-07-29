@@ -254,6 +254,7 @@ function OnboardingPage() {
     <div className="min-h-screen bg-[#FAFAF8]">
       <Header />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+        <BackButton className="mb-4" />
         <div className="mb-6">
           <h1 className="font-display text-3xl font-semibold text-[#2e4053]">Provider onboarding</h1>
           <p className="text-[#6b7b8c] mt-1">Complete these steps to start receiving matched jobs.</p>
