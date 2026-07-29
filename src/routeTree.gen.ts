@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TrustSafetyRouteImport } from './routes/trust-safety'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ServerErrorRouteImport } from './routes/server-error'
 import { Route as SafetyRouteImport } from './routes/safety'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ReportProblemRouteImport } from './routes/report-problem'
@@ -61,6 +62,11 @@ const TrustSafetyRoute = TrustSafetyRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServerErrorRoute = ServerErrorRouteImport.update({
+  id: '/server-error',
+  path: '/server-error',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SafetyRoute = SafetyRouteImport.update({
@@ -294,6 +300,7 @@ export interface FileRoutesByFullPath {
   '/report-problem': typeof ReportProblemRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safety': typeof SafetyRoute
+  '/server-error': typeof ServerErrorRoute
   '/terms': typeof TermsRoute
   '/trust-safety': typeof TrustSafetyRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -338,6 +345,7 @@ export interface FileRoutesByTo {
   '/report-problem': typeof ReportProblemRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safety': typeof SafetyRoute
+  '/server-error': typeof ServerErrorRoute
   '/terms': typeof TermsRoute
   '/trust-safety': typeof TrustSafetyRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -384,6 +392,7 @@ export interface FileRoutesById {
   '/report-problem': typeof ReportProblemRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safety': typeof SafetyRoute
+  '/server-error': typeof ServerErrorRoute
   '/terms': typeof TermsRoute
   '/trust-safety': typeof TrustSafetyRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -430,6 +439,7 @@ export interface FileRouteTypes {
     | '/report-problem'
     | '/reset-password'
     | '/safety'
+    | '/server-error'
     | '/terms'
     | '/trust-safety'
     | '/admin'
@@ -474,6 +484,7 @@ export interface FileRouteTypes {
     | '/report-problem'
     | '/reset-password'
     | '/safety'
+    | '/server-error'
     | '/terms'
     | '/trust-safety'
     | '/admin'
@@ -519,6 +530,7 @@ export interface FileRouteTypes {
     | '/report-problem'
     | '/reset-password'
     | '/safety'
+    | '/server-error'
     | '/terms'
     | '/trust-safety'
     | '/_authenticated/admin'
@@ -565,6 +577,7 @@ export interface RootRouteChildren {
   ReportProblemRoute: typeof ReportProblemRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SafetyRoute: typeof SafetyRoute
+  ServerErrorRoute: typeof ServerErrorRoute
   TermsRoute: typeof TermsRoute
   TrustSafetyRoute: typeof TrustSafetyRoute
   ApiPublicWebhooksStripeConnectRoute: typeof ApiPublicWebhooksStripeConnectRoute
@@ -584,6 +597,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/server-error': {
+      id: '/server-error'
+      path: '/server-error'
+      fullPath: '/server-error'
+      preLoaderRoute: typeof ServerErrorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/safety': {
@@ -961,6 +981,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReportProblemRoute: ReportProblemRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SafetyRoute: SafetyRoute,
+  ServerErrorRoute: ServerErrorRoute,
   TermsRoute: TermsRoute,
   TrustSafetyRoute: TrustSafetyRoute,
   ApiPublicWebhooksStripeConnectRoute: ApiPublicWebhooksStripeConnectRoute,
