@@ -18,8 +18,16 @@ import {
   updateVerificationStatus,
   updateJobStatus,
   addUserRole,
+  getAdminPayouts,
+  updatePayoutStatus,
+  creditJobEarnings,
+  addWalletAdjustment,
+  setPayoutHold,
+  releasePayoutHold,
 } from "@/lib/admin.functions";
-import { Shield, Users, Briefcase, FileCheck } from "lucide-react";
+import { Shield, Wallet as WalletIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminDashboard,
@@ -42,6 +50,16 @@ const jobStatusColors: Record<string, string> = {
   disputed: "bg-rose-100 text-rose-700",
 };
 
+const payoutStatusColors: Record<string, string> = {
+  requested: "bg-amber-100 text-amber-700",
+  pending: "bg-amber-100 text-amber-700",
+  processing: "bg-blue-100 text-blue-700",
+  paid: "bg-[#59914c] text-white",
+  failed: "bg-red-100 text-red-700",
+  reversed: "bg-red-100 text-red-700",
+  on_hold: "bg-rose-100 text-rose-700",
+};
+
 function AdminDashboard() {
   const navigate = useNavigate();
   const { roles } = useAuth();
@@ -49,6 +67,9 @@ function AdminDashboard() {
 
   const [jobStatus, setJobStatus] = useState<Record<string, string>>({});
   const [roleSelections, setRoleSelections] = useState<Record<string, string>>({});
+  const [payoutFail, setPayoutFail] = useState<Record<string, string>>({});
+  const [creditForm, setCreditForm] = useState({ provider_id: "", gross_amount: "" });
+  const [holdForm, setHoldForm] = useState({ provider_id: "", reason: "" });
 
   const statsQuery = useQuery({
     queryKey: ["admin-stats"],
@@ -71,6 +92,12 @@ function AdminDashboard() {
   const usersQuery = useQuery({
     queryKey: ["admin-users"],
     queryFn: () => getAdminUsers(),
+    enabled: isAdmin,
+  });
+
+  const payoutsQuery = useQuery({
+    queryKey: ["admin-payouts"],
+    queryFn: () => getAdminPayouts(),
     enabled: isAdmin,
   });
 
@@ -98,6 +125,45 @@ function AdminDashboard() {
       toast.success("Role added");
       usersQuery.refetch();
     },
+    onError: (error) => toast.error(error instanceof Error ? error.message : "Failed"),
+  });
+
+  const payoutMutation = useMutation({
+    mutationFn: updatePayoutStatus,
+    onSuccess: () => {
+      toast.success("Payout updated");
+      payoutsQuery.refetch();
+    },
+    onError: (error) => toast.error(error instanceof Error ? error.message : "Failed"),
+  });
+
+  const creditMutation = useMutation({
+    mutationFn: creditJobEarnings,
+    onSuccess: () => {
+      toast.success("Earnings credited");
+      setCreditForm({ provider_id: "", gross_amount: "" });
+    },
+    onError: (error) => toast.error(error instanceof Error ? error.message : "Failed"),
+  });
+
+  const adjustmentMutation = useMutation({
+    mutationFn: addWalletAdjustment,
+    onSuccess: () => toast.success("Adjustment added"),
+    onError: (error) => toast.error(error instanceof Error ? error.message : "Failed"),
+  });
+
+  const holdMutation = useMutation({
+    mutationFn: setPayoutHold,
+    onSuccess: () => {
+      toast.success("Hold placed");
+      setHoldForm({ provider_id: "", reason: "" });
+    },
+    onError: (error) => toast.error(error instanceof Error ? error.message : "Failed"),
+  });
+
+  const releaseHoldMutation = useMutation({
+    mutationFn: releasePayoutHold,
+    onSuccess: () => toast.success("Hold released"),
     onError: (error) => toast.error(error instanceof Error ? error.message : "Failed"),
   });
 
@@ -177,6 +243,8 @@ function AdminDashboard() {
             <TabsTrigger value="verifications">Verifications</TabsTrigger>
             <TabsTrigger value="jobs">Jobs</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
+            <TabsTrigger value="payouts">Payouts</TabsTrigger>
+            <TabsTrigger value="wallets">Wallets</TabsTrigger>
           </TabsList>
 
           <TabsContent value="verifications" className="space-y-3">
@@ -318,8 +386,157 @@ function AdminDashboard() {
             ))}
             {users.length === 0 && <p className="text-[#6b7b8c]">No users yet.</p>}
           </TabsContent>
+
+          <TabsContent value="payouts" className="space-y-3">
+            {(payoutsQuery.data ?? []).map((p: any) => (
+              <div key={p.id} className="bg-white rounded-2xl border border-[#E5E7EB] p-5 space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="font-medium text-[#2e4053]">
+                      £{Number(p.amount).toFixed(2)} · {p.bank?.bank_name ?? "—"} •••• {p.bank?.account_last4 ?? "—"}
+                    </p>
+                    <p className="text-xs text-[#6b7b8c]">
+                      Provider {p.provider_id.slice(0, 8)} · Requested {new Date(p.created_at).toLocaleDateString("en-GB")}
+                    </p>
+                  </div>
+                  <Badge className={payoutStatusColors[p.status] ?? payoutStatusColors.requested}>{p.status.replace("_", " ")}</Badge>
+                </div>
+                {p.failure_reason && <p className="text-xs text-[#c0392b]">Reason: {p.failure_reason}</p>}
+                <div className="flex flex-wrap gap-2">
+                  {["processing", "paid", "failed", "on_hold", "reversed"].map((s) => (
+                    <Button
+                      key={s}
+                      size="sm"
+                      variant="outline"
+                      className="rounded-full capitalize"
+                      onClick={() =>
+                        payoutMutation.mutate({
+                          data: {
+                            payout_id: p.id,
+                            status: s as any,
+                            failure_reason: (s === "failed" || s === "reversed") ? (payoutFail[p.id] || undefined) : undefined,
+                          },
+                        })
+                      }
+                    >
+                      Mark {s.replace("_", " ")}
+                    </Button>
+                  ))}
+                </div>
+                <Input
+                  placeholder="Failure reason (if marking failed/reversed)"
+                  value={payoutFail[p.id] ?? ""}
+                  onChange={(e) => setPayoutFail((prev) => ({ ...prev, [p.id]: e.target.value }))}
+                />
+              </div>
+            ))}
+            {(payoutsQuery.data ?? []).length === 0 && <p className="text-[#6b7b8c]">No payout requests yet.</p>}
+          </TabsContent>
+
+          <TabsContent value="wallets" className="space-y-4">
+            <div className="bg-white rounded-2xl border border-[#E5E7EB] p-5 space-y-3">
+              <h3 className="font-medium text-[#2e4053] flex items-center gap-2">
+                <WalletIcon className="h-4 w-4" /> Simulate customer payment
+              </h3>
+              <p className="text-xs text-[#6b7b8c]">
+                Credits a provider's wallet with 90% (10% platform commission). Net enters the 3-day pending hold.
+              </p>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div>
+                  <Label>Provider user id</Label>
+                  <Input value={creditForm.provider_id} onChange={(e) => setCreditForm({ ...creditForm, provider_id: e.target.value })} placeholder="uuid" />
+                </div>
+                <div>
+                  <Label>Gross amount (£)</Label>
+                  <Input type="number" value={creditForm.gross_amount} onChange={(e) => setCreditForm({ ...creditForm, gross_amount: e.target.value })} />
+                </div>
+                <div className="flex items-end">
+                  <Button
+                    className="rounded-full w-full"
+                    onClick={() =>
+                      creditMutation.mutate({
+                        data: { provider_id: creditForm.provider_id, gross_amount: Number(creditForm.gross_amount) },
+                      })
+                    }
+                    disabled={!creditForm.provider_id || !creditForm.gross_amount}
+                  >
+                    Credit earnings
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl border border-[#E5E7EB] p-5 space-y-3">
+              <h3 className="font-medium text-[#2e4053]">Place payout hold</h3>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div>
+                  <Label>Provider user id</Label>
+                  <Input value={holdForm.provider_id} onChange={(e) => setHoldForm({ ...holdForm, provider_id: e.target.value })} placeholder="uuid" />
+                </div>
+                <div className="sm:col-span-2">
+                  <Label>Reason</Label>
+                  <Input value={holdForm.reason} onChange={(e) => setHoldForm({ ...holdForm, reason: e.target.value })} />
+                </div>
+              </div>
+              <Button
+                className="rounded-full"
+                variant="outline"
+                onClick={() => holdMutation.mutate({ data: holdForm })}
+                disabled={!holdForm.provider_id || !holdForm.reason}
+              >
+                Place hold
+              </Button>
+            </div>
+
+            <div className="bg-white rounded-2xl border border-[#E5E7EB] p-5 space-y-3">
+              <h3 className="font-medium text-[#2e4053]">Manual adjustment</h3>
+              <p className="text-xs text-[#6b7b8c]">Positive amount credits the provider; negative amount debits.</p>
+              <AdjustmentForm onSubmit={(v) => adjustmentMutation.mutate({ data: v })} pending={adjustmentMutation.isPending} />
+            </div>
+          </TabsContent>
         </Tabs>
       </main>
+    </div>
+  );
+}
+
+function AdjustmentForm({
+  onSubmit,
+  pending,
+}: {
+  onSubmit: (v: { provider_id: string; type: "adjustment" | "bonus" | "refund" | "cancellation_fee"; amount: number; description: string }) => void;
+  pending: boolean;
+}) {
+  const [form, setForm] = useState({ provider_id: "", type: "adjustment" as const, amount: "", description: "" });
+  return (
+    <div className="grid gap-3 sm:grid-cols-4">
+      <Input placeholder="Provider user id" value={form.provider_id} onChange={(e) => setForm({ ...form, provider_id: e.target.value })} />
+      <select
+        className="rounded-lg border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
+        value={form.type}
+        onChange={(e) => setForm({ ...form, type: e.target.value as any })}
+      >
+        <option value="adjustment">Adjustment</option>
+        <option value="bonus">Bonus</option>
+        <option value="refund">Refund</option>
+        <option value="cancellation_fee">Cancellation fee</option>
+      </select>
+      <Input type="number" placeholder="Amount" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} />
+      <Input placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+      <Button
+        className="rounded-full sm:col-span-4"
+        onClick={() =>
+          onSubmit({
+            provider_id: form.provider_id,
+            type: form.type,
+            amount: Number(form.amount),
+            description: form.description,
+          })
+        }
+        disabled={pending || !form.provider_id || !form.amount || !form.description}
+      >
+        {pending ? "Saving…" : "Add adjustment"}
+      </Button>
     </div>
   );
 }
