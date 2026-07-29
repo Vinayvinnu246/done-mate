@@ -1,7 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { zodValidator, fallback } from "@tanstack/zod-adapter";
-import { z } from "zod";
 import { useState } from "react";
 import { searchProviders } from "@/lib/providers.functions";
 import { getCategories } from "@/lib/jobs.functions";
@@ -10,14 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BadgeCheck, MapPin, Search, Star } from "lucide-react";
 
-const searchSchema = z.object({
-  q: fallback(z.string(), "").default(""),
-  category: fallback(z.string(), "").default(""),
-  city: fallback(z.string(), "").default(""),
-});
+type ProvidersSearch = { q: string; category: string; city: string };
 
 export const Route = createFileRoute("/providers")({
-  validateSearch: zodValidator(searchSchema),
+  validateSearch: (s: Record<string, unknown>): ProvidersSearch => ({
+    q: typeof s.q === "string" ? s.q : "",
+    category: typeof s.category === "string" ? s.category : "",
+    city: typeof s.city === "string" ? s.city : "",
+  }),
   component: ProvidersPage,
   head: () => ({
     meta: [
@@ -64,7 +62,7 @@ function ProvidersPage() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    navigate({ search: (prev) => ({ ...prev, q, city }) });
+    navigate({ search: (prev: ProvidersSearch) => ({ ...prev, q, city }) });
   }
 
   return (
@@ -115,7 +113,7 @@ function ProvidersPage() {
         <div className="flex flex-wrap gap-2 mb-8">
           <button
             type="button"
-            onClick={() => navigate({ search: (prev) => ({ ...prev, category: "" }) })}
+            onClick={() => navigate({ search: (prev: ProvidersSearch) => ({ ...prev, category: "" }) })}
             className={`px-4 py-1.5 rounded-full text-sm border transition ${
               !search.category
                 ? "bg-[#2e4053] text-white border-[#2e4053]"
@@ -128,7 +126,7 @@ function ProvidersPage() {
             <button
               key={c.id}
               type="button"
-              onClick={() => navigate({ search: (prev) => ({ ...prev, category: c.id }) })}
+              onClick={() => navigate({ search: (prev: ProvidersSearch) => ({ ...prev, category: c.id }) })}
               className={`px-4 py-1.5 rounded-full text-sm border transition ${
                 search.category === c.id
                   ? "bg-[#2e4053] text-white border-[#2e4053]"
