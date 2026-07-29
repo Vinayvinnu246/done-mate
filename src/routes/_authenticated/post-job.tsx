@@ -41,7 +41,9 @@ function PostJobPage() {
   const [city, setCity] = useState("");
   const [postcode, setPostcode] = useState("");
   const [images, setImages] = useState<{ path: string; previewUrl: string }[]>([]);
+  const [videos, setVideos] = useState<{ path: string; previewUrl: string }[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const mutation = useMutation({
@@ -102,6 +104,51 @@ function PostJobPage() {
     setImages((prev) => prev.filter((img) => img.path !== path));
   }
 
+  async function handleVideoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    if (!files.length) return;
+    if (videos.length + files.length > 4) {
+      toast.error("You can upload up to 4 videos");
+      return;
+    }
+    setUploadingVideo(true);
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      const userId = userData.user?.id;
+      if (!userId) throw new Error("Not signed in");
+      const uploaded: { path: string; previewUrl: string }[] = [];
+      for (const file of files) {
+        if (file.size > 50 * 1024 * 1024) {
+          toast.error(`${file.name} is larger than 50MB`);
+          continue;
+        }
+        const ext = file.name.split(".").pop() ?? "mp4";
+        const path = `${userId}/videos/${crypto.randomUUID()}.${ext}`;
+        const { error } = await supabase.storage.from("job-images").upload(path, file, {
+          contentType: file.type,
+          upsert: false,
+        });
+        if (error) {
+          toast.error(`Upload failed: ${error.message}`);
+          continue;
+        }
+        const { data: signed } = await supabase.storage
+          .from("job-images")
+          .createSignedUrl(path, 60 * 60);
+        uploaded.push({ path, previewUrl: signed?.signedUrl ?? "" });
+      }
+      setVideos((prev) => [...prev, ...uploaded]);
+    } finally {
+      setUploadingVideo(false);
+      e.target.value = "";
+    }
+  }
+
+  async function removeVideo(path: string) {
+    await supabase.storage.from("job-images").remove([path]);
+    setVideos((prev) => prev.filter((v) => v.path !== path));
+  }
+
   function validate() {
     const next: Record<string, string> = {};
     if (!title.trim() || title.length < 5) next.title = "Title must be at least 5 characters";
@@ -134,6 +181,7 @@ function PostJobPage() {
         city,
         postcode,
         images: images.length ? images.map((img) => img.path) : undefined,
+        videos: videos.length ? videos.map((v) => v.path) : undefined,
       },
     });
   }
@@ -276,6 +324,44 @@ function PostJobPage() {
                     className="hidden"
                     onChange={handleImageUpload}
                     disabled={uploading}
+                  />
+                </label>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Videos (optional)</Label>
+            <p className="text-xs text-[#6b7b8c]">
+              Add up to 4 short videos. Max 50MB each.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {videos.map((v) => (
+                <div key={v.path} className="relative aspect-video rounded-lg overflow-hidden border border-[#E5E7EB] bg-black">
+                  {v.previewUrl && (
+                    <video src={v.previewUrl} controls className="w-full h-full object-cover" />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => removeVideo(v.path)}
+                    className="absolute top-1 right-1 bg-black/60 hover:bg-black/80 text-white rounded-full p-1"
+                    aria-label="Remove video"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ))}
+              {videos.length < 4 && (
+                <label className="aspect-video rounded-lg border-2 border-dashed border-[#E5E7EB] hover:border-[#2e4053] flex flex-col items-center justify-center cursor-pointer text-[#6b7b8c] hover:text-[#2e4053] transition-colors">
+                  <Upload className="w-5 h-5 mb-1" />
+                  <span className="text-xs">{uploadingVideo ? "Uploading…" : "Add video"}</span>
+                  <input
+                    type="file"
+                    accept="video/*"
+                    multiple
+                    className="hidden"
+                    onChange={handleVideoUpload}
+                    disabled={uploadingVideo}
                   />
                 </label>
               )}

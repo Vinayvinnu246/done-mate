@@ -110,6 +110,7 @@ export type Database = {
           title: string
           updated_at: string
           urgency: string
+          videos: string[]
         }
         Insert: {
           address_line1?: string | null
@@ -131,6 +132,7 @@ export type Database = {
           title: string
           updated_at?: string
           urgency?: string
+          videos?: string[]
         }
         Update: {
           address_line1?: string | null
@@ -152,6 +154,7 @@ export type Database = {
           title?: string
           updated_at?: string
           urgency?: string
+          videos?: string[]
         }
         Relationships: [
           {
