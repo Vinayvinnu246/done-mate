@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
 import { createQuote, getJobById, updateQuoteStatus } from "@/lib/jobs.functions";
 import { ArrowLeft, Calendar, MapPin, PoundSterling, User } from "lucide-react";
+import { MessageThread } from "@/components/messages/MessageThread";
 
 export const Route = createFileRoute("/_authenticated/jobs/$jobId")({
   component: JobDetailPage,
@@ -78,6 +79,16 @@ function JobDetailPage() {
   const isCustomer = job.customer_id === user?.id;
   const hasQuoted = job.quotes?.some((q) => q.provider_id === user?.id);
   const acceptedQuote = job.quotes?.find((q) => q.status === "accepted");
+  const providerQuote = job.quotes?.find((q) => q.provider_id === user?.id);
+  const [activeThreadProviderId, setActiveThreadProviderId] = useState<string | null>(null);
+
+  const chatProviderId = isProvider
+    ? user?.id ?? null
+    : activeThreadProviderId ?? job.quotes?.[0]?.provider_id ?? null;
+  const chatOtherName = isProvider
+    ? "the customer"
+    : job.quotes?.find((q) => q.provider_id === chatProviderId)?.provider?.display_name ??
+      "provider";
 
   function handleQuoteSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -188,6 +199,14 @@ function JobDetailPage() {
                       {quote.message && (
                         <p className="text-sm text-[#6b7b8c]">{quote.message}</p>
                       )}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-full"
+                        onClick={() => setActiveThreadProviderId(quote.provider_id)}
+                      >
+                        Message provider
+                      </Button>
                       {quote.status === "pending" && job.status === "quoting" && (
                         <div className="flex gap-3">
                           <Button
@@ -214,6 +233,18 @@ function JobDetailPage() {
                     </CardContent>
                   </Card>
                 ))}
+              </div>
+            )}
+
+            {user && chatProviderId && ((isProvider && providerQuote) || (isCustomer && job.quotes && job.quotes.length > 0)) && (
+              <div className="space-y-3">
+                <h2 className="font-display text-xl font-semibold text-[#2e4053]">Messages</h2>
+                <MessageThread
+                  jobId={job.id}
+                  providerId={chatProviderId}
+                  currentUserId={user.id}
+                  otherName={chatOtherName}
+                />
               </div>
             )}
           </div>
