@@ -241,12 +241,13 @@ function Index() {
       <footer className="border-t border-border">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-4">
           <div>
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <CheckCircle2 className="h-4 w-4" />
-              </div>
-              <span className="text-lg font-semibold">DoneToday</span>
-            </div>
+            <img
+              src={logoAsset.url}
+              alt="DoneToday"
+              width={160}
+              height={56}
+              className="h-9 w-auto"
+            />
             <p className="mt-4 text-sm text-muted-foreground">
               Trusted local professionals, on demand.
             </p>
