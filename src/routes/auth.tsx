@@ -5,7 +5,7 @@ import {
   Link,
 } from "@tanstack/react-router";
 import { useState } from "react";
-import { Eye, EyeOff, Loader2, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail, Lock, User, ArrowRight, Briefcase, ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,17 +31,26 @@ function AuthPage() {
   const search = useSearch({ from: "/auth" });
   const nextPath = search.next;
   const [mode, setMode] = useState<"login" | "signup">(search.mode);
+  const role = search.role;
+
+  // No role picked yet — show the chooser.
+  if (!role) {
+    return <RoleChooser mode={mode} nextPath={nextPath} />;
+  }
+
+  const isProvider = role === "provider";
+  const theme = isProvider
+    ? { accent: "text-emerald-700", bg: "bg-emerald-50", label: "Provider", tagline: "Win more work with DoneToday." }
+    : { accent: "text-primary", bg: "bg-primary/5", label: "Customer", tagline: "Book verified local pros in minutes." };
 
   const goNext = () => {
     if (nextPath) window.location.href = nextPath;
-    else navigate({ to: "/dashboard" });
+    else navigate({ to: isProvider ? "/providers" : "/dashboard" });
   };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [accountType, setAccountType] = useState<"customer" | "provider">(search.role ?? "customer");
-  const roleLocked = search.role;
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -53,12 +62,29 @@ function AuthPage() {
     setLoading(true);
 
     try {
-      const { error: signInError } = await supabase.auth.signInWithPassword({
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (signInError) throw signInError;
+
+      // Enforce that the account matches the role of this login page.
+      const uid = signInData.user?.id;
+      if (uid) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("type")
+          .eq("user_id", uid)
+          .maybeSingle();
+        if (profile?.type && profile.type !== role) {
+          await supabase.auth.signOut();
+          const other = profile.type === "provider" ? "provider" : "customer";
+          throw new Error(
+            `This is a ${role} sign in. Your account is a ${other} — use the ${other} sign in instead.`,
+          );
+        }
+      }
 
       goNext();
     } catch (err) {
@@ -92,7 +118,7 @@ function AuthPage() {
           emailRedirectTo: nextPath
             ? `${window.location.origin}/auth?next=${encodeURIComponent(nextPath)}`
             : window.location.origin,
-          data: { type: accountType },
+          data: { type: role },
         },
       });
 
@@ -142,19 +168,28 @@ function AuthPage() {
           <Link to="/" className="mb-8 inline-block">
             <img src={logoAsset.url} alt="DoneToday" width={180} height={60} className="h-12 w-auto" />
           </Link>
-          <h1 className="font-serif text-4xl text-foreground md:text-5xl">
-            Local pros, done today.
+          <div className={`inline-flex items-center gap-2 rounded-full ${theme.bg} px-3 py-1 text-xs font-semibold ${theme.accent}`}>
+            {isProvider ? <Briefcase className="h-3.5 w-3.5" /> : <User className="h-3.5 w-3.5" />}
+            {theme.label} portal
+          </div>
+          <h1 className="mt-4 font-serif text-4xl text-foreground md:text-5xl">
+            {isProvider ? "Grow your business." : "Local pros, done today."}
           </h1>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Join DoneToday to find verified local professionals or start winning work near you.
-          </p>
+          <p className="mt-4 text-lg text-muted-foreground">{theme.tagline}</p>
+          <Link
+            to="/auth"
+            search={{ mode, role: isProvider ? "customer" : "provider" }}
+            className="mt-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+          >
+            <ArrowLeft className="h-4 w-4" /> Switch to {isProvider ? "customer" : "provider"} sign in
+          </Link>
         </div>
 
         <div className="md:w-1/2">
           <Tabs value={mode} onValueChange={(v) => setMode(v as "login" | "signup")} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Sign in</TabsTrigger>
-              <TabsTrigger value="signup">Create account</TabsTrigger>
+              <TabsTrigger value="login">{theme.label} sign in</TabsTrigger>
+              <TabsTrigger value="signup">Create {theme.label.toLowerCase()} account</TabsTrigger>
             </TabsList>
 
             <TabsContent value="login">
@@ -280,41 +315,23 @@ function AuthPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>I am a</Label>
-                  {roleLocked === "provider" ? (
-                    <div className="flex flex-col items-center gap-2 rounded-lg border border-primary bg-primary/5 p-4">
-                      <ArrowRight className="h-5 w-5" />
-                      <span className="text-sm font-medium">Provider</span>
+                  <Label>Account type</Label>
+                  <div className={`flex items-center gap-3 rounded-lg border border-primary ${theme.bg} p-4`}>
+                    {isProvider ? <Briefcase className="h-5 w-5" /> : <User className="h-5 w-5" />}
+                    <div className="text-sm">
+                      <div className="font-medium">{theme.label}</div>
+                      <div className="text-xs text-muted-foreground">
+                        Wrong type?{" "}
+                        <Link
+                          to="/auth"
+                          search={{ mode: "signup", role: isProvider ? "customer" : "provider" }}
+                          className="underline hover:text-foreground"
+                        >
+                          Sign up as {isProvider ? "customer" : "provider"}
+                        </Link>
+                      </div>
                     </div>
-                  ) : roleLocked === "customer" ? (
-                    <div className="flex flex-col items-center gap-2 rounded-lg border border-primary bg-primary/5 p-4">
-                      <User className="h-5 w-5" />
-                      <span className="text-sm font-medium">Customer</span>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-2 gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setAccountType("customer")}
-                        className={`flex flex-col items-center gap-2 rounded-lg border p-4 transition-colors ${
-                          accountType === "customer" ? "border-primary bg-primary/5" : "border-border hover:bg-muted"
-                        }`}
-                      >
-                        <User className="h-5 w-5" />
-                        <span className="text-sm font-medium">Customer</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setAccountType("provider")}
-                        className={`flex flex-col items-center gap-2 rounded-lg border p-4 transition-colors ${
-                          accountType === "provider" ? "border-primary bg-primary/5" : "border-border hover:bg-muted"
-                        }`}
-                      >
-                        <ArrowRight className="h-5 w-5" />
-                        <span className="text-sm font-medium">Provider</span>
-                      </button>
-                    </div>
-                  )}
+                  </div>
                 </div>
 
                 {error && (
@@ -342,6 +359,72 @@ function AuthPage() {
               </form>
             </TabsContent>
           </Tabs>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RoleChooser({ mode, nextPath }: { mode: "login" | "signup"; nextPath?: string }) {
+  return (
+    <div className="min-h-screen bg-muted/30">
+      <div className="mx-auto max-w-3xl px-6 py-16">
+        <Link to="/" className="mb-10 inline-block">
+          <img src={logoAsset.url} alt="DoneToday" width={180} height={60} className="h-12 w-auto" />
+        </Link>
+        <h1 className="font-serif text-4xl text-foreground md:text-5xl">
+          {mode === "signup" ? "Create your account" : "Welcome back"}
+        </h1>
+        <p className="mt-3 text-lg text-muted-foreground">
+          Choose how you use DoneToday to continue.
+        </p>
+
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
+          <Link
+            to="/auth"
+            search={{ mode, role: "customer", ...(nextPath ? { next: nextPath } : {}) }}
+            className="group rounded-2xl border border-border bg-background p-6 shadow-sm transition hover:border-primary hover:shadow-md"
+          >
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <User className="h-5 w-5" />
+            </div>
+            <h2 className="mt-4 font-serif text-2xl">I'm a Customer</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Post jobs and hire verified local professionals.
+            </p>
+            <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:gap-2 transition-all">
+              Continue <ArrowRight className="h-4 w-4" />
+            </span>
+          </Link>
+
+          <Link
+            to="/auth"
+            search={{ mode, role: "provider", ...(nextPath ? { next: nextPath } : {}) }}
+            className="group rounded-2xl border border-border bg-background p-6 shadow-sm transition hover:border-emerald-600 hover:shadow-md"
+          >
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+              <Briefcase className="h-5 w-5" />
+            </div>
+            <h2 className="mt-4 font-serif text-2xl">I'm a Provider</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Win jobs, manage bookings, and grow your business.
+            </p>
+            <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-emerald-700 group-hover:gap-2 transition-all">
+              Continue <ArrowRight className="h-4 w-4" />
+            </span>
+          </Link>
+        </div>
+
+        <div className="mt-8 text-center text-sm text-muted-foreground">
+          {mode === "signup" ? (
+            <>Already have an account?{" "}
+              <Link to="/auth" search={{ mode: "login" }} className="underline hover:text-foreground">Sign in</Link>
+            </>
+          ) : (
+            <>New to DoneToday?{" "}
+              <Link to="/auth" search={{ mode: "signup" }} className="underline hover:text-foreground">Create an account</Link>
+            </>
+          )}
         </div>
       </div>
     </div>
