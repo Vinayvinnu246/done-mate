@@ -200,11 +200,11 @@ function OnboardingPage() {
       if (!postcode) return toast.error("Enter your base postcode");
     }
     if (step === 5) return handleSubmit();
-    setStep((s) => Math.min(5, (s + 1) as Step));
+    setStep((s) => (Math.min(5, s + 1) as Step));
   }
 
   function back() {
-    setStep((s) => Math.max(0, (s - 1) as Step));
+    setStep((s) => (Math.max(0, s - 1) as Step));
   }
 
   function toggle<T>(list: T[], item: T): T[] {
