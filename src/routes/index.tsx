@@ -5,6 +5,9 @@ import {
   Wrench, Leaf, SprayCan, Zap, Hammer, Paintbrush, Truck, Home as HomeIcon,
 } from "lucide-react";
 import heroImg from "@/assets/hero-provider.jpg";
+import logoAsset from "@/assets/donetoday-logo.png.asset.json";
+
+
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -27,11 +30,14 @@ function Index() {
       {/* Nav */}
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <CheckCircle2 className="h-4 w-4" />
-            </div>
-            <span className="text-lg font-semibold tracking-tight">DoneToday</span>
+          <Link to="/" className="flex items-center">
+            <img
+              src={logoAsset.url}
+              alt="DoneToday"
+              width={160}
+              height={56}
+              className="h-12 w-auto"
+            />
           </Link>
           <nav className="hidden items-center gap-8 md:flex">
             <a href="#how" className="text-sm text-muted-foreground hover:text-foreground">How it works</a>
@@ -235,12 +241,13 @@ function Index() {
       <footer className="border-t border-border">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-4">
           <div>
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <CheckCircle2 className="h-4 w-4" />
-              </div>
-              <span className="text-lg font-semibold">DoneToday</span>
-            </div>
+            <img
+              src={logoAsset.url}
+              alt="DoneToday"
+              width={160}
+              height={56}
+              className="h-12 w-auto"
+            />
             <p className="mt-4 text-sm text-muted-foreground">
               Trusted local professionals, on demand.
             </p>
