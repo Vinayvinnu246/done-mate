@@ -95,13 +95,16 @@ export const getAvailableJobs = createServerFn({ method: "GET" })
 
     const { data, error } = await supabase
       .from("jobs")
-      .select("*, category:categories(*), quotes:quotes!inner(id)")
+      .select("*, category:categories(*), quotes(*)")
       .in("status", ["posted", "quoting"])
       .neq("customer_id", userId)
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-    return data ?? [];
+    return (data ?? []).map((job) => ({
+      ...job,
+      quotes: job.quotes?.filter((q) => q.provider_id !== userId) ?? [],
+    }));
   });
 
 export const getJobById = createServerFn({ method: "GET" })
