@@ -58,7 +58,7 @@ export const createStripeOnboardingLink = createServerFn({ method: "POST" })
         charges_enabled: !!account.charges_enabled,
         payouts_enabled: !!account.payouts_enabled,
         details_submitted: !!account.details_submitted,
-        requirements: account.requirements as unknown as object,
+        requirements: (account.requirements ?? null) as never,
       });
       if (insErr) throw insErr;
     }
@@ -95,7 +95,7 @@ export const refreshStripeConnectStatus = createServerFn({ method: "POST" })
         charges_enabled: !!account.charges_enabled,
         payouts_enabled: !!account.payouts_enabled,
         details_submitted: !!account.details_submitted,
-        requirements: account.requirements as unknown as object,
+        requirements: (account.requirements ?? null) as never,
         country: account.country ?? null,
       })
       .eq("provider_id", userId)
