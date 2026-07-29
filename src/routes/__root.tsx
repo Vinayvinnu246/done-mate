@@ -77,14 +77,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "DoneToday — Trusted local pros, booked in minutes" },
+      { name: "description", content: "Get instant quotes from verified local professionals for cleaning, plumbing, gardening and more. Secure payments, real reviews, done today." },
+      { name: "author", content: "DoneToday" },
+      { property: "og:title", content: "DoneToday — Trusted local pros, booked in minutes" },
+      { property: "og:description", content: "Instant quotes from verified local pros. Secure escrow payments. Done today." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
