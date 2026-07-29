@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Header } from "./Header";
 import { cn } from "@/lib/utils";
+import { BackButton } from "@/components/ui/back-button";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
