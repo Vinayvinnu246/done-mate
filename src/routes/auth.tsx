@@ -33,7 +33,15 @@ function AuthPage() {
   const [mode, setMode] = useState<"login" | "signup">(search.mode);
   const role = search.role;
 
-  // No role picked yet — show the chooser.
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  // No role picked yet — show the chooser (after all hooks are declared).
   if (!role) {
     return <RoleChooser mode={mode} nextPath={nextPath} />;
   }
@@ -47,14 +55,6 @@ function AuthPage() {
     if (nextPath) window.location.href = nextPath;
     else navigate({ to: isProvider ? "/providers" : "/dashboard" });
   };
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
