@@ -38,13 +38,13 @@ function ProfilePage() {
     },
   });
 
-  useState(() => {
+  useEffect(() => {
     if (data?.profile) {
       setDisplayName(data.profile.display_name ?? "");
       setPhone(data.profile.phone ?? "");
       setAvatarUrl(data.profile.avatar_url ?? "");
     }
-  });
+  }, [data?.profile]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
