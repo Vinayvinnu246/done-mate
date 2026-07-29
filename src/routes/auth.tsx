@@ -125,7 +125,9 @@ function AuthPage() {
       if (signUpError) throw signUpError;
 
       if (data.user && data.user.identities && data.user.identities.length === 0) {
-        setError("This email is already registered. Please sign in instead.");
+        setError(
+          `This email is already registered. Each email can only be linked to one account — sign in instead, or use a different email for your ${role} account.`,
+        );
         return;
       }
 
@@ -135,7 +137,14 @@ function AuthPage() {
         setSuccess("Check your email to confirm your account before signing in.");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Sign up failed");
+      const message = err instanceof Error ? err.message : "Sign up failed";
+      if (/already\s+registered|already\s+exists/i.test(message)) {
+        setError(
+          `This email is already registered. Each email can only be linked to one account — sign in instead, or use a different email for your ${role} account.`,
+        );
+      } else {
+        setError(message);
+      }
     } finally {
       setLoading(false);
     }
