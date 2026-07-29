@@ -15,6 +15,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProvidersRouteImport } from './routes/providers'
 import { Route as ProviderAgreementRouteImport } from './routes/provider-agreement'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PressRouteImport } from './routes/press'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as DisputesRouteImport } from './routes/disputes'
@@ -67,6 +68,11 @@ const ProviderAgreementRoute = ProviderAgreementRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PressRoute = PressRouteImport.update({
+  id: '/press',
+  path: '/press',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McpRoute = McpRouteImport.update({
@@ -197,6 +203,7 @@ export interface FileRoutesByFullPath {
   '/disputes': typeof DisputesRoute
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
+  '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
   '/providers': typeof ProvidersRouteWithChildren
@@ -227,6 +234,7 @@ export interface FileRoutesByTo {
   '/disputes': typeof DisputesRoute
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
+  '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
   '/providers': typeof ProvidersRouteWithChildren
@@ -259,6 +267,7 @@ export interface FileRoutesById {
   '/disputes': typeof DisputesRoute
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
+  '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
   '/providers': typeof ProvidersRouteWithChildren
@@ -291,6 +300,7 @@ export interface FileRouteTypes {
     | '/disputes'
     | '/help'
     | '/mcp'
+    | '/press'
     | '/privacy'
     | '/provider-agreement'
     | '/providers'
@@ -321,6 +331,7 @@ export interface FileRouteTypes {
     | '/disputes'
     | '/help'
     | '/mcp'
+    | '/press'
     | '/privacy'
     | '/provider-agreement'
     | '/providers'
@@ -352,6 +363,7 @@ export interface FileRouteTypes {
     | '/disputes'
     | '/help'
     | '/mcp'
+    | '/press'
     | '/privacy'
     | '/provider-agreement'
     | '/providers'
@@ -384,6 +396,7 @@ export interface RootRouteChildren {
   DisputesRoute: typeof DisputesRoute
   HelpRoute: typeof HelpRoute
   McpRoute: typeof McpRoute
+  PressRoute: typeof PressRoute
   PrivacyRoute: typeof PrivacyRoute
   ProviderAgreementRoute: typeof ProviderAgreementRoute
   ProvidersRoute: typeof ProvidersRouteWithChildren
@@ -438,6 +451,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/press': {
+      id: '/press'
+      path: '/press'
+      fullPath: '/press'
+      preLoaderRoute: typeof PressRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcp': {
@@ -661,6 +681,7 @@ const rootRouteChildren: RootRouteChildren = {
   DisputesRoute: DisputesRoute,
   HelpRoute: HelpRoute,
   McpRoute: McpRoute,
+  PressRoute: PressRoute,
   PrivacyRoute: PrivacyRoute,
   ProviderAgreementRoute: ProviderAgreementRoute,
   ProvidersRoute: ProvidersRouteWithChildren,
