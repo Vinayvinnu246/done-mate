@@ -246,7 +246,7 @@ function Index() {
               alt="DoneToday"
               width={160}
               height={56}
-              className="h-9 w-auto"
+              className="h-12 w-auto"
             />
             <p className="mt-4 text-sm text-muted-foreground">
               Trusted local professionals, on demand.
