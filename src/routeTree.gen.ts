@@ -24,6 +24,7 @@ import { Route as HelpRouteImport } from './routes/help'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as DisputesRouteImport } from './routes/disputes'
 import { Route as DisputeResolutionRouteImport } from './routes/dispute-resolution'
+import { Route as DeleteAccountRouteImport } from './routes/delete-account'
 import { Route as CustomerTermsRouteImport } from './routes/customer-terms'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -125,6 +126,11 @@ const DisputesRoute = DisputesRouteImport.update({
 const DisputeResolutionRoute = DisputeResolutionRouteImport.update({
   id: '/dispute-resolution',
   path: '/dispute-resolution',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeleteAccountRoute = DeleteAccountRouteImport.update({
+  id: '/delete-account',
+  path: '/delete-account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CustomerTermsRoute = CustomerTermsRouteImport.update({
@@ -274,6 +280,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/customer-terms': typeof CustomerTermsRoute
+  '/delete-account': typeof DeleteAccountRoute
   '/dispute-resolution': typeof DisputeResolutionRoute
   '/disputes': typeof DisputesRoute
   '/faqs': typeof FaqsRoute
@@ -317,6 +324,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/customer-terms': typeof CustomerTermsRoute
+  '/delete-account': typeof DeleteAccountRoute
   '/dispute-resolution': typeof DisputeResolutionRoute
   '/disputes': typeof DisputesRoute
   '/faqs': typeof FaqsRoute
@@ -362,6 +370,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/customer-terms': typeof CustomerTermsRoute
+  '/delete-account': typeof DeleteAccountRoute
   '/dispute-resolution': typeof DisputeResolutionRoute
   '/disputes': typeof DisputesRoute
   '/faqs': typeof FaqsRoute
@@ -407,6 +416,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/customer-terms'
+    | '/delete-account'
     | '/dispute-resolution'
     | '/disputes'
     | '/faqs'
@@ -450,6 +460,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/customer-terms'
+    | '/delete-account'
     | '/dispute-resolution'
     | '/disputes'
     | '/faqs'
@@ -494,6 +505,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/customer-terms'
+    | '/delete-account'
     | '/dispute-resolution'
     | '/disputes'
     | '/faqs'
@@ -539,6 +551,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   CustomerTermsRoute: typeof CustomerTermsRoute
+  DeleteAccountRoute: typeof DeleteAccountRoute
   DisputeResolutionRoute: typeof DisputeResolutionRoute
   DisputesRoute: typeof DisputesRoute
   FaqsRoute: typeof FaqsRoute
@@ -662,6 +675,13 @@ declare module '@tanstack/react-router' {
       path: '/dispute-resolution'
       fullPath: '/dispute-resolution'
       preLoaderRoute: typeof DisputeResolutionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/delete-account': {
+      id: '/delete-account'
+      path: '/delete-account'
+      fullPath: '/delete-account'
+      preLoaderRoute: typeof DeleteAccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/customer-terms': {
@@ -927,6 +947,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   CustomerTermsRoute: CustomerTermsRoute,
+  DeleteAccountRoute: DeleteAccountRoute,
   DisputeResolutionRoute: DisputeResolutionRoute,
   DisputesRoute: DisputesRoute,
   FaqsRoute: FaqsRoute,
