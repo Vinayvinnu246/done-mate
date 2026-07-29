@@ -110,13 +110,13 @@ function Index() {
           </div>
 
           <div className="relative">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-muted">
+            <div className="relative overflow-hidden rounded-3xl bg-muted">
               <img
                 src={heroImg.url}
                 alt="Verified DoneToday professional"
                 width={1024}
                 height={1024}
-                className="h-full w-full object-cover"
+                className="h-auto w-full object-contain"
               />
             </div>
             {/* Floating card */}
