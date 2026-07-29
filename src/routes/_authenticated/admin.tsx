@@ -186,7 +186,7 @@ function AdminDashboard() {
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-[#2e4053]">
-                      {v.provider?.display_name ?? v.provider?.email ?? "Unknown provider"}
+                      {v.provider?.display_name ?? "Unknown provider"}
                     </span>
                     <Badge className={verificationStatusColors[v.status] ?? verificationStatusColors.pending}>
                       {v.status}
