@@ -1,40 +1,72 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoadingScreen } from "@/components/ui/loading-screen";
-import { Wallet as WalletIcon, Landmark, Clock, ArrowRight, Info } from "lucide-react";
+import { toast } from "sonner";
+import { Wallet as WalletIcon, Landmark, Clock, ArrowRight, Plus, Trash2 } from "lucide-react";
+import { getWalletData, addBankAccount, deleteBankAccount, requestPayout } from "@/lib/wallet.functions";
 
 export const Route = createFileRoute("/_authenticated/wallet")({
   component: WalletPage,
   head: () => ({
     meta: [
       { title: "Wallet · DoneToday" },
-      { name: "description", content: "Track earnings, pending balance and payouts on DoneToday." },
+      { name: "description", content: "Track earnings, add a bank account and withdraw payouts on DoneToday." },
     ],
   }),
 });
 
-// Placeholder figures — real values come from Stripe Connect once payouts are enabled.
-const MOCK = {
-  available: 320.0,
-  pending: 150.0,
-  nextPayout: "Friday",
-  bankLast4: "4567",
-  history: [
-    { id: "p_003", date: "12 Jul", amount: 245.0, status: "Paid" },
-    { id: "p_002", date: "05 Jul", amount: 180.0, status: "Paid" },
-    { id: "p_001", date: "28 Jun", amount: 320.5, status: "Paid" },
-  ],
-};
-
-function gbp(n: number) {
-  return new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(n);
-}
+const gbp = (n: number) =>
+  new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(n);
 
 function WalletPage() {
   const { profile, isLoading } = useAuth();
+  const qc = useQueryClient();
+
+  const walletQuery = useQuery({
+    queryKey: ["wallet"],
+    queryFn: () => getWalletData(),
+    enabled: profile?.type === "provider",
+  });
+
+  const [showBankForm, setShowBankForm] = useState(false);
+  const [bank, setBank] = useState({ account_holder: "", bank_name: "", sort_code: "", account_number: "" });
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+
+  const addBank = useMutation({
+    mutationFn: (input: typeof bank) => addBankAccount({ data: input }),
+    onSuccess: () => {
+      toast.success("Bank account added");
+      setBank({ account_holder: "", bank_name: "", sort_code: "", account_number: "" });
+      setShowBankForm(false);
+      qc.invalidateQueries({ queryKey: ["wallet"] });
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Failed to add bank account"),
+  });
+
+  const removeBank = useMutation({
+    mutationFn: (id: string) => deleteBankAccount({ data: { id } }),
+    onSuccess: () => {
+      toast.success("Bank account removed");
+      qc.invalidateQueries({ queryKey: ["wallet"] });
+    },
+  });
+
+  const withdraw = useMutation({
+    mutationFn: (input: { amount: number; bank_account_id: string }) => requestPayout({ data: input }),
+    onSuccess: () => {
+      toast.success("Withdrawal requested");
+      setWithdrawAmount("");
+      qc.invalidateQueries({ queryKey: ["wallet"] });
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Withdrawal failed"),
+  });
 
   if (isLoading) return <LoadingScreen />;
 
@@ -53,18 +85,27 @@ function WalletPage() {
     );
   }
 
+  const data = walletQuery.data;
+  const banks = data?.banks ?? [];
+  const payouts = data?.payouts ?? [];
+  const defaultBank = banks.find((b) => b.is_default) ?? banks[0];
+  const available = Math.max(0, (data?.totals.paid ?? 0) - (data?.totals.pendingOut ?? 0));
+
+  function handleWithdraw() {
+    const amt = Number(withdrawAmount);
+    if (!amt || amt <= 0) return toast.error("Enter a valid amount");
+    if (!defaultBank) return toast.error("Add a bank account first");
+    if (amt > available) return toast.error("Amount exceeds available balance");
+    withdraw.mutate({ amount: amt, bank_account_id: defaultBank.id });
+  }
+
   return (
     <div className="min-h-screen bg-[#FAFAF8]">
       <Header />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
         <div>
           <h1 className="font-display text-3xl font-semibold text-[#2e4053]">Wallet</h1>
-          <p className="text-[#6b7b8c] mt-1">Track your earnings and payouts from completed jobs.</p>
-        </div>
-
-        <div className="rounded-xl border border-[#E5E7EB] bg-[#FFF8EC] p-4 flex items-start gap-3 text-sm text-[#7a5c1a]">
-          <Info className="h-4 w-4 mt-0.5 shrink-0" />
-          <p>Payouts activate once Stripe Connect is connected on your account. Figures shown are illustrative until then.</p>
+          <p className="text-[#6b7b8c] mt-1">Add a bank account and withdraw earnings from completed jobs.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -75,32 +116,30 @@ function WalletPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="font-display text-3xl text-[#2e4053]">{gbp(MOCK.available)}</p>
-              <p className="text-xs text-[#6b7b8c] mt-1">Ready to pay out</p>
+              <p className="font-display text-3xl text-[#2e4053]">{gbp(available)}</p>
+              <p className="text-xs text-[#6b7b8c] mt-1">Ready to withdraw</p>
             </CardContent>
           </Card>
-
           <Card className="border-[#E5E7EB]">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-[#6b7b8c] flex items-center gap-2">
-                <Clock className="h-4 w-4" /> Pending balance
+                <Clock className="h-4 w-4" /> Pending withdrawals
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="font-display text-3xl text-[#2e4053]">{gbp(MOCK.pending)}</p>
-              <p className="text-xs text-[#6b7b8c] mt-1">Clearing from recent jobs</p>
+              <p className="font-display text-3xl text-[#2e4053]">{gbp(data?.totals.pendingOut ?? 0)}</p>
+              <p className="text-xs text-[#6b7b8c] mt-1">Being processed</p>
             </CardContent>
           </Card>
-
           <Card className="border-[#E5E7EB]">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-[#6b7b8c] flex items-center gap-2">
-                <ArrowRight className="h-4 w-4" /> Next payout
+                <ArrowRight className="h-4 w-4" /> Lifetime paid
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="font-display text-3xl text-[#2e4053]">{MOCK.nextPayout}</p>
-              <p className="text-xs text-[#6b7b8c] mt-1">Automatic weekly transfer</p>
+              <p className="font-display text-3xl text-[#2e4053]">{gbp(data?.totals.paid ?? 0)}</p>
+              <p className="text-xs text-[#6b7b8c] mt-1">All completed payouts</p>
             </CardContent>
           </Card>
         </div>
@@ -108,38 +147,115 @@ function WalletPage() {
         <Card className="border-[#E5E7EB]">
           <CardHeader>
             <CardTitle className="text-[#2e4053] flex items-center gap-2">
-              <Landmark className="h-5 w-5" /> Bank account
+              <ArrowRight className="h-5 w-5" /> Withdraw to bank
             </CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <p className="text-sm text-[#6b7b8c]">Account ending in</p>
-              <p className="font-medium text-[#2e4053] text-lg tracking-widest">•••• {MOCK.bankLast4}</p>
-            </div>
-            <Button variant="outline" className="rounded-full border-[#2e4053] text-[#2e4053]">
-              Update bank details
-            </Button>
+          <CardContent className="space-y-4">
+            {defaultBank ? (
+              <>
+                <div className="text-sm text-[#6b7b8c]">
+                  Sending to <span className="font-medium text-[#2e4053]">{defaultBank.bank_name}</span> •••• {defaultBank.account_last4}
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Input
+                    type="number"
+                    min={1}
+                    step="0.01"
+                    placeholder="Amount in GBP"
+                    value={withdrawAmount}
+                    onChange={(e) => setWithdrawAmount(e.target.value)}
+                  />
+                  <Button className="rounded-full bg-[#59914c] hover:bg-[#4a7d3f]" onClick={handleWithdraw} disabled={withdraw.isPending}>
+                    {withdraw.isPending ? "Requesting…" : "Withdraw now"}
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <p className="text-sm text-[#6b7b8c]">Add a bank account below to enable withdrawals.</p>
+            )}
           </CardContent>
         </Card>
 
         <Card className="border-[#E5E7EB]">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-[#2e4053]">Payout history</CardTitle>
+            <CardTitle className="text-[#2e4053] flex items-center gap-2">
+              <Landmark className="h-5 w-5" /> Bank accounts
+            </CardTitle>
+            <Button variant="outline" size="sm" className="rounded-full" onClick={() => setShowBankForm((s) => !s)}>
+              <Plus className="h-4 w-4 mr-1" /> {showBankForm ? "Cancel" : "Add account"}
+            </Button>
           </CardHeader>
-          <CardContent>
-            <div className="divide-y divide-[#E5E7EB]">
-              {MOCK.history.map((row) => (
-                <div key={row.id} className="flex items-center justify-between py-3 text-sm">
-                  <div>
-                    <p className="text-[#2e4053] font-medium">{gbp(row.amount)}</p>
-                    <p className="text-xs text-[#6b7b8c]">{row.date}</p>
+          <CardContent className="space-y-4">
+            {showBankForm && (
+              <div className="rounded-xl border border-[#E5E7EB] p-4 space-y-3 bg-[#FAFAF8]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label>Account holder</Label>
+                    <Input value={bank.account_holder} onChange={(e) => setBank({ ...bank, account_holder: e.target.value })} />
                   </div>
-                  <span className="text-xs font-medium text-[#59914c] bg-[#59914c]/10 rounded-full px-3 py-1">
-                    {row.status}
-                  </span>
+                  <div className="space-y-1.5">
+                    <Label>Bank name</Label>
+                    <Input value={bank.bank_name} onChange={(e) => setBank({ ...bank, bank_name: e.target.value })} placeholder="e.g. Barclays" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>Sort code</Label>
+                    <Input value={bank.sort_code} onChange={(e) => setBank({ ...bank, sort_code: e.target.value })} placeholder="12-34-56" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>Account number</Label>
+                    <Input value={bank.account_number} onChange={(e) => setBank({ ...bank, account_number: e.target.value })} placeholder="12345678" />
+                  </div>
+                </div>
+                <Button className="rounded-full" onClick={() => addBank.mutate(bank)} disabled={addBank.isPending}>
+                  {addBank.isPending ? "Saving…" : "Save bank account"}
+                </Button>
+              </div>
+            )}
+
+            {banks.length === 0 && !showBankForm && (
+              <p className="text-sm text-[#6b7b8c]">No bank accounts yet.</p>
+            )}
+
+            <div className="divide-y divide-[#E5E7EB]">
+              {banks.map((b) => (
+                <div key={b.id} className="flex items-center justify-between py-3">
+                  <div>
+                    <p className="font-medium text-[#2e4053]">{b.bank_name} <span className="tracking-widest">•••• {b.account_last4}</span></p>
+                    <p className="text-xs text-[#6b7b8c]">{b.account_holder} · Sort {b.sort_code} {b.is_default && "· Default"}</p>
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={() => removeBank.mutate(b.id)}>
+                    <Trash2 className="h-4 w-4 text-[#c0392b]" />
+                  </Button>
                 </div>
               ))}
             </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-[#E5E7EB]">
+          <CardHeader>
+            <CardTitle className="text-[#2e4053]">Payout history</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {payouts.length === 0 ? (
+              <p className="text-sm text-[#6b7b8c]">No withdrawals yet.</p>
+            ) : (
+              <div className="divide-y divide-[#E5E7EB]">
+                {payouts.map((p) => (
+                  <div key={p.id} className="flex items-center justify-between py-3 text-sm">
+                    <div>
+                      <p className="text-[#2e4053] font-medium">{gbp(Number(p.amount))}</p>
+                      <p className="text-xs text-[#6b7b8c]">{new Date(p.created_at).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</p>
+                    </div>
+                    <span className={`text-xs font-medium rounded-full px-3 py-1 capitalize ${
+                      p.status === "paid" ? "text-[#59914c] bg-[#59914c]/10" :
+                      p.status === "rejected" ? "text-[#c0392b] bg-[#c0392b]/10" :
+                      "text-[#7a5c1a] bg-[#FFF8EC]"
+                    }`}>{p.status}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
