@@ -9,10 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TrustSafetyRouteImport } from './routes/trust-safety'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProvidersRouteImport } from './routes/providers'
+import { Route as ProviderAgreementRouteImport } from './routes/provider-agreement'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PressRouteImport } from './routes/press'
 import { Route as McpRouteImport } from './routes/mcp'
+import { Route as HelpRouteImport } from './routes/help'
+import { Route as DisputesRouteImport } from './routes/disputes'
+import { Route as CookiesRouteImport } from './routes/cookies'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CareersRouteImport } from './routes/careers'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProvidersProviderIdRouteImport } from './routes/providers.$providerId'
@@ -29,6 +41,16 @@ import { Route as AuthenticatedJobsJobIdRouteImport } from './routes/_authentica
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
+const TrustSafetyRoute = TrustSafetyRouteImport.update({
+  id: '/trust-safety',
+  path: '/trust-safety',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -39,14 +61,64 @@ const ProvidersRoute = ProvidersRouteImport.update({
   path: '/providers',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProviderAgreementRoute = ProviderAgreementRouteImport.update({
+  id: '/provider-agreement',
+  path: '/provider-agreement',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PressRoute = PressRouteImport.update({
+  id: '/press',
+  path: '/press',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const McpRoute = McpRouteImport.update({
   id: '/mcp',
   path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DisputesRoute = DisputesRouteImport.update({
+  id: '/disputes',
+  path: '/disputes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -129,10 +201,22 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
+  '/careers': typeof CareersRoute
+  '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
+  '/disputes': typeof DisputesRoute
+  '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
+  '/press': typeof PressRoute
+  '/privacy': typeof PrivacyRoute
+  '/provider-agreement': typeof ProviderAgreementRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
+  '/terms': typeof TermsRoute
+  '/trust-safety': typeof TrustSafetyRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -149,10 +233,22 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
+  '/careers': typeof CareersRoute
+  '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
+  '/disputes': typeof DisputesRoute
+  '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
+  '/press': typeof PressRoute
+  '/privacy': typeof PrivacyRoute
+  '/provider-agreement': typeof ProviderAgreementRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
+  '/terms': typeof TermsRoute
+  '/trust-safety': typeof TrustSafetyRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -171,10 +267,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
+  '/careers': typeof CareersRoute
+  '/contact': typeof ContactRoute
+  '/cookies': typeof CookiesRoute
+  '/disputes': typeof DisputesRoute
+  '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
+  '/press': typeof PressRoute
+  '/privacy': typeof PrivacyRoute
+  '/provider-agreement': typeof ProviderAgreementRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
+  '/terms': typeof TermsRoute
+  '/trust-safety': typeof TrustSafetyRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -193,10 +301,22 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/auth'
+    | '/blog'
+    | '/careers'
+    | '/contact'
+    | '/cookies'
+    | '/disputes'
+    | '/help'
     | '/mcp'
+    | '/press'
+    | '/privacy'
+    | '/provider-agreement'
     | '/providers'
     | '/reset-password'
+    | '/terms'
+    | '/trust-safety'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/admin'
@@ -213,10 +333,22 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/auth'
+    | '/blog'
+    | '/careers'
+    | '/contact'
+    | '/cookies'
+    | '/disputes'
+    | '/help'
     | '/mcp'
+    | '/press'
+    | '/privacy'
+    | '/provider-agreement'
     | '/providers'
     | '/reset-password'
+    | '/terms'
+    | '/trust-safety'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/admin'
@@ -234,10 +366,22 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/about'
     | '/auth'
+    | '/blog'
+    | '/careers'
+    | '/contact'
+    | '/cookies'
+    | '/disputes'
+    | '/help'
     | '/mcp'
+    | '/press'
+    | '/privacy'
+    | '/provider-agreement'
     | '/providers'
     | '/reset-password'
+    | '/terms'
+    | '/trust-safety'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/admin'
@@ -256,10 +400,22 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
+  BlogRoute: typeof BlogRoute
+  CareersRoute: typeof CareersRoute
+  ContactRoute: typeof ContactRoute
+  CookiesRoute: typeof CookiesRoute
+  DisputesRoute: typeof DisputesRoute
+  HelpRoute: typeof HelpRoute
   McpRoute: typeof McpRoute
+  PressRoute: typeof PressRoute
+  PrivacyRoute: typeof PrivacyRoute
+  ProviderAgreementRoute: typeof ProviderAgreementRoute
   ProvidersRoute: typeof ProvidersRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
+  TermsRoute: typeof TermsRoute
+  TrustSafetyRoute: typeof TrustSafetyRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
@@ -268,6 +424,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/trust-safety': {
+      id: '/trust-safety'
+      path: '/trust-safety'
+      fullPath: '/trust-safety'
+      preLoaderRoute: typeof TrustSafetyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -282,6 +452,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProvidersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/provider-agreement': {
+      id: '/provider-agreement'
+      path: '/provider-agreement'
+      fullPath: '/provider-agreement'
+      preLoaderRoute: typeof ProviderAgreementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/press': {
+      id: '/press'
+      path: '/press'
+      fullPath: '/press'
+      preLoaderRoute: typeof PressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mcp': {
       id: '/mcp'
       path: '/mcp'
@@ -289,11 +480,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/disputes': {
+      id: '/disputes'
+      path: '/disputes'
+      fullPath: '/disputes'
+      preLoaderRoute: typeof DisputesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -453,10 +693,22 @@ const ProvidersRouteWithChildren = ProvidersRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
+  BlogRoute: BlogRoute,
+  CareersRoute: CareersRoute,
+  ContactRoute: ContactRoute,
+  CookiesRoute: CookiesRoute,
+  DisputesRoute: DisputesRoute,
+  HelpRoute: HelpRoute,
   McpRoute: McpRoute,
+  PressRoute: PressRoute,
+  PrivacyRoute: PrivacyRoute,
+  ProviderAgreementRoute: ProviderAgreementRoute,
   ProvidersRoute: ProvidersRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
+  TermsRoute: TermsRoute,
+  TrustSafetyRoute: TrustSafetyRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,

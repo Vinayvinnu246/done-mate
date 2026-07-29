@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import type { LinkProps } from "@tanstack/react-router";
 import {
   ShieldCheck, Sparkles, Clock, Star, ArrowRight, CheckCircle2,
   Wrench, Leaf, SprayCan, Zap, Hammer, Paintbrush, Truck, Home as HomeIcon,
@@ -21,6 +22,36 @@ const categories = [
   { icon: Paintbrush, label: "Painting" },
   { icon: Truck, label: "Removals" },
   { icon: HomeIcon, label: "Home repairs" },
+];
+
+const footerCols: { h: string; l: { label: string; to: string }[] }[] = [
+  {
+    h: "Company",
+    l: [
+      { label: "About", to: "/about" },
+      { label: "Careers", to: "/careers" },
+      { label: "Press", to: "/press" },
+      { label: "Blog", to: "/blog" },
+    ],
+  },
+  {
+    h: "Support",
+    l: [
+      { label: "Help centre", to: "/help" },
+      { label: "Trust & safety", to: "/trust-safety" },
+      { label: "Contact", to: "/contact" },
+      { label: "Disputes", to: "/disputes" },
+    ],
+  },
+  {
+    h: "Legal",
+    l: [
+      { label: "Terms", to: "/terms" },
+      { label: "Privacy", to: "/privacy" },
+      { label: "Cookies", to: "/cookies" },
+      { label: "Provider agreement", to: "/provider-agreement" },
+    ],
+  },
 ];
 
 function Index() {
@@ -231,16 +262,19 @@ function Index() {
               Trusted local professionals, on demand.
             </p>
           </div>
-          {[
-            { h: "Company", l: ["About", "Careers", "Press", "Blog"] },
-            { h: "Support", l: ["Help centre", "Trust & safety", "Contact", "Disputes"] },
-            { h: "Legal", l: ["Terms", "Privacy", "Cookies", "Provider agreement"] },
-          ].map((c) => (
+          {footerCols.map((c) => (
             <div key={c.h}>
               <div className="text-sm font-semibold">{c.h}</div>
               <ul className="mt-4 space-y-2">
                 {c.l.map((i) => (
-                  <li key={i}><a href="#" className="text-sm text-muted-foreground hover:text-foreground">{i}</a></li>
+                  <li key={i.label}>
+                    <Link
+                      to={i.to as LinkProps["to"]}
+                      className="text-sm text-muted-foreground hover:text-foreground"
+                    >
+                      {i.label}
+                    </Link>
+                  </li>
                 ))}
               </ul>
             </div>
@@ -248,8 +282,12 @@ function Index() {
         </div>
         <div className="border-t border-border">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-xs text-muted-foreground md:flex-row">
-            <div>© {new Date().getFullYear()} DoneToday Ltd. Registered in England & Wales.</div>
-            <div>Made in London.</div>
+            <div>© {new Date().getFullYear()} EAGLERA LTD, trading as DoneToday. Registered in England &amp; Wales.</div>
+            <div>
+              <a href="mailto:support@donetoday.co.uk" className="hover:text-foreground">support@donetoday.co.uk</a>
+              <span className="mx-2">·</span>
+              Made in London
+            </div>
           </div>
         </div>
       </footer>
