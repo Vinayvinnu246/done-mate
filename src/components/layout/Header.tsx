@@ -14,9 +14,25 @@ import { useAuth } from "@/hooks/use-auth";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
 
 export function Header() {
-  const { isAuthenticated, user, signOut } = useAuth();
+  const { isAuthenticated, user, profile, signOut } = useAuth();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const goGetQuote = () => {
+    setMobileOpen(false);
+    if (!isAuthenticated) {
+      navigate({
+        to: "/auth",
+        search: { mode: "signup", role: "customer", next: "/post-job" },
+      });
+      return;
+    }
+    if (profile?.type === "provider") {
+      navigate({ to: "/post-job" }); // guard on the page shows the switch-account message
+      return;
+    }
+    navigate({ to: "/post-job" });
+  };
 
   const navLinks = [
     { href: "#how", label: "How it works" },
@@ -108,9 +124,7 @@ export function Header() {
               <Button
                 size="sm"
                 className="inline-flex items-center gap-1.5 rounded-full"
-                onClick={() =>
-                  navigate({ to: isAuthenticated ? "/post-job" : "/auth" })
-                }
+                onClick={goGetQuote}
               >
                 Get a quote <ArrowRight className="h-3.5 w-3.5" />
               </Button>
@@ -164,15 +178,23 @@ export function Header() {
                 </button>
               </>
             ) : (
-              <button
-                className="text-left text-sm font-medium text-foreground"
-                onClick={() => {
-                  setMobileOpen(false);
-                  navigate({ to: "/auth" });
-                }}
-              >
-                Sign in
-              </button>
+              <>
+                <button
+                  className="text-left text-sm font-medium text-foreground"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    navigate({ to: "/auth" });
+                  }}
+                >
+                  Sign in
+                </button>
+                <button
+                  className="text-left text-sm font-medium text-primary"
+                  onClick={goGetQuote}
+                >
+                  Get a quote
+                </button>
+              </>
             )}
           </nav>
         </div>

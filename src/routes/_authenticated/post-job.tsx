@@ -18,6 +18,9 @@ import { createJob, getCategories } from "@/lib/jobs.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { X, Upload } from "lucide-react";
 import { BackButton } from "@/components/ui/back-button";
+import { useAuth } from "@/hooks/use-auth";
+import { Header } from "@/components/layout/Header";
+import { Briefcase } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/post-job")({
   component: PostJobPage,
@@ -25,6 +28,7 @@ export const Route = createFileRoute("/_authenticated/post-job")({
 
 function PostJobPage() {
   const navigate = useNavigate();
+  const { profile, isLoading: authLoading, signOut } = useAuth();
   const { data: categories, isLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: () => getCategories(),
@@ -57,6 +61,44 @@ function PostJobPage() {
       toast.error(error instanceof Error ? error.message : "Failed to post job");
     },
   });
+
+  if (authLoading) return <LoadingScreen />;
+
+  if (profile && profile.type === "provider") {
+    return (
+      <div className="min-h-screen bg-[#FAFAF8]">
+        <Header />
+        <div className="max-w-xl mx-auto px-4 sm:px-6 py-16 text-center">
+          <div className="mx-auto h-12 w-12 rounded-full bg-emerald-100 grid place-items-center mb-4">
+            <Briefcase className="h-6 w-6 text-emerald-700" />
+          </div>
+          <h1 className="font-display text-2xl font-semibold text-[#2e4053]">
+            You're signed in as a provider
+          </h1>
+          <p className="text-[#6b7b8c] mt-2">
+            Switch to a customer account to request a quote or post a job.
+          </p>
+          <div className="mt-6 flex items-center justify-center gap-3">
+            <Button
+              className="rounded-full"
+              onClick={async () => {
+                await signOut();
+                navigate({
+                  to: "/auth",
+                  search: { mode: "login", role: "customer", next: "/post-job" },
+                });
+              }}
+            >
+              Switch account
+            </Button>
+            <Button variant="outline" className="rounded-full" onClick={() => navigate({ to: "/dashboard" })}>
+              Go back
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) return <LoadingScreen />;
 
