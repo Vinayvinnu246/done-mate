@@ -1,0 +1,5 @@
+CREATE POLICY "Providers can upload own verification documents" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'verifications' AND owner = auth.uid());
+CREATE POLICY "Providers can read own verification documents" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'verifications' AND owner = auth.uid());
+CREATE POLICY "Service role can manage verification documents" ON storage.objects FOR ALL TO service_role USING (bucket_id = 'verifications') WITH CHECK (bucket_id = 'verifications');
+CREATE POLICY "Admins can read all verification documents" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'verifications' AND public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Verification team can read all verification documents" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'verifications' AND public.has_role(auth.uid(), 'verification'));
