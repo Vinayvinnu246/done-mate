@@ -16,34 +16,40 @@ export type Database = {
     Tables: {
       categories: {
         Row: {
+          active: boolean
           base_price: number | null
           created_at: string
           description: string | null
           icon: string | null
           id: string
           name: string
+          requires_qualification: boolean
           slug: string
           sort_order: number | null
           updated_at: string
         }
         Insert: {
+          active?: boolean
           base_price?: number | null
           created_at?: string
           description?: string | null
           icon?: string | null
           id?: string
           name: string
+          requires_qualification?: boolean
           slug: string
           sort_order?: number | null
           updated_at?: string
         }
         Update: {
+          active?: boolean
           base_price?: number | null
           created_at?: string
           description?: string | null
           icon?: string | null
           id?: string
           name?: string
+          requires_qualification?: boolean
           slug?: string
           sort_order?: number | null
           updated_at?: string
@@ -150,13 +156,16 @@ export type Database = {
           created_at: string
           customer_id: string
           description: string
+          emergency: boolean
           id: string
           images: string[]
+          inspection_required: boolean
           lat: number | null
           lng: number | null
           postcode: string | null
           scheduled_date: string | null
           status: string
+          subcategory_id: string | null
           title: string
           updated_at: string
           urgency: string
@@ -172,13 +181,16 @@ export type Database = {
           created_at?: string
           customer_id: string
           description: string
+          emergency?: boolean
           id?: string
           images?: string[]
+          inspection_required?: boolean
           lat?: number | null
           lng?: number | null
           postcode?: string | null
           scheduled_date?: string | null
           status?: string
+          subcategory_id?: string | null
           title: string
           updated_at?: string
           urgency?: string
@@ -194,13 +206,16 @@ export type Database = {
           created_at?: string
           customer_id?: string
           description?: string
+          emergency?: boolean
           id?: string
           images?: string[]
+          inspection_required?: boolean
           lat?: number | null
           lng?: number | null
           postcode?: string | null
           scheduled_date?: string | null
           status?: string
+          subcategory_id?: string | null
           title?: string
           updated_at?: string
           urgency?: string
@@ -219,6 +234,13 @@ export type Database = {
             columns: ["customer_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "jobs_subcategory_id_fkey"
+            columns: ["subcategory_id"]
+            isOneToOne: false
+            referencedRelation: "service_subcategories"
             referencedColumns: ["id"]
           },
         ]
@@ -349,6 +371,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      pending_category_requests: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          description: string | null
+          id: string
+          proposed_name: string
+          provider_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          proposed_name: string
+          provider_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          proposed_name?: string
+          provider_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -520,6 +575,194 @@ export type Database = {
             columns: ["provider_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      provider_portfolio: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string
+          provider_id: string
+          title: string | null
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url: string
+          provider_id: string
+          title?: string | null
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string
+          provider_id?: string
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_portfolio_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      provider_qualifications: {
+        Row: {
+          admin_notes: string | null
+          category_id: string | null
+          created_at: string
+          document_url: string | null
+          expiry_date: string | null
+          id: string
+          issue_date: string | null
+          issuing_body: string | null
+          provider_id: string
+          qualification_name: string
+          registration_number: string | null
+          updated_at: string
+          verification_status: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          category_id?: string | null
+          created_at?: string
+          document_url?: string | null
+          expiry_date?: string | null
+          id?: string
+          issue_date?: string | null
+          issuing_body?: string | null
+          provider_id: string
+          qualification_name: string
+          registration_number?: string | null
+          updated_at?: string
+          verification_status?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          category_id?: string | null
+          created_at?: string
+          document_url?: string | null
+          expiry_date?: string | null
+          id?: string
+          issue_date?: string | null
+          issuing_body?: string | null
+          provider_id?: string
+          qualification_name?: string
+          registration_number?: string | null
+          updated_at?: string
+          verification_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_qualifications_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      provider_service_areas: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          id: string
+          postcode: string
+          provider_id: string
+          radius_miles: number
+          updated_at: string
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          id?: string
+          postcode: string
+          provider_id: string
+          radius_miles?: number
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          id?: string
+          postcode?: string
+          provider_id?: string
+          radius_miles?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_service_areas_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      provider_services: {
+        Row: {
+          callout_fee: number | null
+          category_id: string
+          created_at: string
+          emergency_available: boolean
+          experience_description: string | null
+          hourly_rate: number | null
+          id: string
+          inspection_available: boolean
+          is_active: boolean
+          minimum_job_price: number | null
+          provider_id: string
+          updated_at: string
+          years_experience: number | null
+        }
+        Insert: {
+          callout_fee?: number | null
+          category_id: string
+          created_at?: string
+          emergency_available?: boolean
+          experience_description?: string | null
+          hourly_rate?: number | null
+          id?: string
+          inspection_available?: boolean
+          is_active?: boolean
+          minimum_job_price?: number | null
+          provider_id: string
+          updated_at?: string
+          years_experience?: number | null
+        }
+        Update: {
+          callout_fee?: number | null
+          category_id?: string
+          created_at?: string
+          emergency_available?: boolean
+          experience_description?: string | null
+          hourly_rate?: number | null
+          id?: string
+          inspection_available?: boolean
+          is_active?: boolean
+          minimum_job_price?: number | null
+          provider_id?: string
+          updated_at?: string
+          years_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_services_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
             referencedColumns: ["id"]
           },
         ]
@@ -749,24 +992,30 @@ export type Database = {
       }
       service_subcategories: {
         Row: {
+          active: boolean
           category_id: string
           created_at: string
+          description: string | null
           id: string
           name: string
           slug: string
           sort_order: number | null
         }
         Insert: {
+          active?: boolean
           category_id: string
           created_at?: string
+          description?: string | null
           id?: string
           name: string
           slug: string
           sort_order?: number | null
         }
         Update: {
+          active?: boolean
           category_id?: string
           created_at?: string
+          description?: string | null
           id?: string
           name?: string
           slug?: string
@@ -930,6 +1179,47 @@ export type Database = {
           years_experience?: number | null
         }
         Relationships: []
+      }
+      public_qualifications: {
+        Row: {
+          category_id: string | null
+          expiry_date: string | null
+          id: string | null
+          issue_date: string | null
+          issuing_body: string | null
+          provider_id: string | null
+          qualification_name: string | null
+          verification_status: string | null
+        }
+        Insert: {
+          category_id?: string | null
+          expiry_date?: string | null
+          id?: string | null
+          issue_date?: string | null
+          issuing_body?: string | null
+          provider_id?: string | null
+          qualification_name?: string | null
+          verification_status?: string | null
+        }
+        Update: {
+          category_id?: string | null
+          expiry_date?: string | null
+          id?: string | null
+          issue_date?: string | null
+          issuing_body?: string | null
+          provider_id?: string | null
+          qualification_name?: string | null
+          verification_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_qualifications_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Functions: {
