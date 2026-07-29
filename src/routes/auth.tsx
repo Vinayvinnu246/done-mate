@@ -20,6 +20,7 @@ import logoAsset from "@/assets/donetoday-logo.png.asset.json";
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>) => ({
     mode: s.mode === "signup" ? ("signup" as const) : ("login" as const),
+    role: s.role === "customer" || s.role === "provider" ? (s.role as "customer" | "provider") : undefined,
     next: typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") ? s.next : undefined,
   }),
   component: AuthPage,
@@ -39,7 +40,8 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [accountType, setAccountType] = useState<"customer" | "provider">("customer");
+  const [accountType, setAccountType] = useState<"customer" | "provider">(search.role ?? "customer");
+  const roleLocked = search.role;
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
