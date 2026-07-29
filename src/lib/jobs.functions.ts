@@ -27,11 +27,13 @@ const quoteInsertSchema = z.object({
   price: z.number().min(0),
   duration_minutes: z.number().min(15).optional(),
   message: z.string().trim().max(1000).optional(),
+  parent_quote_id: z.string().uuid().optional(),
+  proposed_by: z.enum(["customer", "provider"]).optional(),
 });
 
 const quoteUpdateSchema = z.object({
   quote_id: z.string().uuid(),
-  status: z.enum(["accepted", "rejected"]),
+  status: z.enum(["accepted", "rejected", "withdrawn"]),
 });
 
 export const getCategories = createServerFn({ method: "GET" }).handler(async () => {
