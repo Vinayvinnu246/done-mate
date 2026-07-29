@@ -32,7 +32,6 @@ import { Route as AuthenticatedWalletRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedVerificationRouteImport } from './routes/_authenticated/verification'
 import { Route as AuthenticatedSupportRouteImport } from './routes/_authenticated/support'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
-import { Route as AuthenticatedReviewsRouteImport } from './routes/_authenticated/reviews'
 import { Route as AuthenticatedQuotesRouteImport } from './routes/_authenticated/quotes'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedPostJobRouteImport } from './routes/_authenticated/post-job'
@@ -164,11 +163,6 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedReviewsRoute = AuthenticatedReviewsRouteImport.update({
-  id: '/reviews',
-  path: '/reviews',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedQuotesRoute = AuthenticatedQuotesRouteImport.update({
   id: '/quotes',
   path: '/quotes',
@@ -278,7 +272,6 @@ export interface FileRoutesByFullPath {
   '/post-job': typeof AuthenticatedPostJobRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/quotes': typeof AuthenticatedQuotesRoute
-  '/reviews': typeof AuthenticatedReviewsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/support': typeof AuthenticatedSupportRoute
   '/verification': typeof AuthenticatedVerificationRoute
@@ -318,7 +311,6 @@ export interface FileRoutesByTo {
   '/post-job': typeof AuthenticatedPostJobRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/quotes': typeof AuthenticatedQuotesRoute
-  '/reviews': typeof AuthenticatedReviewsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/support': typeof AuthenticatedSupportRoute
   '/verification': typeof AuthenticatedVerificationRoute
@@ -360,7 +352,6 @@ export interface FileRoutesById {
   '/_authenticated/post-job': typeof AuthenticatedPostJobRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/quotes': typeof AuthenticatedQuotesRoute
-  '/_authenticated/reviews': typeof AuthenticatedReviewsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/support': typeof AuthenticatedSupportRoute
   '/_authenticated/verification': typeof AuthenticatedVerificationRoute
@@ -402,7 +393,6 @@ export interface FileRouteTypes {
     | '/post-job'
     | '/profile'
     | '/quotes'
-    | '/reviews'
     | '/settings'
     | '/support'
     | '/verification'
@@ -442,7 +432,6 @@ export interface FileRouteTypes {
     | '/post-job'
     | '/profile'
     | '/quotes'
-    | '/reviews'
     | '/settings'
     | '/support'
     | '/verification'
@@ -483,7 +472,6 @@ export interface FileRouteTypes {
     | '/_authenticated/post-job'
     | '/_authenticated/profile'
     | '/_authenticated/quotes'
-    | '/_authenticated/reviews'
     | '/_authenticated/settings'
     | '/_authenticated/support'
     | '/_authenticated/verification'
@@ -684,13 +672,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/reviews': {
-      id: '/_authenticated/reviews'
-      path: '/reviews'
-      fullPath: '/reviews'
-      preLoaderRoute: typeof AuthenticatedReviewsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/quotes': {
       id: '/_authenticated/quotes'
       path: '/quotes'
@@ -820,7 +801,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPostJobRoute: typeof AuthenticatedPostJobRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedQuotesRoute: typeof AuthenticatedQuotesRoute
-  AuthenticatedReviewsRoute: typeof AuthenticatedReviewsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedSupportRoute: typeof AuthenticatedSupportRoute
   AuthenticatedVerificationRoute: typeof AuthenticatedVerificationRoute
@@ -837,7 +817,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPostJobRoute: AuthenticatedPostJobRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedQuotesRoute: AuthenticatedQuotesRoute,
-  AuthenticatedReviewsRoute: AuthenticatedReviewsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedSupportRoute: AuthenticatedSupportRoute,
   AuthenticatedVerificationRoute: AuthenticatedVerificationRoute,
