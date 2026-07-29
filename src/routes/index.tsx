@@ -1,5 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ShieldCheck, Sparkles, Clock, Star, ArrowRight, CheckCircle2,
   Wrench, Leaf, SprayCan, Zap, Hammer, Paintbrush, Truck, Home as HomeIcon,
@@ -7,6 +6,7 @@ import {
 import heroImg from "@/assets/hero-provider.png.asset.json";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
 import { Header } from "@/components/layout/Header";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/")({
   component: Index,
