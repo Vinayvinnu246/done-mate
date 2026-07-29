@@ -4,7 +4,7 @@ import {
   ShieldCheck, Sparkles, Clock, Star, ArrowRight, CheckCircle2,
   Wrench, Leaf, SprayCan, Zap, Hammer, Paintbrush, Truck, Home as HomeIcon,
 } from "lucide-react";
-import heroImg from "@/assets/hero-provider.jpg";
+import heroImg from "@/assets/hero-provider.png.asset.json";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
 
 
@@ -101,10 +101,10 @@ function Index() {
           <div className="relative">
             <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-muted">
               <img
-                src={heroImg}
+                src={heroImg.url}
                 alt="Verified DoneToday professional"
-                width={1600}
-                height={1400}
+                width={1024}
+                height={1024}
                 className="h-full w-full object-cover"
               />
             </div>
