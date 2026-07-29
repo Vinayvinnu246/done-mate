@@ -24,6 +24,8 @@ const categories = [
 ];
 
 function Index() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
