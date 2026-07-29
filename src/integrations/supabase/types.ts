@@ -214,6 +214,47 @@ export type Database = {
           },
         ]
       }
+      payout_requests: {
+        Row: {
+          amount: number
+          bank_account_id: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          provider_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          bank_account_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          provider_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          bank_account_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          provider_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_requests_bank_account_id_fkey"
+            columns: ["bank_account_id"]
+            isOneToOne: false
+            referencedRelation: "provider_bank_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           account_status: string
@@ -280,6 +321,42 @@ export type Database = {
           working_days?: string[]
           working_hours?: Json
           years_experience?: number | null
+        }
+        Relationships: []
+      }
+      provider_bank_accounts: {
+        Row: {
+          account_holder: string
+          account_last4: string
+          bank_name: string
+          created_at: string
+          id: string
+          is_default: boolean
+          provider_id: string
+          sort_code: string
+          updated_at: string
+        }
+        Insert: {
+          account_holder: string
+          account_last4: string
+          bank_name: string
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          provider_id: string
+          sort_code: string
+          updated_at?: string
+        }
+        Update: {
+          account_holder?: string
+          account_last4?: string
+          bank_name?: string
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          provider_id?: string
+          sort_code?: string
+          updated_at?: string
         }
         Relationships: []
       }
