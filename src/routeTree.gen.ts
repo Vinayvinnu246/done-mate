@@ -11,18 +11,29 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TrustSafetyRouteImport } from './routes/trust-safety'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ServerErrorRouteImport } from './routes/server-error'
+import { Route as SafetyRouteImport } from './routes/safety'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ReportProblemRouteImport } from './routes/report-problem'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as ProvidersRouteImport } from './routes/providers'
+import { Route as ProviderTermsRouteImport } from './routes/provider-terms'
 import { Route as ProviderAgreementRouteImport } from './routes/provider-agreement'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PressRouteImport } from './routes/press'
+import { Route as MaintenanceRouteImport } from './routes/maintenance'
 import { Route as HelpRouteImport } from './routes/help'
+import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as DisputesRouteImport } from './routes/disputes'
+import { Route as DisputeResolutionRouteImport } from './routes/dispute-resolution'
+import { Route as DeleteAccountRouteImport } from './routes/delete-account'
+import { Route as CustomerTermsRouteImport } from './routes/customer-terms'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AccessibilityRouteImport } from './routes/accessibility'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -54,14 +65,39 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServerErrorRoute = ServerErrorRouteImport.update({
+  id: '/server-error',
+  path: '/server-error',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SafetyRoute = SafetyRouteImport.update({
+  id: '/safety',
+  path: '/safety',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReportProblemRoute = ReportProblemRouteImport.update({
+  id: '/report-problem',
+  path: '/report-problem',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProvidersRoute = ProvidersRouteImport.update({
   id: '/providers',
   path: '/providers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProviderTermsRoute = ProviderTermsRouteImport.update({
+  id: '/provider-terms',
+  path: '/provider-terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProviderAgreementRoute = ProviderAgreementRouteImport.update({
@@ -79,14 +115,39 @@ const PressRoute = PressRouteImport.update({
   path: '/press',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MaintenanceRoute = MaintenanceRouteImport.update({
+  id: '/maintenance',
+  path: '/maintenance',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HelpRoute = HelpRouteImport.update({
   id: '/help',
   path: '/help',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqsRoute = FaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DisputesRoute = DisputesRouteImport.update({
   id: '/disputes',
   path: '/disputes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DisputeResolutionRoute = DisputeResolutionRouteImport.update({
+  id: '/dispute-resolution',
+  path: '/dispute-resolution',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeleteAccountRoute = DeleteAccountRouteImport.update({
+  id: '/delete-account',
+  path: '/delete-account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CustomerTermsRoute = CustomerTermsRouteImport.update({
+  id: '/customer-terms',
+  path: '/customer-terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CookiesRoute = CookiesRouteImport.update({
@@ -112,6 +173,11 @@ const BlogRoute = BlogRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccessibilityRoute = AccessibilityRouteImport.update({
+  id: '/accessibility',
+  path: '/accessibility',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -219,18 +285,29 @@ const ApiPublicWebhooksStripeConnectRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/accessibility': typeof AccessibilityRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/customer-terms': typeof CustomerTermsRoute
+  '/delete-account': typeof DeleteAccountRoute
+  '/dispute-resolution': typeof DisputeResolutionRoute
   '/disputes': typeof DisputesRoute
+  '/faqs': typeof FaqsRoute
   '/help': typeof HelpRoute
+  '/maintenance': typeof MaintenanceRoute
   '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
+  '/provider-terms': typeof ProviderTermsRoute
   '/providers': typeof ProvidersRouteWithChildren
+  '/refund-policy': typeof RefundPolicyRoute
+  '/report-problem': typeof ReportProblemRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/safety': typeof SafetyRoute
+  '/server-error': typeof ServerErrorRoute
   '/terms': typeof TermsRoute
   '/trust-safety': typeof TrustSafetyRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -254,18 +331,29 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/accessibility': typeof AccessibilityRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/customer-terms': typeof CustomerTermsRoute
+  '/delete-account': typeof DeleteAccountRoute
+  '/dispute-resolution': typeof DisputeResolutionRoute
   '/disputes': typeof DisputesRoute
+  '/faqs': typeof FaqsRoute
   '/help': typeof HelpRoute
+  '/maintenance': typeof MaintenanceRoute
   '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
+  '/provider-terms': typeof ProviderTermsRoute
   '/providers': typeof ProvidersRouteWithChildren
+  '/refund-policy': typeof RefundPolicyRoute
+  '/report-problem': typeof ReportProblemRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/safety': typeof SafetyRoute
+  '/server-error': typeof ServerErrorRoute
   '/terms': typeof TermsRoute
   '/trust-safety': typeof TrustSafetyRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -291,18 +379,29 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/accessibility': typeof AccessibilityRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/customer-terms': typeof CustomerTermsRoute
+  '/delete-account': typeof DeleteAccountRoute
+  '/dispute-resolution': typeof DisputeResolutionRoute
   '/disputes': typeof DisputesRoute
+  '/faqs': typeof FaqsRoute
   '/help': typeof HelpRoute
+  '/maintenance': typeof MaintenanceRoute
   '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
+  '/provider-terms': typeof ProviderTermsRoute
   '/providers': typeof ProvidersRouteWithChildren
+  '/refund-policy': typeof RefundPolicyRoute
+  '/report-problem': typeof ReportProblemRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/safety': typeof SafetyRoute
+  '/server-error': typeof ServerErrorRoute
   '/terms': typeof TermsRoute
   '/trust-safety': typeof TrustSafetyRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -328,18 +427,29 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/accessibility'
     | '/auth'
     | '/blog'
     | '/careers'
     | '/contact'
     | '/cookies'
+    | '/customer-terms'
+    | '/delete-account'
+    | '/dispute-resolution'
     | '/disputes'
+    | '/faqs'
     | '/help'
+    | '/maintenance'
     | '/press'
     | '/privacy'
     | '/provider-agreement'
+    | '/provider-terms'
     | '/providers'
+    | '/refund-policy'
+    | '/report-problem'
     | '/reset-password'
+    | '/safety'
+    | '/server-error'
     | '/terms'
     | '/trust-safety'
     | '/admin'
@@ -363,18 +473,29 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/accessibility'
     | '/auth'
     | '/blog'
     | '/careers'
     | '/contact'
     | '/cookies'
+    | '/customer-terms'
+    | '/delete-account'
+    | '/dispute-resolution'
     | '/disputes'
+    | '/faqs'
     | '/help'
+    | '/maintenance'
     | '/press'
     | '/privacy'
     | '/provider-agreement'
+    | '/provider-terms'
     | '/providers'
+    | '/refund-policy'
+    | '/report-problem'
     | '/reset-password'
+    | '/safety'
+    | '/server-error'
     | '/terms'
     | '/trust-safety'
     | '/admin'
@@ -399,18 +520,29 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/about'
+    | '/accessibility'
     | '/auth'
     | '/blog'
     | '/careers'
     | '/contact'
     | '/cookies'
+    | '/customer-terms'
+    | '/delete-account'
+    | '/dispute-resolution'
     | '/disputes'
+    | '/faqs'
     | '/help'
+    | '/maintenance'
     | '/press'
     | '/privacy'
     | '/provider-agreement'
+    | '/provider-terms'
     | '/providers'
+    | '/refund-policy'
+    | '/report-problem'
     | '/reset-password'
+    | '/safety'
+    | '/server-error'
     | '/terms'
     | '/trust-safety'
     | '/_authenticated/admin'
@@ -436,18 +568,29 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AccessibilityRoute: typeof AccessibilityRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
   CareersRoute: typeof CareersRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
+  CustomerTermsRoute: typeof CustomerTermsRoute
+  DeleteAccountRoute: typeof DeleteAccountRoute
+  DisputeResolutionRoute: typeof DisputeResolutionRoute
   DisputesRoute: typeof DisputesRoute
+  FaqsRoute: typeof FaqsRoute
   HelpRoute: typeof HelpRoute
+  MaintenanceRoute: typeof MaintenanceRoute
   PressRoute: typeof PressRoute
   PrivacyRoute: typeof PrivacyRoute
   ProviderAgreementRoute: typeof ProviderAgreementRoute
+  ProviderTermsRoute: typeof ProviderTermsRoute
   ProvidersRoute: typeof ProvidersRouteWithChildren
+  RefundPolicyRoute: typeof RefundPolicyRoute
+  ReportProblemRoute: typeof ReportProblemRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SafetyRoute: typeof SafetyRoute
+  ServerErrorRoute: typeof ServerErrorRoute
   TermsRoute: typeof TermsRoute
   TrustSafetyRoute: typeof TrustSafetyRoute
   ApiPublicWebhooksStripeConnectRoute: typeof ApiPublicWebhooksStripeConnectRoute
@@ -469,6 +612,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/server-error': {
+      id: '/server-error'
+      path: '/server-error'
+      fullPath: '/server-error'
+      preLoaderRoute: typeof ServerErrorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/safety': {
+      id: '/safety'
+      path: '/safety'
+      fullPath: '/safety'
+      preLoaderRoute: typeof SafetyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -476,11 +633,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/report-problem': {
+      id: '/report-problem'
+      path: '/report-problem'
+      fullPath: '/report-problem'
+      preLoaderRoute: typeof ReportProblemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/providers': {
       id: '/providers'
       path: '/providers'
       fullPath: '/providers'
       preLoaderRoute: typeof ProvidersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/provider-terms': {
+      id: '/provider-terms'
+      path: '/provider-terms'
+      fullPath: '/provider-terms'
+      preLoaderRoute: typeof ProviderTermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/provider-agreement': {
@@ -504,6 +682,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PressRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/maintenance': {
+      id: '/maintenance'
+      path: '/maintenance'
+      fullPath: '/maintenance'
+      preLoaderRoute: typeof MaintenanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/help': {
       id: '/help'
       path: '/help'
@@ -511,11 +696,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HelpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faqs': {
+      id: '/faqs'
+      path: '/faqs'
+      fullPath: '/faqs'
+      preLoaderRoute: typeof FaqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/disputes': {
       id: '/disputes'
       path: '/disputes'
       fullPath: '/disputes'
       preLoaderRoute: typeof DisputesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dispute-resolution': {
+      id: '/dispute-resolution'
+      path: '/dispute-resolution'
+      fullPath: '/dispute-resolution'
+      preLoaderRoute: typeof DisputeResolutionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/delete-account': {
+      id: '/delete-account'
+      path: '/delete-account'
+      fullPath: '/delete-account'
+      preLoaderRoute: typeof DeleteAccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/customer-terms': {
+      id: '/customer-terms'
+      path: '/customer-terms'
+      fullPath: '/customer-terms'
+      preLoaderRoute: typeof CustomerTermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cookies': {
@@ -551,6 +764,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accessibility': {
+      id: '/accessibility'
+      path: '/accessibility'
+      fullPath: '/accessibility'
+      preLoaderRoute: typeof AccessibilityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -760,18 +980,29 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  AccessibilityRoute: AccessibilityRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRoute,
   CareersRoute: CareersRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
+  CustomerTermsRoute: CustomerTermsRoute,
+  DeleteAccountRoute: DeleteAccountRoute,
+  DisputeResolutionRoute: DisputeResolutionRoute,
   DisputesRoute: DisputesRoute,
+  FaqsRoute: FaqsRoute,
   HelpRoute: HelpRoute,
+  MaintenanceRoute: MaintenanceRoute,
   PressRoute: PressRoute,
   PrivacyRoute: PrivacyRoute,
   ProviderAgreementRoute: ProviderAgreementRoute,
+  ProviderTermsRoute: ProviderTermsRoute,
   ProvidersRoute: ProvidersRouteWithChildren,
+  RefundPolicyRoute: RefundPolicyRoute,
+  ReportProblemRoute: ReportProblemRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SafetyRoute: SafetyRoute,
+  ServerErrorRoute: ServerErrorRoute,
   TermsRoute: TermsRoute,
   TrustSafetyRoute: TrustSafetyRoute,
   ApiPublicWebhooksStripeConnectRoute: ApiPublicWebhooksStripeConnectRoute,

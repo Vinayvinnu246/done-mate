@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { Header } from "@/components/layout/Header";
-import logoAsset from "@/assets/donetoday-logo.png.asset.json";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 
 export function LegalPage({
   eyebrow,
@@ -80,22 +80,8 @@ export function LegalPage({
           </div>
         </div>
       </main>
-      <LegalFooter />
+      <SiteFooter />
     </div>
-  );
-}
-
-function LegalFooter() {
-  return (
-    <footer className="border-t border-border">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-xs text-muted-foreground md:flex-row">
-        <div className="flex items-center gap-3">
-          <img src={logoAsset.url} alt="DoneToday" className="h-6 w-auto" />
-          <span>© {new Date().getFullYear()} EAGLERA LTD. All rights reserved.</span>
-        </div>
-        <div>support@donetoday.co.uk</div>
-      </div>
-    </footer>
   );
 }
 
