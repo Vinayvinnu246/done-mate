@@ -281,28 +281,40 @@ function AuthPage() {
 
                 <div className="space-y-2">
                   <Label>I am a</Label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setAccountType("customer")}
-                      className={`flex flex-col items-center gap-2 rounded-lg border p-4 transition-colors ${
-                        accountType === "customer" ? "border-primary bg-primary/5" : "border-border hover:bg-muted"
-                      }`}
-                    >
-                      <User className="h-5 w-5" />
-                      <span className="text-sm font-medium">Customer</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setAccountType("provider")}
-                      className={`flex flex-col items-center gap-2 rounded-lg border p-4 transition-colors ${
-                        accountType === "provider" ? "border-primary bg-primary/5" : "border-border hover:bg-muted"
-                      }`}
-                    >
+                  {roleLocked === "provider" ? (
+                    <div className="flex flex-col items-center gap-2 rounded-lg border border-primary bg-primary/5 p-4">
                       <ArrowRight className="h-5 w-5" />
                       <span className="text-sm font-medium">Provider</span>
-                    </button>
-                  </div>
+                    </div>
+                  ) : roleLocked === "customer" ? (
+                    <div className="flex flex-col items-center gap-2 rounded-lg border border-primary bg-primary/5 p-4">
+                      <User className="h-5 w-5" />
+                      <span className="text-sm font-medium">Customer</span>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setAccountType("customer")}
+                        className={`flex flex-col items-center gap-2 rounded-lg border p-4 transition-colors ${
+                          accountType === "customer" ? "border-primary bg-primary/5" : "border-border hover:bg-muted"
+                        }`}
+                      >
+                        <User className="h-5 w-5" />
+                        <span className="text-sm font-medium">Customer</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAccountType("provider")}
+                        className={`flex flex-col items-center gap-2 rounded-lg border p-4 transition-colors ${
+                          accountType === "provider" ? "border-primary bg-primary/5" : "border-border hover:bg-muted"
+                        }`}
+                      >
+                        <ArrowRight className="h-5 w-5" />
+                        <span className="text-sm font-medium">Provider</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {error && (
