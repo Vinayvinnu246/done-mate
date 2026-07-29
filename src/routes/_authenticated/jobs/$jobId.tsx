@@ -81,6 +81,7 @@ function JobDetailPage() {
 
   function handleQuoteSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!job) return;
     if (!quotePrice || isNaN(Number(quotePrice))) {
       toast.error("Enter a valid price");
       return;
