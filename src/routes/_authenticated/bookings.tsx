@@ -1,12 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getMyBookings, updateJobStatus } from "@/lib/jobs.functions";
+import { createReview } from "@/lib/reviews.functions";
+import { createDispute } from "@/lib/disputes.functions";
 import { ProviderShell } from "@/components/layout/ProviderShell";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
-import { Calendar, MapPin, PoundSterling, CheckCircle2, PlayCircle, XCircle } from "lucide-react";
+import { Calendar, MapPin, PoundSterling, CheckCircle2, PlayCircle, XCircle, Star, AlertTriangle } from "lucide-react";
+import { useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/_authenticated/bookings")({
   component: BookingsPage,
@@ -47,6 +53,9 @@ function BookingsPage() {
     onError: (e) => toast.error(e instanceof Error ? e.message : "Failed"),
   });
 
+  const [reviewFor, setReviewFor] = useState<any>(null);
+  const [disputeFor, setDisputeFor] = useState<any>(null);
+
   if (isLoading) return <LoadingScreen />;
 
   const jobs = isProvider ? data?.providerJobs ?? [] : data?.customerJobs ?? [];
@@ -73,6 +82,7 @@ function BookingsPage() {
               isProvider={isProvider}
               onAction={(s) => mutation.mutate({ job_id: j.id, status: s })}
               pending={mutation.isPending}
+              onDispute={() => setDisputeFor(j)}
             />
           ))
         )}
@@ -82,13 +92,88 @@ function BookingsPage() {
         {past.length === 0 ? (
           <Empty message="No past bookings." />
         ) : (
-          past.map((j: any) => <BookingCard key={j.id} job={j} isProvider={isProvider} readOnly />)
+          past.map((j: any) => (
+            <BookingCard
+              key={j.id}
+              job={j}
+              isProvider={isProvider}
+              readOnly
+              onReview={!isProvider && j.status === "completed" ? () => setReviewFor(j) : undefined}
+            />
+          ))
         )}
       </Section>
     </div>
   );
 
-  return isProvider ? <ProviderShell>{content}</ProviderShell> : <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">{content}</div>;
+  const wrapped = isProvider ? <ProviderShell>{content}</ProviderShell> : <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">{content}</div>;
+  return (
+    <>
+      {wrapped}
+      {reviewFor && <ReviewDialog job={reviewFor} onClose={() => setReviewFor(null)} />}
+      {disputeFor && <DisputeDialog job={disputeFor} onClose={() => setDisputeFor(null)} />}
+    </>
+  );
+}
+
+function ReviewDialog({ job, onClose }: { job: any; onClose: () => void }) {
+  const qc = useQueryClient();
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+  const acceptedQuote = job.myQuote ?? (job.quotes ?? []).find((q: any) => q.status === "accepted");
+  const providerId = acceptedQuote?.provider_id;
+  const m = useMutation({
+    mutationFn: () => createReview({ data: { job_id: job.id, provider_id: providerId, rating, comment: comment || undefined } }),
+    onSuccess: () => { toast.success("Review submitted"); qc.invalidateQueries({ queryKey: ["my-bookings"] }); onClose(); },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Failed"),
+  });
+  return (
+    <Dialog open onOpenChange={(v) => !v && onClose()}>
+      <DialogContent>
+        <DialogHeader><DialogTitle>Leave a review</DialogTitle></DialogHeader>
+        <div className="space-y-4">
+          <div className="flex gap-1">
+            {[1,2,3,4,5].map((n) => (
+              <button key={n} type="button" onClick={() => setRating(n)}>
+                <Star className={`h-8 w-8 ${n <= rating ? "fill-[#F5B301] text-[#F5B301]" : "text-[#E5E7EB]"}`} />
+              </button>
+            ))}
+          </div>
+          <Textarea rows={4} placeholder="How did it go?" value={comment} onChange={(e) => setComment(e.target.value)} />
+        </div>
+        <DialogFooter>
+          <Button variant="ghost" onClick={onClose}>Cancel</Button>
+          <Button className="bg-[#59914c] hover:bg-[#4a7d3f]" disabled={m.isPending || !providerId} onClick={() => m.mutate()}>Submit</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function DisputeDialog({ job, onClose }: { job: any; onClose: () => void }) {
+  const qc = useQueryClient();
+  const [reason, setReason] = useState("");
+  const [description, setDescription] = useState("");
+  const m = useMutation({
+    mutationFn: () => createDispute({ data: { job_id: job.id, reason, description: description || undefined } }),
+    onSuccess: () => { toast.success("Dispute opened"); qc.invalidateQueries({ queryKey: ["my-bookings"] }); onClose(); },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Failed"),
+  });
+  return (
+    <Dialog open onOpenChange={(v) => !v && onClose()}>
+      <DialogContent>
+        <DialogHeader><DialogTitle>Open a dispute</DialogTitle></DialogHeader>
+        <div className="space-y-3">
+          <Input placeholder="Reason (e.g. Work not completed)" value={reason} onChange={(e) => setReason(e.target.value)} />
+          <Textarea rows={4} placeholder="Describe what went wrong…" value={description} onChange={(e) => setDescription(e.target.value)} />
+        </div>
+        <DialogFooter>
+          <Button variant="ghost" onClick={onClose}>Cancel</Button>
+          <Button className="bg-[#B91C1C] hover:bg-[#991B1B]" disabled={m.isPending || reason.trim().length < 3} onClick={() => m.mutate()}>Open dispute</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
@@ -114,12 +199,16 @@ function BookingCard({
   onAction,
   pending,
   readOnly,
+  onReview,
+  onDispute,
 }: {
   job: any;
   isProvider: boolean;
   onAction?: (status: "in_progress" | "completed" | "cancelled") => void;
   pending?: boolean;
   readOnly?: boolean;
+  onReview?: () => void;
+  onDispute?: () => void;
 }) {
   const currentStep = STATUS_STEPS.indexOf(job.status as any);
   const cancelled = job.status === "cancelled" || job.status === "disputed";
@@ -229,6 +318,18 @@ function BookingCard({
             <Link to="/jobs/$jobId" params={{ jobId: job.id }}>
               Details
             </Link>
+          </Button>
+          {onDispute && (
+            <Button size="sm" variant="outline" className="rounded-full text-[#B91C1C] border-[#FCA5A5] hover:bg-[#FEF2F2]" onClick={onDispute}>
+              <AlertTriangle className="h-4 w-4 mr-1" /> Dispute
+            </Button>
+          )}
+        </div>
+      )}
+      {readOnly && onReview && (
+        <div className="mt-4 flex justify-end">
+          <Button size="sm" className="rounded-full bg-[#59914c] hover:bg-[#4a7d3f]" onClick={onReview}>
+            <Star className="h-4 w-4 mr-1" /> Leave review
           </Button>
         </div>
       )}
