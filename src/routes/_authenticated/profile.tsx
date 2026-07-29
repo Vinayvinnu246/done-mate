@@ -31,7 +31,8 @@ function ProfilePage() {
   const [formError, setFormError] = useState<string | null>(null);
 
   const updateMutation = useMutation({
-    mutationFn: updateMyProfile,
+    mutationFn: (input: { display_name?: string; phone?: string; avatar_url?: string }) =>
+      updateMyProfile({ data: input }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["auth", "profile"] });
     },
