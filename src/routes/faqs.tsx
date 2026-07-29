@@ -7,7 +7,7 @@ export const Route = createFileRoute("/faqs")({
   head: () => ({
     meta: [
       { title: "FAQs — DoneToday" },
-      { name: "description", content: "Answers to the most common questions about DoneToday: quotes, payments, providers, refunds and support." },
+      { name: "description", content: "Answers to common questions about DoneToday: quotes, payments, providers, refunds and support." },
       { property: "og:title", content: "DoneToday FAQs" },
       { property: "og:description", content: "Common questions answered." },
       { property: "og:type", content: "website" },

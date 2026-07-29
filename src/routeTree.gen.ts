@@ -13,6 +13,7 @@ import { Route as TrustSafetyRouteImport } from './routes/trust-safety'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SafetyRouteImport } from './routes/safety'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ReportProblemRouteImport } from './routes/report-problem'
 import { Route as ProvidersRouteImport } from './routes/providers'
 import { Route as ProviderAgreementRouteImport } from './routes/provider-agreement'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -64,6 +65,11 @@ const SafetyRoute = SafetyRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportProblemRoute = ReportProblemRouteImport.update({
+  id: '/report-problem',
+  path: '/report-problem',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProvidersRoute = ProvidersRouteImport.update({
@@ -243,6 +249,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
   '/providers': typeof ProvidersRouteWithChildren
+  '/report-problem': typeof ReportProblemRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safety': typeof SafetyRoute
   '/terms': typeof TermsRoute
@@ -280,6 +287,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
   '/providers': typeof ProvidersRouteWithChildren
+  '/report-problem': typeof ReportProblemRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safety': typeof SafetyRoute
   '/terms': typeof TermsRoute
@@ -319,6 +327,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
   '/providers': typeof ProvidersRouteWithChildren
+  '/report-problem': typeof ReportProblemRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safety': typeof SafetyRoute
   '/terms': typeof TermsRoute
@@ -358,6 +367,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/provider-agreement'
     | '/providers'
+    | '/report-problem'
     | '/reset-password'
     | '/safety'
     | '/terms'
@@ -395,6 +405,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/provider-agreement'
     | '/providers'
+    | '/report-problem'
     | '/reset-password'
     | '/safety'
     | '/terms'
@@ -433,6 +444,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/provider-agreement'
     | '/providers'
+    | '/report-problem'
     | '/reset-password'
     | '/safety'
     | '/terms'
@@ -472,6 +484,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ProviderAgreementRoute: typeof ProviderAgreementRoute
   ProvidersRoute: typeof ProvidersRouteWithChildren
+  ReportProblemRoute: typeof ReportProblemRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SafetyRoute: typeof SafetyRoute
   TermsRoute: typeof TermsRoute
@@ -507,6 +520,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/report-problem': {
+      id: '/report-problem'
+      path: '/report-problem'
+      fullPath: '/report-problem'
+      preLoaderRoute: typeof ReportProblemRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/providers': {
@@ -812,6 +832,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ProviderAgreementRoute: ProviderAgreementRoute,
   ProvidersRoute: ProvidersRouteWithChildren,
+  ReportProblemRoute: ReportProblemRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SafetyRoute: SafetyRoute,
   TermsRoute: TermsRoute,
