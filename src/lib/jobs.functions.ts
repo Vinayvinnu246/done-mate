@@ -33,9 +33,6 @@ const quoteUpdateSchema = z.object({
 });
 
 export const getCategories = createServerFn({ method: "GET" }).handler(async () => {
-  const { createClient } = await import("@supabase/supabase-js");
-  const { Database } = await import("@/integrations/supabase/types");
-
   const supabasePublic = createClient<Database>(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_PUBLISHABLE_KEY!,
