@@ -248,14 +248,45 @@ export const createQuote = createServerFn({ method: "POST" })
       .single();
 
     if (jobError) throw jobError;
-    if (job.customer_id === userId) throw new Error("You cannot quote on your own job");
     if (!["posted", "quoting"].includes(job.status)) throw new Error("This job is not accepting quotes");
+
+    const proposedBy = data.proposed_by ?? (job.customer_id === userId ? "customer" : "provider");
+    if (proposedBy === "provider" && job.customer_id === userId) {
+      throw new Error("You cannot quote on your own job");
+    }
+    if (proposedBy === "customer" && job.customer_id !== userId) {
+      throw new Error("Only the customer can send a counter-offer");
+    }
+
+    // For customer counter-offers, provider_id must be the original quote's provider
+    let providerId = userId;
+    if (proposedBy === "customer") {
+      if (!data.parent_quote_id) throw new Error("Counter-offer must reference a parent quote");
+      const { data: parent, error: pe } = await supabase
+        .from("quotes")
+        .select("provider_id")
+        .eq("id", data.parent_quote_id)
+        .single();
+      if (pe) throw pe;
+      providerId = parent.provider_id;
+
+      // Mark parent as countered
+      await supabase.from("quotes").update({ status: "countered" }).eq("id", data.parent_quote_id);
+    } else if (data.parent_quote_id) {
+      // Provider counter-response
+      await supabase.from("quotes").update({ status: "countered" }).eq("id", data.parent_quote_id);
+    }
 
     const { data: quote, error } = await supabase
       .from("quotes")
       .insert({
-        provider_id: userId,
-        ...data,
+        provider_id: providerId,
+        job_id: data.job_id,
+        price: data.price,
+        duration_minutes: data.duration_minutes,
+        message: data.message,
+        parent_quote_id: data.parent_quote_id,
+        proposed_by: proposedBy,
       })
       .select("*")
       .single();
