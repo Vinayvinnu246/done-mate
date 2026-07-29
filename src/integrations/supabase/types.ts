@@ -50,6 +50,45 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_addresses: {
+        Row: {
+          city: string | null
+          created_at: string
+          id: string
+          is_default: boolean
+          label: string
+          line1: string
+          line2: string | null
+          postcode: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          label: string
+          line1: string
+          line2?: string | null
+          postcode: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          city?: string | null
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          label?: string
+          line1?: string
+          line2?: string | null
+          postcode?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       jobs: {
         Row: {
           address_line1: string | null
@@ -171,51 +210,69 @@ export type Database = {
       }
       profiles: {
         Row: {
+          account_status: string
           avatar_url: string | null
           bio: string | null
+          business_name: string | null
           created_at: string
           display_name: string | null
           id: string
           is_available: boolean | null
+          notification_preferences: Json
           onboarding_status: string
           phone: string | null
+          postcode: string | null
           service_radius: number | null
           type: string
           updated_at: string
           user_id: string
           verification_status: string | null
+          working_days: string[]
+          working_hours: Json
           years_experience: number | null
         }
         Insert: {
+          account_status?: string
           avatar_url?: string | null
           bio?: string | null
+          business_name?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
           is_available?: boolean | null
+          notification_preferences?: Json
           onboarding_status?: string
           phone?: string | null
+          postcode?: string | null
           service_radius?: number | null
           type?: string
           updated_at?: string
           user_id: string
           verification_status?: string | null
+          working_days?: string[]
+          working_hours?: Json
           years_experience?: number | null
         }
         Update: {
+          account_status?: string
           avatar_url?: string | null
           bio?: string | null
+          business_name?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
           is_available?: boolean | null
+          notification_preferences?: Json
           onboarding_status?: string
           phone?: string | null
+          postcode?: string | null
           service_radius?: number | null
           type?: string
           updated_at?: string
           user_id?: string
           verification_status?: string | null
+          working_days?: string[]
+          working_hours?: Json
           years_experience?: number | null
         }
         Relationships: []

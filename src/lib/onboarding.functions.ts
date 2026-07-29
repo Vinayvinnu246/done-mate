@@ -6,6 +6,10 @@ const onboardingSchema = z.object({
   bio: z.string().trim().max(1000).optional(),
   years_experience: z.number().min(0).max(60).optional(),
   service_radius: z.number().min(1).max(100).optional(),
+  business_name: z.string().trim().max(120).optional(),
+  postcode: z.string().trim().max(16).optional(),
+  working_days: z.array(z.enum(["mon","tue","wed","thu","fri","sat","sun"])).max(7).optional(),
+  working_hours: z.object({ start: z.string(), end: z.string() }).optional(),
   category_ids: z.array(z.string().uuid()).max(10),
   documents: z.array(
     z.object({
@@ -51,6 +55,10 @@ export const submitProviderOnboarding = createServerFn({ method: "POST" })
         bio: data.bio,
         years_experience: data.years_experience,
         service_radius: data.service_radius,
+        business_name: data.business_name,
+        postcode: data.postcode,
+        working_days: data.working_days ?? [],
+        working_hours: data.working_hours ?? { start: "09:00", end: "18:00" },
         verification_status: "pending",
       })
       .eq("id", userId);

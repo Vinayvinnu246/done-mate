@@ -42,6 +42,11 @@ function OnboardingPage() {
   const [bio, setBio] = useState("");
   const [yearsExperience, setYearsExperience] = useState("");
   const [serviceRadius, setServiceRadius] = useState("10");
+  const [businessName, setBusinessName] = useState("");
+  const [postcode, setPostcode] = useState("");
+  const [workingDays, setWorkingDays] = useState<string[]>(["mon","tue","wed","thu","fri"]);
+  const [workStart, setWorkStart] = useState("09:00");
+  const [workEnd, setWorkEnd] = useState("18:00");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [documents, setDocuments] = useState<Record<string, string>>({});
 
@@ -99,6 +104,10 @@ function OnboardingPage() {
         bio: bio || undefined,
         years_experience: yearsExperience ? Number(yearsExperience) : undefined,
         service_radius: Number(serviceRadius) || 10,
+        business_name: businessName || undefined,
+        postcode: postcode || undefined,
+        working_days: workingDays as ("mon"|"tue"|"wed"|"thu"|"fri"|"sat"|"sun")[],
+        working_hours: { start: workStart, end: workEnd },
         category_ids: selectedCategories,
         documents: docs,
       },
@@ -132,6 +141,10 @@ function OnboardingPage() {
               />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-2 sm:col-span-2">
+                <Label htmlFor="businessName">Business name (optional)</Label>
+                <Input id="businessName" value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="yearsExperience">Years of experience</Label>
                 <Input
@@ -153,6 +166,38 @@ function OnboardingPage() {
                   value={serviceRadius}
                   onChange={(e) => setServiceRadius(e.target.value)}
                 />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="postcode">Base postcode</Label>
+                <Input id="postcode" value={postcode} onChange={(e) => setPostcode(e.target.value)} placeholder="e.g. SW1A 1AA" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Working days</Label>
+              <div className="flex flex-wrap gap-2">
+                {(["mon","tue","wed","thu","fri","sat","sun"] as const).map((d) => {
+                  const active = workingDays.includes(d);
+                  return (
+                    <button
+                      type="button"
+                      key={d}
+                      onClick={() => setWorkingDays((prev) => active ? prev.filter((x) => x !== d) : [...prev, d])}
+                      className={`px-3 py-1.5 rounded-full text-sm border ${active ? "bg-[#2e4053] text-white border-[#2e4053]" : "bg-white text-[#2e4053] border-[#E5E7EB]"}`}
+                    >
+                      {d.toUpperCase()}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="workStart">Working hours start</Label>
+                <Input id="workStart" type="time" value={workStart} onChange={(e) => setWorkStart(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="workEnd">Working hours end</Label>
+                <Input id="workEnd" type="time" value={workEnd} onChange={(e) => setWorkEnd(e.target.value)} />
               </div>
             </div>
           </div>
