@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { toast } from "sonner";
-import { Wallet as WalletIcon, Landmark, Clock, ArrowRight, Plus, Trash2, ShieldCheck, ExternalLink, AlertTriangle } from "lucide-react";
+import { Wallet as WalletIcon, Landmark, Clock, ArrowRight, Plus, Trash2, ShieldCheck, ExternalLink, AlertTriangle, TrendingUp, Receipt, Ban } from "lucide-react";
 import { BackButton } from "@/components/ui/back-button";
 import { getWalletData, addBankAccount, deleteBankAccount, requestPayout } from "@/lib/wallet.functions";
 import {
@@ -124,15 +124,21 @@ function WalletPage() {
   const data = walletQuery.data;
   const banks = data?.banks ?? [];
   const payouts = data?.payouts ?? [];
+  const transactions = data?.transactions ?? [];
+  const holds = data?.holds ?? [];
+  const balances = data?.balances ?? { available: 0, pending: 0, totalEarnings: 0, totalCommission: 0, totalWithdrawn: 0, reserved: 0 };
   const defaultBank = banks.find((b) => b.is_default) ?? banks[0];
-  const available = Math.max(0, (data?.totals.paid ?? 0) - (data?.totals.pendingOut ?? 0));
+  const available = balances.available;
+  const minWithdrawal = data?.minWithdrawal ?? 50;
   const connect = connectQuery.data;
   const payoutsEnabled = !!connect?.payouts_enabled;
+  const hasActiveHold = holds.length > 0;
 
   function handleWithdraw() {
     const amt = Number(withdrawAmount);
     if (!amt || amt <= 0) return toast.error("Enter a valid amount");
-    if (!payoutsEnabled) return toast.error("Complete Stripe onboarding to enable payouts");
+    if (amt < minWithdrawal) return toast.error(`Minimum withdrawal is £${minWithdrawal}`);
+    if (hasActiveHold) return toast.error("Payouts are on hold");
     if (!defaultBank) return toast.error("Add a bank account first");
     if (amt > available) return toast.error("Amount exceeds available balance");
     withdraw.mutate({ amount: amt, bank_account_id: defaultBank.id });
@@ -148,6 +154,16 @@ function WalletPage() {
           <p className="text-[#6b7b8c] mt-1">Add a bank account and withdraw earnings from completed jobs.</p>
         </div>
 
+        {hasActiveHold && (
+          <div className="rounded-xl bg-[#fdecea] border border-[#f5c6c0] p-4 flex items-start gap-3">
+            <Ban className="h-5 w-5 text-[#c0392b] mt-0.5" />
+            <div className="text-sm">
+              <p className="font-medium text-[#c0392b]">Payouts on hold</p>
+              <p className="text-[#7a2b21] mt-1">{holds[0].reason}</p>
+            </div>
+          </div>
+        )}
+
         <Card className="border-[#E5E7EB]">
           <CardHeader>
             <CardTitle className="text-[#2e4053] flex items-center gap-2">
@@ -158,8 +174,8 @@ function WalletPage() {
             {!connect ? (
               <>
                 <p className="text-sm text-[#6b7b8c]">
-                  Connect a Stripe Express account to receive secure payouts. Stripe verifies your identity and handles
-                  bank transfers directly to you.
+                  Optionally connect Stripe Express for automatic secure payouts. You can also withdraw to the bank
+                  account you add below and DoneToday will process it manually.
                 </p>
                 <Button
                   className="rounded-full bg-[#635bff] hover:bg-[#5148e6]"
@@ -206,7 +222,7 @@ function WalletPage() {
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <Card className="border-[#E5E7EB]">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-[#6b7b8c] flex items-center gap-2">
@@ -214,30 +230,52 @@ function WalletPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="font-display text-3xl text-[#2e4053]">{gbp(available)}</p>
+              <p className="font-display text-2xl text-[#2e4053]">{gbp(available)}</p>
               <p className="text-xs text-[#6b7b8c] mt-1">Ready to withdraw</p>
             </CardContent>
           </Card>
           <Card className="border-[#E5E7EB]">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-[#6b7b8c] flex items-center gap-2">
-                <Clock className="h-4 w-4" /> Pending withdrawals
+                <Clock className="h-4 w-4" /> Pending balance
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="font-display text-3xl text-[#2e4053]">{gbp(data?.totals.pendingOut ?? 0)}</p>
-              <p className="text-xs text-[#6b7b8c] mt-1">Being processed</p>
+              <p className="font-display text-2xl text-[#2e4053]">{gbp(balances.pending)}</p>
+              <p className="text-xs text-[#6b7b8c] mt-1">In 3-day hold</p>
             </CardContent>
           </Card>
           <Card className="border-[#E5E7EB]">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-[#6b7b8c] flex items-center gap-2">
-                <ArrowRight className="h-4 w-4" /> Lifetime paid
+                <TrendingUp className="h-4 w-4" /> Total earnings
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="font-display text-3xl text-[#2e4053]">{gbp(data?.totals.paid ?? 0)}</p>
-              <p className="text-xs text-[#6b7b8c] mt-1">All completed payouts</p>
+              <p className="font-display text-2xl text-[#2e4053]">{gbp(balances.totalEarnings)}</p>
+              <p className="text-xs text-[#6b7b8c] mt-1">Gross of commission</p>
+            </CardContent>
+          </Card>
+          <Card className="border-[#E5E7EB]">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-[#6b7b8c] flex items-center gap-2">
+                <ArrowRight className="h-4 w-4" /> Total withdrawn
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="font-display text-2xl text-[#2e4053]">{gbp(balances.totalWithdrawn)}</p>
+              <p className="text-xs text-[#6b7b8c] mt-1">Paid to your bank</p>
+            </CardContent>
+          </Card>
+          <Card className="border-[#E5E7EB]">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-[#6b7b8c] flex items-center gap-2">
+                <Receipt className="h-4 w-4" /> Commission
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="font-display text-2xl text-[#2e4053]">{gbp(balances.totalCommission)}</p>
+              <p className="text-xs text-[#6b7b8c] mt-1">10% platform fee</p>
             </CardContent>
           </Card>
         </div>
@@ -254,12 +292,15 @@ function WalletPage() {
                 <div className="text-sm text-[#6b7b8c]">
                   Sending to <span className="font-medium text-[#2e4053]">{defaultBank.bank_name}</span> •••• {defaultBank.account_last4}
                 </div>
+                <div className="text-xs text-[#6b7b8c]">
+                  Minimum withdrawal £{minWithdrawal}. Estimated arrival: 2–3 business days.
+                </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Input
                     type="number"
-                    min={1}
+                    min={minWithdrawal}
                     step="0.01"
-                    placeholder="Amount in GBP"
+                    placeholder={`Amount (min £${minWithdrawal})`}
                     value={withdrawAmount}
                     onChange={(e) => setWithdrawAmount(e.target.value)}
                   />
@@ -267,6 +308,9 @@ function WalletPage() {
                     {withdraw.isPending ? "Requesting…" : "Withdraw now"}
                   </Button>
                 </div>
+                {balances.pending > 0 && (
+                  <p className="text-xs text-[#6b7b8c]">{gbp(balances.pending)} is still in the 3-day hold period.</p>
+                )}
               </>
             ) : (
               <p className="text-sm text-[#6b7b8c]">Add a bank account below to enable withdrawals.</p>
@@ -340,18 +384,60 @@ function WalletPage() {
             ) : (
               <div className="divide-y divide-[#E5E7EB]">
                 {payouts.map((p) => (
-                  <div key={p.id} className="flex items-center justify-between py-3 text-sm">
-                    <div>
-                      <p className="text-[#2e4053] font-medium">{gbp(Number(p.amount))}</p>
-                      <p className="text-xs text-[#6b7b8c]">{new Date(p.created_at).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</p>
+                  <div key={p.id} className="py-3 text-sm">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-[#2e4053] font-medium">{gbp(Number(p.amount))}</p>
+                        <p className="text-xs text-[#6b7b8c]">
+                          {new Date(p.created_at).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
+                          {p.estimated_arrival && ["requested","processing","pending"].includes(p.status) && (
+                            <> · ETA {new Date(p.estimated_arrival).toLocaleDateString("en-GB", { day: "2-digit", month: "short" })}</>
+                          )}
+                        </p>
+                      </div>
+                      <span className={`text-xs font-medium rounded-full px-3 py-1 capitalize ${
+                        p.status === "paid" ? "text-[#59914c] bg-[#59914c]/10" :
+                        p.status === "failed" || p.status === "reversed" ? "text-[#c0392b] bg-[#c0392b]/10" :
+                        p.status === "on_hold" ? "text-[#c0392b] bg-[#fdecea]" :
+                        "text-[#7a5c1a] bg-[#FFF8EC]"
+                      }`}>{p.status.replace("_", " ")}</span>
                     </div>
-                    <span className={`text-xs font-medium rounded-full px-3 py-1 capitalize ${
-                      p.status === "paid" ? "text-[#59914c] bg-[#59914c]/10" :
-                      p.status === "rejected" ? "text-[#c0392b] bg-[#c0392b]/10" :
-                      "text-[#7a5c1a] bg-[#FFF8EC]"
-                    }`}>{p.status}</span>
+                    {p.failure_reason && (p.status === "failed" || p.status === "reversed") && (
+                      <p className="text-xs text-[#c0392b] mt-1">Reason: {p.failure_reason}</p>
+                    )}
                   </div>
                 ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="border-[#E5E7EB]">
+          <CardHeader>
+            <CardTitle className="text-[#2e4053]">Transaction history</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {transactions.length === 0 ? (
+              <p className="text-sm text-[#6b7b8c]">No transactions yet.</p>
+            ) : (
+              <div className="divide-y divide-[#E5E7EB]">
+                {transactions.map((t) => {
+                  const amt = Number(t.amount);
+                  const positive = amt >= 0;
+                  return (
+                    <div key={t.id} className="flex items-center justify-between py-3 text-sm">
+                      <div className="min-w-0">
+                        <p className="text-[#2e4053] font-medium capitalize">{t.type.replace(/_/g, " ")}</p>
+                        <p className="text-xs text-[#6b7b8c] truncate">
+                          {t.description ?? "—"} · {new Date(t.created_at).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
+                        </p>
+                      </div>
+                      <span className={`font-medium ${positive ? "text-[#59914c]" : "text-[#c0392b]"}`}>
+                        {positive ? "+" : ""}{gbp(amt)}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </CardContent>
