@@ -14,6 +14,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SafetyRouteImport } from './routes/safety'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ReportProblemRouteImport } from './routes/report-problem'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
 import { Route as ProvidersRouteImport } from './routes/providers'
 import { Route as ProviderAgreementRouteImport } from './routes/provider-agreement'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -70,6 +71,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const ReportProblemRoute = ReportProblemRouteImport.update({
   id: '/report-problem',
   path: '/report-problem',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProvidersRoute = ProvidersRouteImport.update({
@@ -249,6 +255,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
   '/providers': typeof ProvidersRouteWithChildren
+  '/refund-policy': typeof RefundPolicyRoute
   '/report-problem': typeof ReportProblemRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safety': typeof SafetyRoute
@@ -287,6 +294,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
   '/providers': typeof ProvidersRouteWithChildren
+  '/refund-policy': typeof RefundPolicyRoute
   '/report-problem': typeof ReportProblemRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safety': typeof SafetyRoute
@@ -327,6 +335,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
   '/providers': typeof ProvidersRouteWithChildren
+  '/refund-policy': typeof RefundPolicyRoute
   '/report-problem': typeof ReportProblemRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safety': typeof SafetyRoute
@@ -367,6 +376,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/provider-agreement'
     | '/providers'
+    | '/refund-policy'
     | '/report-problem'
     | '/reset-password'
     | '/safety'
@@ -405,6 +415,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/provider-agreement'
     | '/providers'
+    | '/refund-policy'
     | '/report-problem'
     | '/reset-password'
     | '/safety'
@@ -444,6 +455,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/provider-agreement'
     | '/providers'
+    | '/refund-policy'
     | '/report-problem'
     | '/reset-password'
     | '/safety'
@@ -484,6 +496,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ProviderAgreementRoute: typeof ProviderAgreementRoute
   ProvidersRoute: typeof ProvidersRouteWithChildren
+  RefundPolicyRoute: typeof RefundPolicyRoute
   ReportProblemRoute: typeof ReportProblemRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SafetyRoute: typeof SafetyRoute
@@ -527,6 +540,13 @@ declare module '@tanstack/react-router' {
       path: '/report-problem'
       fullPath: '/report-problem'
       preLoaderRoute: typeof ReportProblemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/providers': {
@@ -832,6 +852,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ProviderAgreementRoute: ProviderAgreementRoute,
   ProvidersRoute: ProvidersRouteWithChildren,
+  RefundPolicyRoute: RefundPolicyRoute,
   ReportProblemRoute: ReportProblemRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SafetyRoute: SafetyRoute,
