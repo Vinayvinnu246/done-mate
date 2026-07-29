@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { Header } from "@/components/layout/Header";
+import { BackButton } from "@/components/ui/back-button";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -141,6 +142,7 @@ function AdminDashboard() {
     <div className="min-h-screen bg-[#FAFAF8]">
       <Header />
       <main className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+        <BackButton className="mb-4" />
         <h1 className="font-display text-3xl font-semibold text-[#2e4053] mb-8">Admin dashboard</h1>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">

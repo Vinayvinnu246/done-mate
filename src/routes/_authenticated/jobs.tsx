@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { getAvailableJobs, getMyJobs } from "@/lib/jobs.functions";
 import { useAuth } from "@/hooks/use-auth";
 import { Calendar, MapPin, PoundSterling, Plus, Briefcase } from "lucide-react";
+import { BackButton } from "@/components/ui/back-button";
 
 export const Route = createFileRoute("/_authenticated/jobs")({
   component: JobsPage,
@@ -54,6 +55,7 @@ function JobsPage() {
   return (
     <div className="min-h-screen bg-[#FAFAF8] py-12">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <BackButton className="mb-4" />
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="font-display text-3xl font-semibold text-[#2e4053]">

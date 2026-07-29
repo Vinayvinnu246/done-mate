@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { Header } from "@/components/layout/Header";
+import { BackButton } from "@/components/ui/back-button";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
 import { getCategories } from "@/lib/jobs.functions";

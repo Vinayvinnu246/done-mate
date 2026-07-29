@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Header } from "@/components/layout/Header";
+import { BackButton } from "@/components/ui/back-button";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { getMyProfile, updateMyProfile } from "@/lib/profile.functions";
 
@@ -75,6 +76,7 @@ function ProfilePage() {
       <Header />
 
       <main className="mx-auto max-w-3xl px-6 py-12">
+        <BackButton className="mb-4" />
         <h1 className="font-serif text-3xl text-foreground">Your profile</h1>
         <p className="mt-2 text-muted-foreground">
           Update your account details so pros and customers can recognise you.
