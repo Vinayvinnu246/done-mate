@@ -101,6 +101,7 @@ export type Database = {
           customer_id: string
           description: string
           id: string
+          images: string[]
           lat: number | null
           lng: number | null
           postcode: string | null
@@ -121,6 +122,7 @@ export type Database = {
           customer_id: string
           description: string
           id?: string
+          images?: string[]
           lat?: number | null
           lng?: number | null
           postcode?: string | null
@@ -141,6 +143,7 @@ export type Database = {
           customer_id?: string
           description?: string
           id?: string
+          images?: string[]
           lat?: number | null
           lng?: number | null
           postcode?: string | null

@@ -18,6 +18,7 @@ const jobInsertSchema = z.object({
   postcode: z.string().trim().min(3).max(20),
   lat: z.number().optional(),
   lng: z.number().optional(),
+  images: z.array(z.string().min(1)).max(8).optional(),
 });
 
 const quoteInsertSchema = z.object({
