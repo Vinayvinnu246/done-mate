@@ -50,7 +50,10 @@ export const searchProviders = createServerFn({ method: "GET" })
 
     if (!rows || rows.length === 0) return [];
 
-    const ids = rows.map((r) => r.user_id);
+    const safeRows = rows.filter(
+      (r): r is typeof r & { user_id: string } => !!r.user_id,
+    );
+    const ids = safeRows.map((r) => r.user_id);
     const { data: cats } = await supabase
       .from("provider_categories")
       .select("provider_id, category:categories(id, name, slug, icon)")
@@ -65,7 +68,7 @@ export const searchProviders = createServerFn({ method: "GET" })
       byProvider.set(link.provider_id, list);
     }
 
-    return rows.map((r) => ({
+    return safeRows.map((r) => ({
       ...r,
       categories: byProvider.get(r.user_id) ?? [],
     }));
