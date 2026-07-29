@@ -36,7 +36,7 @@ function Index() {
               alt="DoneToday"
               width={160}
               height={56}
-              className="h-9 w-auto"
+              className="h-12 w-auto"
             />
           </Link>
           <nav className="hidden items-center gap-8 md:flex">
