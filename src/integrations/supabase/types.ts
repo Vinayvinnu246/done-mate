@@ -898,7 +898,39 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_providers: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          display_name: string | null
+          is_available: boolean | null
+          service_radius: number | null
+          user_id: string | null
+          verification_status: string | null
+          years_experience: number | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          display_name?: string | null
+          is_available?: boolean | null
+          service_radius?: number | null
+          user_id?: string | null
+          verification_status?: string | null
+          years_experience?: number | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          display_name?: string | null
+          is_available?: boolean | null
+          service_radius?: number | null
+          user_id?: string | null
+          verification_status?: string | null
+          years_experience?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
