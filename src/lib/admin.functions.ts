@@ -231,16 +231,18 @@ export const updatePayoutStatus = createServerFn({ method: "POST" })
     await requireAdmin(context);
     const supabase = await adminClient();
 
-    const patch: Record<string, unknown> = { status: data.status };
-    if (data.failure_reason !== undefined) patch.failure_reason = data.failure_reason;
-    if (data.estimated_arrival) patch.estimated_arrival = data.estimated_arrival;
-    if (data.status === "paid" || data.status === "failed" || data.status === "reversed") {
-      patch.processed_at = new Date().toISOString();
-    }
+    const patch = {
+      status: data.status,
+      ...(data.failure_reason !== undefined ? { failure_reason: data.failure_reason } : {}),
+      ...(data.estimated_arrival ? { estimated_arrival: data.estimated_arrival } : {}),
+      ...(data.status === "paid" || data.status === "failed" || data.status === "reversed"
+        ? { processed_at: new Date().toISOString() }
+        : {}),
+    };
 
     const { data: row, error } = await supabase
       .from("payout_requests")
-      .update(patch)
+      .update(patch as never)
       .eq("id", data.payout_id)
       .select()
       .single();
