@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { toast } from "sonner";
 import { Wallet as WalletIcon, Landmark, Clock, ArrowRight, Plus, Trash2, ShieldCheck, ExternalLink, AlertTriangle } from "lucide-react";
+import { BackButton } from "@/components/ui/back-button";
 import { getWalletData, addBankAccount, deleteBankAccount, requestPayout } from "@/lib/wallet.functions";
 import {
   getStripeConnectStatus,
@@ -141,6 +142,7 @@ function WalletPage() {
     <div className="min-h-screen bg-[#FAFAF8]">
       <Header />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+        <BackButton className="mb-2" />
         <div>
           <h1 className="font-display text-3xl font-semibold text-[#2e4053]">Wallet</h1>
           <p className="text-[#6b7b8c] mt-1">Add a bank account and withdraw earnings from completed jobs.</p>

@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { Header } from "@/components/layout/Header";
+import { BackButton } from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoadingScreen } from "@/components/ui/loading-screen";
@@ -58,6 +59,7 @@ function Dashboard() {
       <Header />
 
       <main className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+        <BackButton className="mb-4" />
         <div className="mb-8">
           <h1 className="font-display text-3xl sm:text-4xl font-semibold text-[#2e4053]">
             Welcome back{profile?.display_name ? `, ${profile.display_name}` : ""}

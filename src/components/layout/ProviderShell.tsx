@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Header } from "./Header";
 import { cn } from "@/lib/utils";
+import { BackButton } from "@/components/ui/back-button";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -81,7 +82,10 @@ export function ProviderShell({ children }: { children: React.ReactNode }) {
           </nav>
         </aside>
 
-        <main className="flex-1 min-w-0">{children}</main>
+        <main className="flex-1 min-w-0">
+          <BackButton className="mb-4" />
+          {children}
+        </main>
       </div>
     </div>
   );

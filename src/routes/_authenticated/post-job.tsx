@@ -17,6 +17,7 @@ import {
 import { createJob, getCategories } from "@/lib/jobs.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { X, Upload } from "lucide-react";
+import { BackButton } from "@/components/ui/back-button";
 
 export const Route = createFileRoute("/_authenticated/post-job")({
   component: PostJobPage,
@@ -189,6 +190,7 @@ function PostJobPage() {
   return (
     <div className="min-h-screen bg-[#FAFAF8] py-12">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <BackButton className="mb-4" />
         <div className="mb-8">
           <h1 className="font-display text-3xl font-semibold text-[#2e4053]">Post a job</h1>
           <p className="text-[#6b7b8c] mt-1">
