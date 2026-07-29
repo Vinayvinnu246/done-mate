@@ -3,7 +3,7 @@ import { useRouter } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
-import { getMyProfile } from "@/lib/auth.functions";
+import { getMyProfile } from "@/lib/profile.functions";
 
 export function useAuth() {
   const router = useRouter();
