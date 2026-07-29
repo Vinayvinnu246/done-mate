@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import {
-  ShieldCheck, Sparkles, Clock, Star, ArrowRight,
+  ShieldCheck, Sparkles, Clock, Star, ArrowRight, CheckCircle2,
   Wrench, Leaf, SprayCan, Zap, Hammer, Paintbrush, Truck, Home as HomeIcon,
 } from "lucide-react";
 import heroImg from "@/assets/hero-provider.jpg";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
+
 
 
 export const Route = createFileRoute("/")({
