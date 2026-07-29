@@ -5,6 +5,7 @@ import {
   Wrench, Leaf, SprayCan, Zap, Hammer, Paintbrush, Truck, Home as HomeIcon,
 } from "lucide-react";
 import heroImg from "@/assets/hero-provider.png.asset.json";
+import logoAsset from "@/assets/donetoday-logo.png.asset.json";
 import { Header } from "@/components/layout/Header";
 
 export const Route = createFileRoute("/")({
