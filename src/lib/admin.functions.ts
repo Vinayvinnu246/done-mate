@@ -16,11 +16,16 @@ async function requireAdmin(context: { supabase: any; userId: string }) {
   if (!data) throw new Error("Unauthorized");
 }
 
+async function adminClient() {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  return supabaseAdmin;
+}
+
 export const getAdminStats = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await requireAdmin(context);
-    const { supabase } = context;
+    const supabase = await adminClient();
 
     const [profiles, jobs, quotes, verifications] = await Promise.all([
       supabase.from("profiles").select("type", { count: "exact" }),
@@ -41,11 +46,11 @@ export const getAdminVerifications = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await requireAdmin(context);
-    const { supabase } = context;
+    const supabase = await adminClient();
 
     const { data, error } = await supabase
       .from("provider_verifications")
-      .select("*, provider:profiles(*)")
+      .select("*, provider:profiles(display_name)")
       .order("created_at", { ascending: false });
 
     if (error) throw error;
@@ -65,7 +70,7 @@ export const updateVerificationStatus = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await requireAdmin(context);
-    const { supabase } = context;
+    const supabase = await adminClient();
 
     const { data: verification, error: findError } = await supabase
       .from("provider_verifications")
@@ -98,11 +103,11 @@ export const getAdminJobs = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await requireAdmin(context);
-    const { supabase } = context;
+    const supabase = await adminClient();
 
     const { data, error } = await supabase
       .from("jobs")
-      .select("*, category:categories(*), customer:profiles(*)")
+      .select("*, category:categories(name)")
       .order("created_at", { ascending: false })
       .limit(100);
 
@@ -122,7 +127,7 @@ export const updateJobStatus = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await requireAdmin(context);
-    const { supabase } = context;
+    const supabase = await adminClient();
 
     const { error } = await supabase.from("jobs").update({ status: data.status }).eq("id", data.job_id);
     if (error) throw error;
@@ -133,16 +138,30 @@ export const getAdminUsers = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await requireAdmin(context);
-    const { supabase } = context;
+    const supabase = await adminClient();
 
-    const { data, error } = await supabase
+    const { data: profiles, error: profilesError } = await supabase
       .from("profiles")
-      .select("*, user_roles(role)")
+      .select("id, display_name, type, created_at")
       .order("created_at", { ascending: false })
       .limit(100);
 
-    if (error) throw error;
-    return data ?? [];
+    if (profilesError) throw profilesError;
+
+    const { data: roles, error: rolesError } = await supabase.from("user_roles").select("user_id, role");
+    if (rolesError) throw rolesError;
+
+    const rolesByUser = new Map<string, string[]>();
+    for (const r of roles ?? []) {
+      const list = rolesByUser.get(r.user_id) ?? [];
+      list.push(r.role);
+      rolesByUser.set(r.user_id, list);
+    }
+
+    return (profiles ?? []).map((p) => ({
+      ...p,
+      roles: rolesByUser.get(p.id) ?? [],
+    }));
   });
 
 export const addUserRole = createServerFn({ method: "POST" })
@@ -157,7 +176,7 @@ export const addUserRole = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await requireAdmin(context);
-    const { supabase } = context;
+    const supabase = await adminClient();
 
     const { error } = await supabase.from("user_roles").insert({
       user_id: data.user_id,
