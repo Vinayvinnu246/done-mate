@@ -13,6 +13,7 @@ import { Route as TrustSafetyRouteImport } from './routes/trust-safety'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProvidersRouteImport } from './routes/providers'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as DisputesRouteImport } from './routes/disputes'
@@ -53,6 +54,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const ProvidersRoute = ProvidersRouteImport.update({
   id: '/providers',
   path: '/providers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McpRoute = McpRouteImport.update({
@@ -171,6 +177,7 @@ export interface FileRoutesByFullPath {
   '/disputes': typeof DisputesRoute
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
+  '/privacy': typeof PrivacyRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
@@ -197,6 +204,7 @@ export interface FileRoutesByTo {
   '/disputes': typeof DisputesRoute
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
+  '/privacy': typeof PrivacyRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
@@ -225,6 +233,7 @@ export interface FileRoutesById {
   '/disputes': typeof DisputesRoute
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
+  '/privacy': typeof PrivacyRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
@@ -253,6 +262,7 @@ export interface FileRouteTypes {
     | '/disputes'
     | '/help'
     | '/mcp'
+    | '/privacy'
     | '/providers'
     | '/reset-password'
     | '/terms'
@@ -279,6 +289,7 @@ export interface FileRouteTypes {
     | '/disputes'
     | '/help'
     | '/mcp'
+    | '/privacy'
     | '/providers'
     | '/reset-password'
     | '/terms'
@@ -306,6 +317,7 @@ export interface FileRouteTypes {
     | '/disputes'
     | '/help'
     | '/mcp'
+    | '/privacy'
     | '/providers'
     | '/reset-password'
     | '/terms'
@@ -334,6 +346,7 @@ export interface RootRouteChildren {
   DisputesRoute: typeof DisputesRoute
   HelpRoute: typeof HelpRoute
   McpRoute: typeof McpRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProvidersRoute: typeof ProvidersRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
   TermsRoute: typeof TermsRoute
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       path: '/providers'
       fullPath: '/providers'
       preLoaderRoute: typeof ProvidersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcp': {
@@ -579,6 +599,7 @@ const rootRouteChildren: RootRouteChildren = {
   DisputesRoute: DisputesRoute,
   HelpRoute: HelpRoute,
   McpRoute: McpRoute,
+  PrivacyRoute: PrivacyRoute,
   ProvidersRoute: ProvidersRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
   TermsRoute: TermsRoute,
