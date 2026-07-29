@@ -82,6 +82,7 @@ function BookingsPage() {
               isProvider={isProvider}
               onAction={(s) => mutation.mutate({ job_id: j.id, status: s })}
               pending={mutation.isPending}
+              onDispute={() => setDisputeFor(j)}
             />
           ))
         )}
@@ -91,13 +92,28 @@ function BookingsPage() {
         {past.length === 0 ? (
           <Empty message="No past bookings." />
         ) : (
-          past.map((j: any) => <BookingCard key={j.id} job={j} isProvider={isProvider} readOnly />)
+          past.map((j: any) => (
+            <BookingCard
+              key={j.id}
+              job={j}
+              isProvider={isProvider}
+              readOnly
+              onReview={!isProvider && j.status === "completed" ? () => setReviewFor(j) : undefined}
+            />
+          ))
         )}
       </Section>
     </div>
   );
 
-  return isProvider ? <ProviderShell>{content}</ProviderShell> : <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">{content}</div>;
+  const wrapped = isProvider ? <ProviderShell>{content}</ProviderShell> : <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">{content}</div>;
+  return (
+    <>
+      {wrapped}
+      {reviewFor && <ReviewDialog job={reviewFor} onClose={() => setReviewFor(null)} />}
+      {disputeFor && <DisputeDialog job={disputeFor} onClose={() => setDisputeFor(null)} />}
+    </>
+  );
 }
 
 function ReviewDialog({ job, onClose }: { job: any; onClose: () => void }) {
@@ -183,12 +199,16 @@ function BookingCard({
   onAction,
   pending,
   readOnly,
+  onReview,
+  onDispute,
 }: {
   job: any;
   isProvider: boolean;
   onAction?: (status: "in_progress" | "completed" | "cancelled") => void;
   pending?: boolean;
   readOnly?: boolean;
+  onReview?: () => void;
+  onDispute?: () => void;
 }) {
   const currentStep = STATUS_STEPS.indexOf(job.status as any);
   const cancelled = job.status === "cancelled" || job.status === "disputed";
@@ -298,6 +318,18 @@ function BookingCard({
             <Link to="/jobs/$jobId" params={{ jobId: job.id }}>
               Details
             </Link>
+          </Button>
+          {onDispute && (
+            <Button size="sm" variant="outline" className="rounded-full text-[#B91C1C] border-[#FCA5A5] hover:bg-[#FEF2F2]" onClick={onDispute}>
+              <AlertTriangle className="h-4 w-4 mr-1" /> Dispute
+            </Button>
+          )}
+        </div>
+      )}
+      {readOnly && onReview && (
+        <div className="mt-4 flex justify-end">
+          <Button size="sm" className="rounded-full bg-[#59914c] hover:bg-[#4a7d3f]" onClick={onReview}>
+            <Star className="h-4 w-4 mr-1" /> Leave review
           </Button>
         </div>
       )}
