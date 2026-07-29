@@ -429,6 +429,45 @@ export type Database = {
           },
         ]
       }
+      provider_stripe_accounts: {
+        Row: {
+          charges_enabled: boolean
+          country: string | null
+          created_at: string
+          details_submitted: boolean
+          id: string
+          payouts_enabled: boolean
+          provider_id: string
+          requirements: Json | null
+          stripe_account_id: string
+          updated_at: string
+        }
+        Insert: {
+          charges_enabled?: boolean
+          country?: string | null
+          created_at?: string
+          details_submitted?: boolean
+          id?: string
+          payouts_enabled?: boolean
+          provider_id: string
+          requirements?: Json | null
+          stripe_account_id: string
+          updated_at?: string
+        }
+        Update: {
+          charges_enabled?: boolean
+          country?: string | null
+          created_at?: string
+          details_submitted?: boolean
+          id?: string
+          payouts_enabled?: boolean
+          provider_id?: string
+          requirements?: Json | null
+          stripe_account_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       provider_subcategories: {
         Row: {
           created_at: string
