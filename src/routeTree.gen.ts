@@ -14,6 +14,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProvidersRouteImport } from './routes/providers'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as HelpRouteImport } from './routes/help'
+import { Route as DisputesRouteImport } from './routes/disputes'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
@@ -56,6 +57,11 @@ const McpRoute = McpRouteImport.update({
 const HelpRoute = HelpRouteImport.update({
   id: '/help',
   path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DisputesRoute = DisputesRouteImport.update({
+  id: '/disputes',
+  path: '/disputes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -156,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/disputes': typeof DisputesRoute
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
   '/providers': typeof ProvidersRouteWithChildren
@@ -180,6 +187,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/disputes': typeof DisputesRoute
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
   '/providers': typeof ProvidersRouteWithChildren
@@ -206,6 +214,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/disputes': typeof DisputesRoute
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
   '/providers': typeof ProvidersRouteWithChildren
@@ -232,6 +241,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/contact'
+    | '/disputes'
     | '/help'
     | '/mcp'
     | '/providers'
@@ -256,6 +266,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/contact'
+    | '/disputes'
     | '/help'
     | '/mcp'
     | '/providers'
@@ -281,6 +292,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/contact'
+    | '/disputes'
     | '/help'
     | '/mcp'
     | '/providers'
@@ -307,6 +319,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
+  DisputesRoute: typeof DisputesRoute
   HelpRoute: typeof HelpRoute
   McpRoute: typeof McpRoute
   ProvidersRoute: typeof ProvidersRouteWithChildren
@@ -353,6 +366,13 @@ declare module '@tanstack/react-router' {
       path: '/help'
       fullPath: '/help'
       preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/disputes': {
+      id: '/disputes'
+      path: '/disputes'
+      fullPath: '/disputes'
+      preLoaderRoute: typeof DisputesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -536,6 +556,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
+  DisputesRoute: DisputesRoute,
   HelpRoute: HelpRoute,
   McpRoute: McpRoute,
   ProvidersRoute: ProvidersRouteWithChildren,
