@@ -37,10 +37,8 @@ export const searchProviders = createServerFn({ method: "GET" })
     }
 
     let query = supabase
-      .from("profiles")
+      .from("public_providers")
       .select(PROVIDER_COLUMNS)
-      .eq("type", "provider")
-      .eq("onboarding_status", "complete")
       .order("verification_status", { ascending: false })
       .limit(60);
 
@@ -78,11 +76,9 @@ export const getProviderById = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const supabase = publicClient();
     const { data: provider, error } = await supabase
-      .from("profiles")
+      .from("public_providers")
       .select(PROVIDER_COLUMNS)
       .eq("user_id", data)
-      .eq("type", "provider")
-      .eq("onboarding_status", "complete")
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!provider) return null;
