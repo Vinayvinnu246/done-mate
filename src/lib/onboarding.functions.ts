@@ -197,3 +197,46 @@ export const listSubcategories = createServerFn({ method: "GET" }).handler(async
   if (error) throw error;
   return data ?? [];
 });
+
+export const updateProviderServices = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .validator((input: unknown) =>
+    z
+      .object({
+        category_ids: z.array(z.string().uuid()).max(25),
+        subcategory_ids: z.array(z.string().uuid()).max(150).optional().default([]),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("type")
+      .eq("user_id", userId)
+      .maybeSingle();
+    if (profileError) throw profileError;
+    if (!profile || profile.type !== "provider")
+      throw new Error("Only providers can update services");
+
+    await supabase.from("provider_categories").delete().eq("provider_id", userId);
+    if (data.category_ids.length > 0) {
+      const { error } = await supabase
+        .from("provider_categories")
+        .insert(data.category_ids.map((category_id) => ({ provider_id: userId, category_id })));
+      if (error) throw error;
+    }
+
+    await supabase.from("provider_subcategories").delete().eq("provider_id", userId);
+    if (data.subcategory_ids && data.subcategory_ids.length > 0) {
+      const { error } = await supabase
+        .from("provider_subcategories")
+        .insert(
+          data.subcategory_ids.map((subcategory_id) => ({ provider_id: userId, subcategory_id })),
+        );
+      if (error) throw error;
+    }
+
+    return { ok: true };
+  });
