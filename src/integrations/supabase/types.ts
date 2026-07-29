@@ -264,13 +264,60 @@ export type Database = {
           },
         ]
       }
+      payout_holds: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string | null
+          id: string
+          provider_id: string
+          reason: string
+          released_at: string | null
+          released_by: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          provider_id: string
+          reason: string
+          released_at?: string | null
+          released_by?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          provider_id?: string
+          reason?: string
+          released_at?: string | null
+          released_by?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_holds_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payout_requests: {
         Row: {
           amount: number
           bank_account_id: string | null
           created_at: string
+          estimated_arrival: string | null
+          failure_reason: string | null
           id: string
           notes: string | null
+          processed_at: string | null
           provider_id: string
           status: string
           updated_at: string
@@ -279,8 +326,11 @@ export type Database = {
           amount: number
           bank_account_id?: string | null
           created_at?: string
+          estimated_arrival?: string | null
+          failure_reason?: string | null
           id?: string
           notes?: string | null
+          processed_at?: string | null
           provider_id: string
           status?: string
           updated_at?: string
@@ -289,8 +339,11 @@ export type Database = {
           amount?: number
           bank_account_id?: string | null
           created_at?: string
+          estimated_arrival?: string | null
+          failure_reason?: string | null
           id?: string
           notes?: string | null
+          processed_at?: string | null
           provider_id?: string
           status?: string
           updated_at?: string
@@ -793,6 +846,70 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      wallet_transactions: {
+        Row: {
+          amount: number
+          available_at: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          job_id: string | null
+          payout_request_id: string | null
+          provider_id: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          available_at?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          job_id?: string | null
+          payout_request_id?: string | null
+          provider_id: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          available_at?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          job_id?: string | null
+          payout_request_id?: string | null
+          provider_id?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wallet_transactions_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wallet_transactions_payout_request_id_fkey"
+            columns: ["payout_request_id"]
+            isOneToOne: false
+            referencedRelation: "payout_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wallet_transactions_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
