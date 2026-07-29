@@ -179,6 +179,42 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_categories: {
+        Row: {
+          category_id: string
+          created_at: string
+          id: string
+          provider_id: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          id?: string
+          provider_id: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          id?: string
+          provider_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "provider_categories_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       provider_verifications: {
         Row: {
           created_at: string
