@@ -1,12 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import type { LinkProps } from "@tanstack/react-router";
 import {
   ShieldCheck, Sparkles, Clock, Star, ArrowRight, CheckCircle2,
   Wrench, Leaf, SprayCan, Zap, Hammer, Paintbrush, Truck, Home as HomeIcon,
 } from "lucide-react";
 import heroImg from "@/assets/hero-provider.png.asset.json";
-import logoAsset from "@/assets/donetoday-logo.png.asset.json";
 import { Header } from "@/components/layout/Header";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/")({
@@ -23,36 +22,6 @@ const categories = [
   { icon: Paintbrush, label: "Painting" },
   { icon: Truck, label: "Removals" },
   { icon: HomeIcon, label: "Home repairs" },
-];
-
-const footerCols: { h: string; l: { label: string; to: string }[] }[] = [
-  {
-    h: "Company",
-    l: [
-      { label: "About", to: "/about" },
-      { label: "Careers", to: "/careers" },
-      { label: "Press", to: "/press" },
-      { label: "Blog", to: "/blog" },
-    ],
-  },
-  {
-    h: "Support",
-    l: [
-      { label: "Help centre", to: "/help" },
-      { label: "Trust & safety", to: "/trust-safety" },
-      { label: "Contact", to: "/contact" },
-      { label: "Disputes", to: "/disputes" },
-    ],
-  },
-  {
-    h: "Legal",
-    l: [
-      { label: "Terms", to: "/terms" },
-      { label: "Privacy", to: "/privacy" },
-      { label: "Cookies", to: "/cookies" },
-      { label: "Provider agreement", to: "/provider-agreement" },
-    ],
-  },
 ];
 
 function Index() {
@@ -248,50 +217,7 @@ function Index() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-4">
-          <div>
-            <img
-              src={logoAsset.url}
-              alt="DoneToday"
-              width={160}
-              height={56}
-              className="h-12 w-auto"
-            />
-            <p className="mt-4 text-sm text-muted-foreground">
-              Trusted local professionals, on demand.
-            </p>
-          </div>
-          {footerCols.map((c) => (
-            <div key={c.h}>
-              <div className="text-sm font-semibold">{c.h}</div>
-              <ul className="mt-4 space-y-2">
-                {c.l.map((i) => (
-                  <li key={i.label}>
-                    <Link
-                      to={i.to as LinkProps["to"]}
-                      className="text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      {i.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className="border-t border-border">
-          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-xs text-muted-foreground md:flex-row">
-            <div>© {new Date().getFullYear()} EAGLERA LTD, trading as DoneToday. Registered in England &amp; Wales.</div>
-            <div>
-              <a href="mailto:support@donetoday.co.uk" className="hover:text-foreground">support@donetoday.co.uk</a>
-              <span className="mx-2">·</span>
-              Made in London
-            </div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
