@@ -19,6 +19,7 @@ const categories = [
   { icon: Wrench, label: "Plumbing" },
   { icon: Zap, label: "Electrical" },
   { icon: Hammer, label: "Handyman" },
+  { icon: Hammer, label: "Carpentry" },
   { icon: Paintbrush, label: "Painting" },
   { icon: Truck, label: "Removals" },
   { icon: HomeIcon, label: "Home repairs" },
