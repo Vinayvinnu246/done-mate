@@ -101,10 +101,10 @@ function Index() {
           <div className="relative">
             <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-muted">
               <img
-                src={heroImg}
+                src={heroImg.url}
                 alt="Verified DoneToday professional"
-                width={1600}
-                height={1400}
+                width={1024}
+                height={1024}
                 className="h-full w-full object-cover"
               />
             </div>
