@@ -244,9 +244,7 @@ function AdminDashboard() {
                       {job.status.replace("_", " ")}
                     </Badge>
                   </div>
-                  <p className="text-sm text-[#6b7b8c] mt-1">
-                    {job.customer?.display_name ?? job.customer?.email} • {job.category?.name}
-                  </p>
+                  <p className="text-sm text-[#6b7b8c] mt-1">{job.category?.name}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <select
