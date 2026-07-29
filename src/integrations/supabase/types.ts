@@ -298,15 +298,7 @@ export type Database = {
           released_by?: string | null
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "payout_holds_provider_id_fkey"
-            columns: ["provider_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       payout_requests: {
         Row: {
@@ -900,13 +892,6 @@ export type Database = {
             columns: ["payout_request_id"]
             isOneToOne: false
             referencedRelation: "payout_requests"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "wallet_transactions_provider_id_fkey"
-            columns: ["provider_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
