@@ -77,7 +77,7 @@ export const updateVerificationStatus = createServerFn({ method: "POST" })
 
     const { error: updateError } = await supabase
       .from("provider_verifications")
-      .update({ status: data.status, notes: data.notes, reviewed_at: new Date().toISOString() })
+      .update({ status: data.status, notes: data.notes, reviewed_by: context.userId })
       .eq("id", data.verification_id);
 
     if (updateError) throw updateError;
