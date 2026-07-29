@@ -22,6 +22,7 @@ import { Route as PressRouteImport } from './routes/press'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as DisputesRouteImport } from './routes/disputes'
+import { Route as DisputeResolutionRouteImport } from './routes/dispute-resolution'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
@@ -111,6 +112,11 @@ const FaqsRoute = FaqsRouteImport.update({
 const DisputesRoute = DisputesRouteImport.update({
   id: '/disputes',
   path: '/disputes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DisputeResolutionRoute = DisputeResolutionRouteImport.update({
+  id: '/dispute-resolution',
+  path: '/dispute-resolution',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CookiesRoute = CookiesRouteImport.update({
@@ -248,6 +254,7 @@ export interface FileRoutesByFullPath {
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/dispute-resolution': typeof DisputeResolutionRoute
   '/disputes': typeof DisputesRoute
   '/faqs': typeof FaqsRoute
   '/help': typeof HelpRoute
@@ -287,6 +294,7 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/dispute-resolution': typeof DisputeResolutionRoute
   '/disputes': typeof DisputesRoute
   '/faqs': typeof FaqsRoute
   '/help': typeof HelpRoute
@@ -328,6 +336,7 @@ export interface FileRoutesById {
   '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
+  '/dispute-resolution': typeof DisputeResolutionRoute
   '/disputes': typeof DisputesRoute
   '/faqs': typeof FaqsRoute
   '/help': typeof HelpRoute
@@ -369,6 +378,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/contact'
     | '/cookies'
+    | '/dispute-resolution'
     | '/disputes'
     | '/faqs'
     | '/help'
@@ -408,6 +418,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/contact'
     | '/cookies'
+    | '/dispute-resolution'
     | '/disputes'
     | '/faqs'
     | '/help'
@@ -448,6 +459,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/contact'
     | '/cookies'
+    | '/dispute-resolution'
     | '/disputes'
     | '/faqs'
     | '/help'
@@ -489,6 +501,7 @@ export interface RootRouteChildren {
   CareersRoute: typeof CareersRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
+  DisputeResolutionRoute: typeof DisputeResolutionRoute
   DisputesRoute: typeof DisputesRoute
   FaqsRoute: typeof FaqsRoute
   HelpRoute: typeof HelpRoute
@@ -596,6 +609,13 @@ declare module '@tanstack/react-router' {
       path: '/disputes'
       fullPath: '/disputes'
       preLoaderRoute: typeof DisputesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dispute-resolution': {
+      id: '/dispute-resolution'
+      path: '/dispute-resolution'
+      fullPath: '/dispute-resolution'
+      preLoaderRoute: typeof DisputeResolutionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cookies': {
@@ -845,6 +865,7 @@ const rootRouteChildren: RootRouteChildren = {
   CareersRoute: CareersRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
+  DisputeResolutionRoute: DisputeResolutionRoute,
   DisputesRoute: DisputesRoute,
   FaqsRoute: FaqsRoute,
   HelpRoute: HelpRoute,
