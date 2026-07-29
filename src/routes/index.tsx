@@ -24,6 +24,36 @@ const categories = [
   { icon: HomeIcon, label: "Home repairs" },
 ];
 
+const footerCols: { h: string; l: { label: string; to: string }[] }[] = [
+  {
+    h: "Company",
+    l: [
+      { label: "About", to: "/about" },
+      { label: "Careers", to: "/careers" },
+      { label: "Press", to: "/press" },
+      { label: "Blog", to: "/blog" },
+    ],
+  },
+  {
+    h: "Support",
+    l: [
+      { label: "Help centre", to: "/help" },
+      { label: "Trust & safety", to: "/trust-safety" },
+      { label: "Contact", to: "/contact" },
+      { label: "Disputes", to: "/disputes" },
+    ],
+  },
+  {
+    h: "Legal",
+    l: [
+      { label: "Terms", to: "/terms" },
+      { label: "Privacy", to: "/privacy" },
+      { label: "Cookies", to: "/cookies" },
+      { label: "Provider agreement", to: "/provider-agreement" },
+    ],
+  },
+];
+
 function Index() {
   const { isAuthenticated } = useAuth();
 
