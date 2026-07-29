@@ -87,7 +87,9 @@ function AuthPage() {
         email,
         password,
         options: {
-          emailRedirectTo: window.location.origin,
+          emailRedirectTo: nextPath
+            ? `${window.location.origin}/auth?next=${encodeURIComponent(nextPath)}`
+            : window.location.origin,
           data: { type: accountType },
         },
       });
