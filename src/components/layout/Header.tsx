@@ -39,6 +39,13 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
+          <Link
+            to="/providers"
+            search={{ q: "", category: "", city: "" }}
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
+            Find providers
+          </Link>
           {navLinks.map((link) => (
             <a
               key={link.href}
