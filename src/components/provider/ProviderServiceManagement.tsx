@@ -107,7 +107,7 @@ function ServicesSection({ cats, services, onChange }: { cats: Cat[]; services: 
               key={s.id}
               service={s}
               cat={cat}
-              onSave={(patch) => upsert.mutate({ data: { category_id: s.category_id, ...patch } } as any)}
+              onSave={(patch: Record<string, unknown>) => upsert.mutate({ data: { category_id: s.category_id, ...patch } } as any)}
               onDelete={() => del.mutate({ data: { category_id: s.category_id } } as any)}
               onTogglePause={() => pause.mutate({ data: { category_id: s.category_id, is_active: !s.is_active } } as any)}
               busy={upsert.isPending || del.isPending}
