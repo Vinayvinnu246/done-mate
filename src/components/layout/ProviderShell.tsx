@@ -82,7 +82,10 @@ export function ProviderShell({ children }: { children: React.ReactNode }) {
           </nav>
         </aside>
 
-        <main className="flex-1 min-w-0">{children}</main>
+        <main className="flex-1 min-w-0">
+          <BackButton className="mb-4" />
+          {children}
+        </main>
       </div>
     </div>
   );
