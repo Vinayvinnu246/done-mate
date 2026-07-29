@@ -21,6 +21,7 @@ import { Route as ProviderTermsRouteImport } from './routes/provider-terms'
 import { Route as ProviderAgreementRouteImport } from './routes/provider-agreement'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PressRouteImport } from './routes/press'
+import { Route as MaintenanceRouteImport } from './routes/maintenance'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as DisputesRouteImport } from './routes/disputes'
@@ -112,6 +113,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PressRoute = PressRouteImport.update({
   id: '/press',
   path: '/press',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MaintenanceRoute = MaintenanceRouteImport.update({
+  id: '/maintenance',
+  path: '/maintenance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HelpRoute = HelpRouteImport.update({
@@ -291,6 +297,7 @@ export interface FileRoutesByFullPath {
   '/disputes': typeof DisputesRoute
   '/faqs': typeof FaqsRoute
   '/help': typeof HelpRoute
+  '/maintenance': typeof MaintenanceRoute
   '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
@@ -336,6 +343,7 @@ export interface FileRoutesByTo {
   '/disputes': typeof DisputesRoute
   '/faqs': typeof FaqsRoute
   '/help': typeof HelpRoute
+  '/maintenance': typeof MaintenanceRoute
   '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
@@ -383,6 +391,7 @@ export interface FileRoutesById {
   '/disputes': typeof DisputesRoute
   '/faqs': typeof FaqsRoute
   '/help': typeof HelpRoute
+  '/maintenance': typeof MaintenanceRoute
   '/press': typeof PressRoute
   '/privacy': typeof PrivacyRoute
   '/provider-agreement': typeof ProviderAgreementRoute
@@ -430,6 +439,7 @@ export interface FileRouteTypes {
     | '/disputes'
     | '/faqs'
     | '/help'
+    | '/maintenance'
     | '/press'
     | '/privacy'
     | '/provider-agreement'
@@ -475,6 +485,7 @@ export interface FileRouteTypes {
     | '/disputes'
     | '/faqs'
     | '/help'
+    | '/maintenance'
     | '/press'
     | '/privacy'
     | '/provider-agreement'
@@ -521,6 +532,7 @@ export interface FileRouteTypes {
     | '/disputes'
     | '/faqs'
     | '/help'
+    | '/maintenance'
     | '/press'
     | '/privacy'
     | '/provider-agreement'
@@ -568,6 +580,7 @@ export interface RootRouteChildren {
   DisputesRoute: typeof DisputesRoute
   FaqsRoute: typeof FaqsRoute
   HelpRoute: typeof HelpRoute
+  MaintenanceRoute: typeof MaintenanceRoute
   PressRoute: typeof PressRoute
   PrivacyRoute: typeof PrivacyRoute
   ProviderAgreementRoute: typeof ProviderAgreementRoute
@@ -667,6 +680,13 @@ declare module '@tanstack/react-router' {
       path: '/press'
       fullPath: '/press'
       preLoaderRoute: typeof PressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/maintenance': {
+      id: '/maintenance'
+      path: '/maintenance'
+      fullPath: '/maintenance'
+      preLoaderRoute: typeof MaintenanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/help': {
@@ -972,6 +992,7 @@ const rootRouteChildren: RootRouteChildren = {
   DisputesRoute: DisputesRoute,
   FaqsRoute: FaqsRoute,
   HelpRoute: HelpRoute,
+  MaintenanceRoute: MaintenanceRoute,
   PressRoute: PressRoute,
   PrivacyRoute: PrivacyRoute,
   ProviderAgreementRoute: ProviderAgreementRoute,
