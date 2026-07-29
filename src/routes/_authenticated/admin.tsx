@@ -282,9 +282,9 @@ function AdminDashboard() {
                 className="bg-white rounded-2xl border border-[#E5E7EB] p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
               >
                 <div className="min-w-0">
-                  <span className="font-medium text-[#2e4053]">{user.display_name ?? user.email}</span>
+                  <span className="font-medium text-[#2e4053]">{user.display_name ?? "Unnamed"}</span>
                   <p className="text-sm text-[#6b7b8c] mt-1">
-                    {user.email} • {user.type} • {user.user_roles.map((r: any) => r.role).join(", ") || "no roles"}
+                    {user.type} • {user.roles.join(", ") || "no roles"}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
