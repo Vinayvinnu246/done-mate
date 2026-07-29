@@ -28,7 +28,6 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProvidersProviderIdRouteImport } from './routes/providers.$providerId'
-import { Route as AuthenticatedWalletRouteImport } from './routes/_authenticated/wallet'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedPostJobRouteImport } from './routes/_authenticated/post-job'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
@@ -135,11 +134,6 @@ const ProvidersProviderIdRoute = ProvidersProviderIdRouteImport.update({
   path: '/$providerId',
   getParentRoute: () => ProvidersRoute,
 } as any)
-const AuthenticatedWalletRoute = AuthenticatedWalletRouteImport.update({
-  id: '/wallet',
-  path: '/wallet',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -225,7 +219,6 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/post-job': typeof AuthenticatedPostJobRoute
   '/profile': typeof AuthenticatedProfileRoute
-  '/wallet': typeof AuthenticatedWalletRoute
   '/providers/$providerId': typeof ProvidersProviderIdRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -257,7 +250,6 @@ export interface FileRoutesByTo {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/post-job': typeof AuthenticatedPostJobRoute
   '/profile': typeof AuthenticatedProfileRoute
-  '/wallet': typeof AuthenticatedWalletRoute
   '/providers/$providerId': typeof ProvidersProviderIdRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -291,7 +283,6 @@ export interface FileRoutesById {
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/post-job': typeof AuthenticatedPostJobRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
-  '/_authenticated/wallet': typeof AuthenticatedWalletRoute
   '/providers/$providerId': typeof ProvidersProviderIdRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -325,7 +316,6 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/post-job'
     | '/profile'
-    | '/wallet'
     | '/providers/$providerId'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
@@ -357,7 +347,6 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/post-job'
     | '/profile'
-    | '/wallet'
     | '/providers/$providerId'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
@@ -390,7 +379,6 @@ export interface FileRouteTypes {
     | '/_authenticated/onboarding'
     | '/_authenticated/post-job'
     | '/_authenticated/profile'
-    | '/_authenticated/wallet'
     | '/providers/$providerId'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
@@ -557,13 +545,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProvidersProviderIdRouteImport
       parentRoute: typeof ProvidersRoute
     }
-    '/_authenticated/wallet': {
-      id: '/_authenticated/wallet'
-      path: '/wallet'
-      fullPath: '/wallet'
-      preLoaderRoute: typeof AuthenticatedWalletRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -662,7 +643,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedPostJobRoute: typeof AuthenticatedPostJobRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
-  AuthenticatedWalletRoute: typeof AuthenticatedWalletRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -672,7 +652,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedPostJobRoute: AuthenticatedPostJobRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
-  AuthenticatedWalletRoute: AuthenticatedWalletRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
