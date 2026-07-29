@@ -101,7 +101,9 @@ export function Header() {
               <Button
                 size="sm"
                 className="inline-flex items-center gap-1.5 rounded-full"
-                onClick={() => navigate({ to: "/auth" })}
+                onClick={() =>
+                  navigate({ to: isAuthenticated ? "/post-job" : "/auth" })
+                }
               >
                 Get a quote <ArrowRight className="h-3.5 w-3.5" />
               </Button>
