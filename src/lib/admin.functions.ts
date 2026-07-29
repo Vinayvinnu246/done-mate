@@ -189,7 +189,7 @@ export const addUserRole = createServerFn({ method: "POST" })
 
 // ============ Wallet / Payouts admin ============
 
-const COMMISSION_RATE = 0.1;
+const COMMISSION_RATE = 0.15;
 const HOLD_DAYS = 3;
 
 export const getAdminPayouts = createServerFn({ method: "GET" })
@@ -308,7 +308,7 @@ export const creditJobEarnings = createServerFn({ method: "POST" })
         provider_id: data.provider_id,
         type: "commission" as const,
         amount: -commission,
-        description: "Platform commission (10%)",
+        description: "Platform commission (15%)",
         job_id: data.job_id ?? null,
         available_at: new Date().toISOString(),
         created_by: context.userId,

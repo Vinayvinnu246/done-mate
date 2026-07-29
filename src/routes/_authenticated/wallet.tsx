@@ -275,7 +275,7 @@ function WalletPage() {
             </CardHeader>
             <CardContent>
               <p className="font-display text-2xl text-[#2e4053]">{gbp(balances.totalCommission)}</p>
-              <p className="text-xs text-[#6b7b8c] mt-1">10% platform fee</p>
+              <p className="text-xs text-[#6b7b8c] mt-1">15% platform fee</p>
             </CardContent>
           </Card>
         </div>
