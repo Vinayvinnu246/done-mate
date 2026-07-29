@@ -15,6 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createJob, getCategories } from "@/lib/jobs.functions";
+import { supabase } from "@/integrations/supabase/client";
+import { X, Upload } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/post-job")({
   component: PostJobPage,
@@ -38,6 +40,8 @@ function PostJobPage() {
   const [addressLine2, setAddressLine2] = useState("");
   const [city, setCity] = useState("");
   const [postcode, setPostcode] = useState("");
+  const [images, setImages] = useState<{ path: string; previewUrl: string }[]>([]);
+  const [uploading, setUploading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const mutation = useMutation({
@@ -52,6 +56,51 @@ function PostJobPage() {
   });
 
   if (isLoading) return <LoadingScreen />;
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    if (!files.length) return;
+    if (images.length + files.length > 8) {
+      toast.error("You can upload up to 8 images");
+      return;
+    }
+    setUploading(true);
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      const userId = userData.user?.id;
+      if (!userId) throw new Error("Not signed in");
+      const uploaded: { path: string; previewUrl: string }[] = [];
+      for (const file of files) {
+        if (file.size > 8 * 1024 * 1024) {
+          toast.error(`${file.name} is larger than 8MB`);
+          continue;
+        }
+        const ext = file.name.split(".").pop() ?? "jpg";
+        const path = `${userId}/${crypto.randomUUID()}.${ext}`;
+        const { error } = await supabase.storage.from("job-images").upload(path, file, {
+          contentType: file.type,
+          upsert: false,
+        });
+        if (error) {
+          toast.error(`Upload failed: ${error.message}`);
+          continue;
+        }
+        const { data: signed } = await supabase.storage
+          .from("job-images")
+          .createSignedUrl(path, 60 * 60);
+        uploaded.push({ path, previewUrl: signed?.signedUrl ?? "" });
+      }
+      setImages((prev) => [...prev, ...uploaded]);
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  }
+
+  async function removeImage(path: string) {
+    await supabase.storage.from("job-images").remove([path]);
+    setImages((prev) => prev.filter((img) => img.path !== path));
+  }
 
   function validate() {
     const next: Record<string, string> = {};
@@ -84,6 +133,7 @@ function PostJobPage() {
         address_line2: addressLine2 || undefined,
         city,
         postcode,
+        images: images.length ? images.map((img) => img.path) : undefined,
       },
     });
   }
@@ -192,6 +242,44 @@ function PostJobPage() {
               value={scheduledDate}
               onChange={(e) => setScheduledDate(e.target.value)}
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Photos (optional)</Label>
+            <p className="text-xs text-[#6b7b8c]">
+              Add up to 8 photos to help providers understand the job. Max 8MB each.
+            </p>
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+              {images.map((img) => (
+                <div key={img.path} className="relative aspect-square rounded-lg overflow-hidden border border-[#E5E7EB] bg-[#F5F5F0]">
+                  {img.previewUrl && (
+                    <img src={img.previewUrl} alt="Job upload" className="w-full h-full object-cover" />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => removeImage(img.path)}
+                    className="absolute top-1 right-1 bg-black/60 hover:bg-black/80 text-white rounded-full p-1"
+                    aria-label="Remove image"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ))}
+              {images.length < 8 && (
+                <label className="aspect-square rounded-lg border-2 border-dashed border-[#E5E7EB] hover:border-[#2e4053] flex flex-col items-center justify-center cursor-pointer text-[#6b7b8c] hover:text-[#2e4053] transition-colors">
+                  <Upload className="w-5 h-5 mb-1" />
+                  <span className="text-xs">{uploading ? "Uploading…" : "Add photo"}</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={handleImageUpload}
+                    disabled={uploading}
+                  />
+                </label>
+              )}
+            </div>
           </div>
 
           <div className="space-y-4">
