@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TrustSafetyRouteImport } from './routes/trust-safety'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ProvidersRouteImport } from './routes/providers'
 import { Route as McpRouteImport } from './routes/mcp'
@@ -32,6 +33,11 @@ import { Route as AuthenticatedJobsJobIdRouteImport } from './routes/_authentica
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
+const TrustSafetyRoute = TrustSafetyRouteImport.update({
+  id: '/trust-safety',
+  path: '/trust-safety',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -154,6 +160,7 @@ export interface FileRoutesByFullPath {
   '/mcp': typeof McpRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
+  '/trust-safety': typeof TrustSafetyRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -177,6 +184,7 @@ export interface FileRoutesByTo {
   '/mcp': typeof McpRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
+  '/trust-safety': typeof TrustSafetyRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -202,6 +210,7 @@ export interface FileRoutesById {
   '/mcp': typeof McpRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
+  '/trust-safety': typeof TrustSafetyRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -227,6 +236,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/providers'
     | '/reset-password'
+    | '/trust-safety'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/admin'
@@ -250,6 +260,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/providers'
     | '/reset-password'
+    | '/trust-safety'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/admin'
@@ -274,6 +285,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/providers'
     | '/reset-password'
+    | '/trust-safety'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/admin'
@@ -299,6 +311,7 @@ export interface RootRouteChildren {
   McpRoute: typeof McpRoute
   ProvidersRoute: typeof ProvidersRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
+  TrustSafetyRoute: typeof TrustSafetyRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
@@ -307,6 +320,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/trust-safety': {
+      id: '/trust-safety'
+      path: '/trust-safety'
+      fullPath: '/trust-safety'
+      preLoaderRoute: typeof TrustSafetyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -520,6 +540,7 @@ const rootRouteChildren: RootRouteChildren = {
   McpRoute: McpRoute,
   ProvidersRoute: ProvidersRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
+  TrustSafetyRoute: TrustSafetyRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
