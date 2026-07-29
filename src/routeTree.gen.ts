@@ -20,6 +20,7 @@ import { Route as HelpRouteImport } from './routes/help'
 import { Route as DisputesRouteImport } from './routes/disputes'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CareersRouteImport } from './routes/careers'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -91,6 +92,11 @@ const CookiesRoute = CookiesRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -185,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/disputes': typeof DisputesRoute
@@ -214,6 +221,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/disputes': typeof DisputesRoute
@@ -245,6 +253,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/disputes': typeof DisputesRoute
@@ -276,6 +285,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/careers'
     | '/contact'
     | '/cookies'
     | '/disputes'
@@ -305,6 +315,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
+    | '/careers'
     | '/contact'
     | '/cookies'
     | '/disputes'
@@ -335,6 +346,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/about'
     | '/auth'
+    | '/careers'
     | '/contact'
     | '/cookies'
     | '/disputes'
@@ -366,6 +378,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
+  CareersRoute: typeof CareersRoute
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   DisputesRoute: typeof DisputesRoute
@@ -460,6 +473,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -635,6 +655,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
+  CareersRoute: CareersRoute,
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   DisputesRoute: DisputesRoute,
