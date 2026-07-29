@@ -97,18 +97,117 @@ export const getAvailableJobs = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
 
-    const { data, error } = await supabase
+    // Get provider's categories to filter matched jobs
+    const { data: providerCats } = await supabase
+      .from("provider_categories")
+      .select("category_id")
+      .eq("provider_id", userId);
+    const catIds = (providerCats ?? []).map((c) => c.category_id);
+
+    let query = supabase
       .from("jobs")
       .select("*, category:categories(*), quotes(*)")
       .in("status", ["posted", "quoting"])
       .neq("customer_id", userId)
       .order("created_at", { ascending: false });
 
+    if (catIds.length > 0) query = query.in("category_id", catIds);
+
+    const { data, error } = await query;
     if (error) throw error;
     return (data ?? []).map((job) => ({
       ...job,
       quotes: job.quotes?.filter((q) => q.provider_id !== userId) ?? [],
+      hasMyQuote: (job.quotes ?? []).some((q) => q.provider_id === userId),
     }));
+  });
+
+export const getMyProviderQuotes = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase, userId } = context;
+    const { data, error } = await supabase
+      .from("quotes")
+      .select("*, job:jobs(*, category:categories(*))")
+      .eq("provider_id", userId)
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return data ?? [];
+  });
+
+export const getMyBookings = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase, userId } = context;
+
+    // Customer's accepted+ jobs
+    const { data: customerJobs, error: e1 } = await supabase
+      .from("jobs")
+      .select("*, category:categories(*), quotes(*, provider:profiles(*))")
+      .eq("customer_id", userId)
+      .in("status", ["accepted", "in_progress", "completed", "cancelled", "disputed"])
+      .order("scheduled_date", { ascending: true });
+    if (e1) throw e1;
+
+    // Provider's accepted quotes
+    const { data: quotes, error: e2 } = await supabase
+      .from("quotes")
+      .select("*, job:jobs(*, category:categories(*), customer:profiles!jobs_customer_id_fkey(display_name, avatar_url))")
+      .eq("provider_id", userId)
+      .eq("status", "accepted")
+      .order("updated_at", { ascending: false });
+    if (e2) throw e2;
+
+    return {
+      customerJobs: customerJobs ?? [],
+      providerJobs: (quotes ?? []).map((q) => ({ ...q.job, myQuote: q })),
+    };
+  });
+
+export const updateJobStatus = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .validator((input: unknown) =>
+    z
+      .object({
+        job_id: z.string().uuid(),
+        status: z.enum(["in_progress", "completed", "cancelled"]),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+    const { data: job, error: je } = await supabase
+      .from("jobs")
+      .select("id, customer_id, status")
+      .eq("id", data.job_id)
+      .maybeSingle();
+    if (je) throw je;
+    if (!job) throw new Error("Job not found");
+
+    const { data: myQuote } = await supabase
+      .from("quotes")
+      .select("id, status")
+      .eq("job_id", data.job_id)
+      .eq("provider_id", userId)
+      .eq("status", "accepted")
+      .maybeSingle();
+
+    const isCustomer = job.customer_id === userId;
+    const isProvider = !!myQuote;
+    if (!isCustomer && !isProvider) throw new Error("Not authorized");
+
+    // Providers can move in_progress; customers can cancel or mark completed
+    if (data.status === "in_progress" && !isProvider) throw new Error("Only the provider can start the job");
+    if (data.status === "completed" && !isCustomer) throw new Error("Only the customer can mark the job as completed");
+
+    const { data: updated, error } = await supabase
+      .from("jobs")
+      .update({ status: data.status })
+      .eq("id", data.job_id)
+      .select("*")
+      .single();
+    if (error) throw error;
+    return updated;
   });
 
 export const getJobById = createServerFn({ method: "GET" })
