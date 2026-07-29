@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -16,16 +16,34 @@ export function LegalPage({
   intro?: string;
   children: ReactNode;
 }) {
+  const router = useRouter();
+  const goBack = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.history.back();
+    } else {
+      router.navigate({ to: "/" });
+    }
+  };
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
       <main className="mx-auto max-w-3xl px-6 py-12 md:py-20">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition hover:text-foreground"
-        >
-          <ArrowLeft className="h-4 w-4" /> Back to home
-        </Link>
+        <div className="flex items-center gap-4 text-sm">
+          <button
+            type="button"
+            onClick={goBack}
+            className="inline-flex items-center gap-1.5 text-muted-foreground transition hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back
+          </button>
+          <span className="text-muted-foreground/40">·</span>
+          <Link
+            to="/"
+            className="text-muted-foreground transition hover:text-foreground"
+          >
+            Home
+          </Link>
+        </div>
         <header className="mt-6 border-b border-border pb-8">
           {eyebrow && (
             <div className="text-xs font-semibold uppercase tracking-wider text-accent">
@@ -45,12 +63,21 @@ export function LegalPage({
           {children}
         </article>
         <div className="mt-16 border-t border-border pt-8">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
-          >
-            <ArrowLeft className="h-4 w-4" /> Back to home
-          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={goBack}
+              className="inline-flex items-center gap-1.5 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-foreground transition hover:bg-muted"
+            >
+              <ArrowLeft className="h-4 w-4" /> Back
+            </button>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
+            >
+              Back to home
+            </Link>
+          </div>
         </div>
       </main>
       <LegalFooter />
