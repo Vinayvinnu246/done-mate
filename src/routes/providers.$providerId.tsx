@@ -4,7 +4,7 @@ import { getProviderById } from "@/lib/providers.functions";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, BadgeCheck, Clock, MapPin, Star } from "lucide-react";
+import { BadgeCheck, Clock, MapPin, Star } from "lucide-react";
 import { BackButton } from "@/components/ui/back-button";
 
 export const Route = createFileRoute("/providers/$providerId")({
