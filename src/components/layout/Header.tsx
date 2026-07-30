@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/use-auth";
+import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { homePathForUser } from "@/lib/role-routing";
 import { setCustomerMode } from "@/hooks/use-role-guard";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
@@ -89,6 +90,7 @@ export function Header() {
         <div className="flex items-center gap-2">
           {isAuthenticated ? (
             <div className="flex items-center gap-3">
+              <NotificationBell />
               <Button
                 variant="ghost"
                 size="sm"
