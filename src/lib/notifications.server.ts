@@ -187,7 +187,7 @@ export async function dispatchNotifications(rows: NotificationInput[]) {
     .upsert(
       rows.map((r) => ({
         ...r,
-        metadata: r.metadata ?? {},
+        metadata: (r.metadata ?? {}) as never,
         delivery_method: "in_app",
         delivery_status: "delivered",
       })),
