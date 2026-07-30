@@ -37,7 +37,7 @@ export function useBlockProvidersFromCustomerPages() {
   useEffect(() => {
     if (!shouldRedirect) return;
     navigate({
-      to: providerNeedsSetup(profile) ? PROVIDER_SETUP : PROVIDER_HOME,
+      to: PROVIDER_HOME,
       replace: true,
     });
   }, [shouldRedirect, profile, navigate]);

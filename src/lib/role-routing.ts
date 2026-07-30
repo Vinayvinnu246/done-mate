@@ -24,9 +24,7 @@ export function providerNeedsSetup(profile: MinimalProfile) {
 /** Where an authenticated user should land after sign in / sign up. */
 export function homePathForUser(profile: MinimalProfile, roles: string[] = []) {
   if (roles.includes("admin") || roles.includes("super_admin")) return ADMIN_HOME;
-  if (isProviderProfile(profile)) {
-    return providerNeedsSetup(profile) ? PROVIDER_SETUP : PROVIDER_HOME;
-  }
+  if (isProviderProfile(profile)) return PROVIDER_HOME;
   return CUSTOMER_HOME;
 }
 

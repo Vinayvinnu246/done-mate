@@ -1,6 +1,8 @@
 import { useRouter } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
+import { homePathForUser } from "@/lib/role-routing";
 
 type BackButtonProps = {
   /** Force a specific destination instead of browser history. */
@@ -13,11 +15,14 @@ type BackButtonProps = {
 
 export function BackButton({
   to,
-  fallbackTo = "/",
+  fallbackTo,
   label = "Back",
   className,
 }: BackButtonProps) {
   const router = useRouter();
+  const { isAuthenticated, profile, roles } = useAuth();
+  const safeFallback =
+    fallbackTo ?? (isAuthenticated ? homePathForUser(profile, roles) : "/");
 
   const classes = cn(
     "inline-flex items-center gap-1.5 text-sm font-medium text-[#6b7b8c] hover:text-[#2e4053] transition-colors",
@@ -25,7 +30,7 @@ export function BackButton({
   );
 
   const handleClick = () => {
-    const target = to ?? fallbackTo;
+    const target = to ?? safeFallback;
     if (to) {
       router.navigate({ to });
       return;
