@@ -3,6 +3,8 @@ import { useState } from "react";
 import {
   LayoutDashboard,
   Search,
+  Briefcase,
+  Bell,
   FileText,
   CalendarCheck,
   MessageSquare,
@@ -21,12 +23,14 @@ import { BackButton } from "@/components/ui/back-button";
 
 const nav = [
   { to: "/provider/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/jobs", label: "Find jobs", icon: Search },
+  { to: "/jobs", label: "Available Jobs", icon: Search },
+  { to: "/my-jobs", label: "My Jobs", icon: Briefcase },
   { to: "/quotes", label: "Quotes", icon: FileText },
-  { to: "/bookings", label: "Bookings", icon: CalendarCheck },
   { to: "/messages", label: "Messages", icon: MessageSquare },
+  { to: "/calendar", label: "Calendar", icon: CalendarCheck },
   { to: "/wallet", label: "Earnings", icon: Wallet },
   { to: "/reviews", label: "Reviews", icon: Star },
+  { to: "/notifications", label: "Notifications", icon: Bell },
   { to: "/profile", label: "Profile", icon: User },
   { to: "/verification", label: "Verification", icon: ShieldCheck },
   { to: "/settings", label: "Settings", icon: Settings },
