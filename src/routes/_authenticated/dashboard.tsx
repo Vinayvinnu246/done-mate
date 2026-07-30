@@ -1,6 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { PROVIDER_HOME, PROVIDER_SETUP, providerNeedsSetup } from "@/lib/role-routing";
 import { Header } from "@/components/layout/Header";
 import { BackButton } from "@/components/ui/back-button";
 import { Button } from "@/components/ui/button";
@@ -19,6 +21,13 @@ function Dashboard() {
   const { user, profile, roles, isLoading } = useAuth();
   const isProvider = profile?.type === "provider";
   const isAdmin = roles.includes("admin") || roles.includes("super_admin");
+  const navigate = useNavigate();
+
+  // Providers belong in the provider portal, never the customer dashboard.
+  useEffect(() => {
+    if (isLoading || !isProvider) return;
+    navigate({ to: providerNeedsSetup(profile) ? PROVIDER_SETUP : PROVIDER_HOME, replace: true });
+  }, [isLoading, isProvider, profile, navigate]);
 
   const myJobsQuery = useQuery({
     queryKey: ["my-jobs"],
@@ -38,7 +47,7 @@ function Dashboard() {
     enabled: isProvider,
   });
 
-  if (isLoading) {
+  if (isLoading || isProvider) {
     return (
       <div className="min-h-screen bg-[#FAFAF8]">
         <Header />
