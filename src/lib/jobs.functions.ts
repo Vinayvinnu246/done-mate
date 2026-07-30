@@ -74,6 +74,14 @@ export const createJob = createServerFn({ method: "POST" })
       .single();
 
     if (error) throw error;
+
+    try {
+      const { notifyProvidersOfNewJob } = await import("./notifications.server");
+      await notifyProvidersOfNewJob(job.id);
+    } catch (e) {
+      console.error("Failed to notify providers about new job", e);
+    }
+
     return job;
   });
 
@@ -109,6 +117,7 @@ export const getAvailableJobs = createServerFn({ method: "GET" })
       .select("*, category:categories(*), quotes(*)")
       .in("status", ["posted", "quoting"])
       .neq("customer_id", userId)
+      .gt("expires_at", new Date().toISOString())
       .order("created_at", { ascending: false });
 
     if (catIds.length > 0) query = query.in("category_id", catIds);
@@ -243,12 +252,27 @@ export const createQuote = createServerFn({ method: "POST" })
 
     const { data: job, error: jobError } = await supabase
       .from("jobs")
-      .select("customer_id, status")
+      .select("customer_id, status, expires_at")
       .eq("id", data.job_id)
       .single();
 
     if (jobError) throw jobError;
     if (!["posted", "quoting"].includes(job.status)) throw new Error("This job is not accepting quotes");
+    if (job.expires_at && new Date(job.expires_at) < new Date()) {
+      throw new Error("This job has expired and is no longer accepting quotes");
+    }
+
+    // No duplicate quotes from the same provider (counter-offers excepted).
+    if (!data.parent_quote_id && job.customer_id !== userId) {
+      const { data: existing } = await supabase
+        .from("quotes")
+        .select("id")
+        .eq("job_id", data.job_id)
+        .eq("provider_id", userId)
+        .in("status", ["pending", "countered", "accepted"])
+        .maybeSingle();
+      if (existing) throw new Error("You've already quoted on this job. Edit your existing quote instead.");
+    }
 
     const proposedBy = data.proposed_by ?? (job.customer_id === userId ? "customer" : "provider");
     if (proposedBy === "provider" && job.customer_id === userId) {
@@ -292,6 +316,16 @@ export const createQuote = createServerFn({ method: "POST" })
       .single();
 
     if (error) throw error;
+
+    if (proposedBy === "provider") {
+      try {
+        const { notifyCustomerOfQuote } = await import("./notifications.server");
+        await notifyCustomerOfQuote(quote.id);
+      } catch (e) {
+        console.error("Failed to notify customer about quote", e);
+      }
+    }
+
     return quote;
   });
 
@@ -330,6 +364,13 @@ export const updateQuoteStatus = createServerFn({ method: "POST" })
         .update({ status: "rejected" })
         .eq("job_id", quote.job_id)
         .neq("id", data.quote_id);
+
+      try {
+        const { notifyOnQuoteAccepted } = await import("./notifications.server");
+        await notifyOnQuoteAccepted(data.quote_id);
+      } catch (e) {
+        console.error("Failed to send booking notifications", e);
+      }
     }
 
     return updatedQuote;

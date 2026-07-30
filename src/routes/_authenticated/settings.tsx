@@ -3,6 +3,7 @@ import { ProviderShell, ComingSoon } from "@/components/layout/ProviderShell";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { useAuth } from "@/hooks/use-auth";
 import { ProviderServiceManagement } from "@/components/provider/ProviderServiceManagement";
+import { NotificationPreferences } from "@/components/provider/NotificationPreferences";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   component: SettingsPage,
@@ -30,6 +31,9 @@ function SettingsPage() {
           <p className="text-[#6b7b8c] mt-1 text-sm">Manage every trade you offer, with pricing, qualifications, coverage and portfolio.</p>
         </div>
         <ProviderServiceManagement />
+        <div className="mt-8">
+          <NotificationPreferences />
+        </div>
       </div>
     </ProviderShell>
   );
