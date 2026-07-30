@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { homePathForUser } from "@/lib/role-routing";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
+import { BackButton } from "@/components/ui/back-button";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>) => ({
@@ -200,6 +201,7 @@ function AuthPage() {
     <div className="min-h-screen bg-muted/30">
       <div className="mx-auto flex max-w-5xl flex-col px-6 py-12 md:flex-row md:gap-16">
         <div className="mb-10 md:mb-0 md:w-1/2">
+          <BackButton className="mb-6 text-muted-foreground hover:text-foreground" />
           <Link to="/" className="mb-8 inline-block">
             <img src={logoAsset.url} alt="DoneToday" width={180} height={60} className="h-12 w-auto" />
           </Link>

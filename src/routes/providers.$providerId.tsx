@@ -40,14 +40,11 @@ function ProviderProfilePage() {
   return (
     <div className="min-h-screen bg-[#FAFAF8] py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <Link
-          to="/providers"
-          search={{ q: "", category: "", city: "" }}
-          className="inline-flex items-center gap-1.5 text-sm text-[#6b7b8c] hover:text-[#2e4053] mb-6"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to providers
-        </Link>
+        <BackButton
+          fallbackTo="/providers"
+          label="Back to providers"
+          className="mb-6"
+        />
 
         <div className="bg-white rounded-2xl p-8 border border-[#E5E7EB] shadow-sm">
           <div className="flex flex-col sm:flex-row gap-6 items-start">

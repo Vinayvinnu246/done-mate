@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BadgeCheck, MapPin, Search, Star } from "lucide-react";
+import { BackButton } from "@/components/ui/back-button";
 
 type ProvidersSearch = { q: string; category: string; city: string };
 
