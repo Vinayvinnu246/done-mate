@@ -189,7 +189,7 @@ function JobsPage() {
           </div>
         ) : (
           <div className="grid gap-4">
-            {jobs.map((job) => (
+            {jobs.map((job: any) => (
               <Link
                 key={job.id}
                 to="/jobs/$jobId"
