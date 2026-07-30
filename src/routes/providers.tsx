@@ -75,9 +75,7 @@ function ProvidersPage() {
     <div className="min-h-screen bg-[#FAFAF8]">
       <header className="bg-[#2e4053] text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-          <Link to="/" className="text-sm text-white/70 hover:text-white">
-            ← Back home
-          </Link>
+          <BackButton className="text-white/70 hover:text-white" />
           <h1 className="font-display text-3xl sm:text-4xl font-semibold mt-4">
             Find a trusted provider
           </h1>
