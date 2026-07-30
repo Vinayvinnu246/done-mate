@@ -330,8 +330,10 @@ function JobCard({ job, currentUserId }: { job: Job; currentUserId: string }) {
   const invalidate = () => qc.invalidateQueries({ queryKey: ["assigned-jobs"] });
 
   const status = useMutation({
-    mutationFn: (vars: { status: Parameters<typeof updateBookingStatus>[0] extends never ? never : string; note?: string }) =>
-      updateBookingStatus({ data: { job_id: job.id, status: vars.status as never, note: vars.note } }),
+    mutationFn: (vars: { status: string; note?: string }) =>
+      updateBookingStatus({
+        data: { job_id: job.id, status: vars.status as never, note: vars.note },
+      }),
     onSuccess: () => {
       invalidate();
       toast.success("Status updated — the customer has been notified");
