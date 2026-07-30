@@ -57,6 +57,48 @@ function JobsPage() {
     enabled: isProvider,
   });
 
+  const [category, setCategory] = useState("all");
+  const [minBudget, setMinBudget] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [sort, setSort] = useState("newest");
+
+  const available = (availableJobsQuery.data ?? []) as any[];
+
+  const categories = useMemo(() => {
+    const map = new Map<string, string>();
+    available.forEach((j) => j.category && map.set(j.category.id, j.category.name));
+    return [...map.entries()];
+  }, [available]);
+
+  const filtered = useMemo(() => {
+    let list = [...available];
+    if (category !== "all") list = list.filter((j) => j.category?.id === category);
+    if (minBudget) {
+      const min = Number(minBudget);
+      list = list.filter((j) => Number(j.budget_max ?? j.budget_min ?? 0) >= min);
+    }
+    if (fromDate) {
+      const from = new Date(fromDate).getTime();
+      list = list.filter(
+        (j) => !j.scheduled_date || new Date(j.scheduled_date).getTime() >= from,
+      );
+    }
+    if (sort === "budget") {
+      list.sort((a, b) => Number(b.budget_max ?? 0) - Number(a.budget_max ?? 0));
+    } else if (sort === "soonest") {
+      list.sort(
+        (a, b) =>
+          new Date(a.scheduled_date ?? a.created_at).getTime() -
+          new Date(b.scheduled_date ?? b.created_at).getTime(),
+      );
+    } else {
+      list.sort(
+        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      );
+    }
+    return list;
+  }, [available, category, minBudget, fromDate, sort]);
+
   if (myJobsQuery.isLoading || availableJobsQuery.isLoading) return <LoadingScreen />;
 
   const rawJobs = (isProvider ? availableJobsQuery.data ?? [] : myJobsQuery.data ?? []) as any[];
@@ -86,6 +128,47 @@ function JobsPage() {
             </Button>
           )}
         </div>
+
+        {isProvider && (
+          <div className="mb-6 grid gap-3 rounded-2xl border border-[#E5E7EB] bg-white p-4 sm:grid-cols-4">
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger>
+                <SelectValue placeholder="Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All categories</SelectItem>
+                {categories.map(([id, name]) => (
+                  <SelectItem key={id} value={id}>
+                    {name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Input
+              type="number"
+              min={0}
+              placeholder="Min budget (£)"
+              value={minBudget}
+              onChange={(e) => setMinBudget(e.target.value)}
+            />
+            <Input
+              type="date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+              aria-label="Jobs from date"
+            />
+            <Select value={sort} onValueChange={setSort}>
+              <SelectTrigger>
+                <SelectValue placeholder="Sort" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest first</SelectItem>
+                <SelectItem value="soonest">Soonest date</SelectItem>
+                <SelectItem value="budget">Highest budget</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         {jobs.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-[#E5E7EB]">
