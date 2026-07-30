@@ -74,6 +74,14 @@ export const createJob = createServerFn({ method: "POST" })
       .single();
 
     if (error) throw error;
+
+    try {
+      const { notifyProvidersOfNewJob } = await import("./notifications.server");
+      await notifyProvidersOfNewJob(job.id);
+    } catch (e) {
+      console.error("Failed to notify providers about new job", e);
+    }
+
     return job;
   });
 
