@@ -97,15 +97,19 @@ export const updateBookingStatus = createServerFn({ method: "POST" })
     );
     if (isTerminal(job.booking_status)) throw new Error("This job is closed");
 
-    const patch: Record<string, unknown> = { booking_status: data.status };
-    if (data.status === "in_progress") patch.status = "in_progress";
-    if (data.status === "provider_completed") patch.completion_notes = data.note ?? null;
-    if (data.status === "unable_to_complete") {
-      patch.status = "disputed";
-      patch.cancellation_details = data.note ?? null;
-    }
-
-    const { error } = await supabase.from("jobs").update(patch).eq("id", data.job_id);
+    const { error } = await supabase
+      .from("jobs")
+      .update({
+        booking_status: data.status,
+        ...(data.status === "in_progress" ? { status: "in_progress" } : {}),
+        ...(data.status === "provider_completed"
+          ? { completion_notes: data.note ?? null }
+          : {}),
+        ...(data.status === "unable_to_complete"
+          ? { status: "disputed", cancellation_details: data.note ?? null }
+          : {}),
+      })
+      .eq("id", data.job_id);
     if (error) throw new Error(error.message);
 
     await logStatusEvent(data.job_id, userId, data.status, data.note);
@@ -259,8 +263,17 @@ export const updateJobWorkDetails = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    const { job_id, ...patch } = data;
-    const clean = Object.fromEntries(Object.entries(patch).filter(([, v]) => v !== undefined));
+    const { job_id } = data;
+    const clean: {
+      before_photos?: string[];
+      after_photos?: string[];
+      provider_notes?: string;
+      materials_info?: string;
+    } = {};
+    if (data.before_photos !== undefined) clean.before_photos = data.before_photos;
+    if (data.after_photos !== undefined) clean.after_photos = data.after_photos;
+    if (data.provider_notes !== undefined) clean.provider_notes = data.provider_notes;
+    if (data.materials_info !== undefined) clean.materials_info = data.materials_info;
     if (Object.keys(clean).length === 0) return { ok: true };
 
     const { error } = await supabase
