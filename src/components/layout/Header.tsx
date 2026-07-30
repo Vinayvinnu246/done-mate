@@ -11,12 +11,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/use-auth";
+import { homePathForUser } from "@/lib/role-routing";
+import { setCustomerMode } from "@/hooks/use-role-guard";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
 
 export function Header() {
-  const { isAuthenticated, user, profile, signOut } = useAuth();
+  const { isAuthenticated, user, profile, roles, signOut } = useAuth();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const isProvider = profile?.type === "provider";
+  const homePath = homePathForUser(profile, roles);
+
+  const goHome = () => navigate({ to: homePath });
+
+  const switchToCustomerMode = () => {
+    setCustomerMode(true);
+    setMobileOpen(false);
+    navigate({ to: "/" });
+  };
 
   const goGetQuote = () => {
     setMobileOpen(false);
@@ -27,7 +39,7 @@ export function Header() {
       });
       return;
     }
-    if (profile?.type === "provider") {
+    if (isProvider) {
       navigate({ to: "/post-job" }); // guard on the page shows the switch-account message
       return;
     }
@@ -80,7 +92,7 @@ export function Header() {
                 variant="ghost"
                 size="sm"
                 className="hidden md:inline-flex"
-                onClick={() => navigate({ to: "/dashboard" })}
+                onClick={goHome}
               >
                 Dashboard
               </Button>
@@ -98,12 +110,17 @@ export function Header() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={() => navigate({ to: "/dashboard" })}>
+                  <DropdownMenuItem onClick={goHome}>
                     Dashboard
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate({ to: "/profile" })}>
                     Profile
                   </DropdownMenuItem>
+                  {isProvider && (
+                    <DropdownMenuItem onClick={switchToCustomerMode}>
+                      Switch to customer mode
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={signOut} className="text-destructive">
                     Sign out
@@ -162,11 +179,19 @@ export function Header() {
                   className="text-left text-sm font-medium text-foreground"
                   onClick={() => {
                     setMobileOpen(false);
-                    navigate({ to: "/dashboard" });
+                    goHome();
                   }}
                 >
                   Dashboard
                 </button>
+                {isProvider && (
+                  <button
+                    className="text-left text-sm text-muted-foreground"
+                    onClick={switchToCustomerMode}
+                  >
+                    Switch to customer mode
+                  </button>
+                )}
                 <button
                   className="text-left text-sm text-destructive"
                   onClick={() => {
