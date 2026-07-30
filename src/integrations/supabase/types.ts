@@ -157,6 +157,7 @@ export type Database = {
           customer_id: string
           description: string
           emergency: boolean
+          expires_at: string
           id: string
           images: string[]
           inspection_required: boolean
@@ -182,6 +183,7 @@ export type Database = {
           customer_id: string
           description: string
           emergency?: boolean
+          expires_at?: string
           id?: string
           images?: string[]
           inspection_required?: boolean
@@ -207,6 +209,7 @@ export type Database = {
           customer_id?: string
           description?: string
           emergency?: boolean
+          expires_at?: string
           id?: string
           images?: string[]
           inspection_required?: boolean
@@ -282,6 +285,72 @@ export type Database = {
             columns: ["job_id"]
             isOneToOne: false
             referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          delivery_method: string
+          delivery_status: string
+          id: string
+          job_id: string | null
+          message: string
+          metadata: Json
+          quote_id: string | null
+          read_at: string | null
+          status: string
+          title: string
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          delivery_method?: string
+          delivery_status?: string
+          id?: string
+          job_id?: string | null
+          message: string
+          metadata?: Json
+          quote_id?: string | null
+          read_at?: string | null
+          status?: string
+          title: string
+          type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          delivery_method?: string
+          delivery_status?: string
+          id?: string
+          job_id?: string | null
+          message?: string
+          metadata?: Json
+          quote_id?: string | null
+          read_at?: string | null
+          status?: string
+          title?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
             referencedColumns: ["id"]
           },
         ]
@@ -416,6 +485,7 @@ export type Database = {
           business_type: string | null
           company_number: string | null
           created_at: string
+          daily_notification_limit: number
           date_of_birth: string | null
           display_name: string | null
           emergency_jobs: boolean
@@ -423,6 +493,7 @@ export type Database = {
           home_address: string | null
           id: string
           is_available: boolean | null
+          muted_category_ids: string[]
           notification_preferences: Json
           onboarding_status: string
           phone: string | null
@@ -449,6 +520,7 @@ export type Database = {
           business_type?: string | null
           company_number?: string | null
           created_at?: string
+          daily_notification_limit?: number
           date_of_birth?: string | null
           display_name?: string | null
           emergency_jobs?: boolean
@@ -456,6 +528,7 @@ export type Database = {
           home_address?: string | null
           id?: string
           is_available?: boolean | null
+          muted_category_ids?: string[]
           notification_preferences?: Json
           onboarding_status?: string
           phone?: string | null
@@ -482,6 +555,7 @@ export type Database = {
           business_type?: string | null
           company_number?: string | null
           created_at?: string
+          daily_notification_limit?: number
           date_of_birth?: string | null
           display_name?: string | null
           emergency_jobs?: boolean
@@ -489,6 +563,7 @@ export type Database = {
           home_address?: string | null
           id?: string
           is_available?: boolean | null
+          muted_category_ids?: string[]
           notification_preferences?: Json
           onboarding_status?: string
           phone?: string | null
