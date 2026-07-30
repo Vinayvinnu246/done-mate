@@ -89,8 +89,8 @@ function ProviderDashboard() {
 
   const verification = (profile?.verification_status as string) ?? "unverified";
   const status = STATUS_LABELS[verification] ?? STATUS_LABELS.unverified;
-  const bookings = bookingsQuery.data ?? [];
-  const upcoming = bookings.filter((b: any) =>
+  const bookings = (bookingsQuery.data?.providerJobs ?? []) as any[];
+  const upcoming = bookings.filter((b) =>
     ["accepted", "scheduled", "in_progress", "on_the_way", "arrived"].includes(b.status),
   );
   const balances = walletQuery.data?.balances;
