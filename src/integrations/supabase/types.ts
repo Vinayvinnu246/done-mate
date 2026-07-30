@@ -145,28 +145,87 @@ export type Database = {
           },
         ]
       }
+      job_status_events: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          id: string
+          job_id: string
+          note: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          job_id: string
+          note?: string | null
+          status: string
+          updated_at?: string
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          job_id?: string
+          note?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_status_events_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       jobs: {
         Row: {
           address_line1: string | null
           address_line2: string | null
+          after_photos: string[]
+          agreed_price: number | null
+          assigned_provider_id: string | null
+          before_photos: string[]
+          booking_status: string
           budget_max: number | null
           budget_min: number | null
+          cancellation_details: string | null
+          cancellation_reason: string | null
+          cancelled_by: string | null
           category_id: string | null
           city: string | null
+          completion_notes: string | null
           created_at: string
           customer_id: string
+          customer_instructions: string | null
           description: string
           emergency: boolean
+          estimated_duration_minutes: number | null
           expires_at: string
           id: string
           images: string[]
           inspection_required: boolean
+          job_ref: string | null
           lat: number | null
           lng: number | null
+          materials_info: string | null
+          payment_status: string
           postcode: string | null
+          provider_notes: string | null
+          reminder_24h_sent: boolean
+          reminder_24h_sent_at: string | null
+          reminder_5h_sent: boolean
+          reminder_5h_sent_at: string | null
           scheduled_date: string | null
+          scheduled_start_datetime: string | null
           status: string
           subcategory_id: string | null
+          timezone: string
           title: string
           updated_at: string
           urgency: string
@@ -175,24 +234,45 @@ export type Database = {
         Insert: {
           address_line1?: string | null
           address_line2?: string | null
+          after_photos?: string[]
+          agreed_price?: number | null
+          assigned_provider_id?: string | null
+          before_photos?: string[]
+          booking_status?: string
           budget_max?: number | null
           budget_min?: number | null
+          cancellation_details?: string | null
+          cancellation_reason?: string | null
+          cancelled_by?: string | null
           category_id?: string | null
           city?: string | null
+          completion_notes?: string | null
           created_at?: string
           customer_id: string
+          customer_instructions?: string | null
           description: string
           emergency?: boolean
+          estimated_duration_minutes?: number | null
           expires_at?: string
           id?: string
           images?: string[]
           inspection_required?: boolean
+          job_ref?: string | null
           lat?: number | null
           lng?: number | null
+          materials_info?: string | null
+          payment_status?: string
           postcode?: string | null
+          provider_notes?: string | null
+          reminder_24h_sent?: boolean
+          reminder_24h_sent_at?: string | null
+          reminder_5h_sent?: boolean
+          reminder_5h_sent_at?: string | null
           scheduled_date?: string | null
+          scheduled_start_datetime?: string | null
           status?: string
           subcategory_id?: string | null
+          timezone?: string
           title: string
           updated_at?: string
           urgency?: string
@@ -201,24 +281,45 @@ export type Database = {
         Update: {
           address_line1?: string | null
           address_line2?: string | null
+          after_photos?: string[]
+          agreed_price?: number | null
+          assigned_provider_id?: string | null
+          before_photos?: string[]
+          booking_status?: string
           budget_max?: number | null
           budget_min?: number | null
+          cancellation_details?: string | null
+          cancellation_reason?: string | null
+          cancelled_by?: string | null
           category_id?: string | null
           city?: string | null
+          completion_notes?: string | null
           created_at?: string
           customer_id?: string
+          customer_instructions?: string | null
           description?: string
           emergency?: boolean
+          estimated_duration_minutes?: number | null
           expires_at?: string
           id?: string
           images?: string[]
           inspection_required?: boolean
+          job_ref?: string | null
           lat?: number | null
           lng?: number | null
+          materials_info?: string | null
+          payment_status?: string
           postcode?: string | null
+          provider_notes?: string | null
+          reminder_24h_sent?: boolean
+          reminder_24h_sent_at?: string | null
+          reminder_5h_sent?: boolean
+          reminder_5h_sent_at?: string | null
           scheduled_date?: string | null
+          scheduled_start_datetime?: string | null
           status?: string
           subcategory_id?: string | null
+          timezone?: string
           title?: string
           updated_at?: string
           urgency?: string

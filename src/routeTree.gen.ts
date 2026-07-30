@@ -47,14 +47,18 @@ import { Route as AuthenticatedQuotesRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedPostJobRouteImport } from './routes/_authenticated/post-job'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
+import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
+import { Route as AuthenticatedMyJobsRouteImport } from './routes/_authenticated/my-jobs'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
 import { Route as AuthenticatedJobsRouteImport } from './routes/_authenticated/jobs'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCalendarRouteImport } from './routes/_authenticated/calendar'
 import { Route as AuthenticatedBookingsRouteImport } from './routes/_authenticated/bookings'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedProviderDashboardRouteImport } from './routes/_authenticated/provider.dashboard'
 import { Route as AuthenticatedJobsJobIdRouteImport } from './routes/_authenticated/jobs/$jobId'
 import { Route as ApiPublicWebhooksStripeConnectRouteImport } from './routes/api/public/webhooks/stripe-connect'
+import { Route as ApiPublicHooksJobRemindersRouteImport } from './routes/api/public/hooks/job-reminders'
 
 const TrustSafetyRoute = TrustSafetyRouteImport.update({
   id: '/trust-safety',
@@ -246,6 +250,17 @@ const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
   path: '/onboarding',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedNotificationsRoute =
+  AuthenticatedNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMyJobsRoute = AuthenticatedMyJobsRouteImport.update({
+  id: '/my-jobs',
+  path: '/my-jobs',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedMessagesRoute = AuthenticatedMessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
@@ -259,6 +274,11 @@ const AuthenticatedJobsRoute = AuthenticatedJobsRouteImport.update({
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCalendarRoute = AuthenticatedCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedBookingsRoute = AuthenticatedBookingsRouteImport.update({
@@ -286,6 +306,12 @@ const ApiPublicWebhooksStripeConnectRoute =
   ApiPublicWebhooksStripeConnectRouteImport.update({
     id: '/api/public/webhooks/stripe-connect',
     path: '/api/public/webhooks/stripe-connect',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicHooksJobRemindersRoute =
+  ApiPublicHooksJobRemindersRouteImport.update({
+    id: '/api/public/hooks/job-reminders',
+    path: '/api/public/hooks/job-reminders',
     getParentRoute: () => rootRouteImport,
   } as any)
 
@@ -319,9 +345,12 @@ export interface FileRoutesByFullPath {
   '/trust-safety': typeof TrustSafetyRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/bookings': typeof AuthenticatedBookingsRoute
+  '/calendar': typeof AuthenticatedCalendarRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/jobs': typeof AuthenticatedJobsRouteWithChildren
   '/messages': typeof AuthenticatedMessagesRoute
+  '/my-jobs': typeof AuthenticatedMyJobsRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/post-job': typeof AuthenticatedPostJobRoute
   '/profile': typeof AuthenticatedProfileRoute
@@ -334,6 +363,7 @@ export interface FileRoutesByFullPath {
   '/providers/$providerId': typeof ProvidersProviderIdRoute
   '/jobs/$jobId': typeof AuthenticatedJobsJobIdRoute
   '/provider/dashboard': typeof AuthenticatedProviderDashboardRoute
+  '/api/public/hooks/job-reminders': typeof ApiPublicHooksJobRemindersRoute
   '/api/public/webhooks/stripe-connect': typeof ApiPublicWebhooksStripeConnectRoute
 }
 export interface FileRoutesByTo {
@@ -366,9 +396,12 @@ export interface FileRoutesByTo {
   '/trust-safety': typeof TrustSafetyRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/bookings': typeof AuthenticatedBookingsRoute
+  '/calendar': typeof AuthenticatedCalendarRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/jobs': typeof AuthenticatedJobsRouteWithChildren
   '/messages': typeof AuthenticatedMessagesRoute
+  '/my-jobs': typeof AuthenticatedMyJobsRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/post-job': typeof AuthenticatedPostJobRoute
   '/profile': typeof AuthenticatedProfileRoute
@@ -381,6 +414,7 @@ export interface FileRoutesByTo {
   '/providers/$providerId': typeof ProvidersProviderIdRoute
   '/jobs/$jobId': typeof AuthenticatedJobsJobIdRoute
   '/provider/dashboard': typeof AuthenticatedProviderDashboardRoute
+  '/api/public/hooks/job-reminders': typeof ApiPublicHooksJobRemindersRoute
   '/api/public/webhooks/stripe-connect': typeof ApiPublicWebhooksStripeConnectRoute
 }
 export interface FileRoutesById {
@@ -415,9 +449,12 @@ export interface FileRoutesById {
   '/trust-safety': typeof TrustSafetyRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/bookings': typeof AuthenticatedBookingsRoute
+  '/_authenticated/calendar': typeof AuthenticatedCalendarRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/jobs': typeof AuthenticatedJobsRouteWithChildren
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
+  '/_authenticated/my-jobs': typeof AuthenticatedMyJobsRoute
+  '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/post-job': typeof AuthenticatedPostJobRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
@@ -430,6 +467,7 @@ export interface FileRoutesById {
   '/providers/$providerId': typeof ProvidersProviderIdRoute
   '/_authenticated/jobs/$jobId': typeof AuthenticatedJobsJobIdRoute
   '/_authenticated/provider/dashboard': typeof AuthenticatedProviderDashboardRoute
+  '/api/public/hooks/job-reminders': typeof ApiPublicHooksJobRemindersRoute
   '/api/public/webhooks/stripe-connect': typeof ApiPublicWebhooksStripeConnectRoute
 }
 export interface FileRouteTypes {
@@ -464,9 +502,12 @@ export interface FileRouteTypes {
     | '/trust-safety'
     | '/admin'
     | '/bookings'
+    | '/calendar'
     | '/dashboard'
     | '/jobs'
     | '/messages'
+    | '/my-jobs'
+    | '/notifications'
     | '/onboarding'
     | '/post-job'
     | '/profile'
@@ -479,6 +520,7 @@ export interface FileRouteTypes {
     | '/providers/$providerId'
     | '/jobs/$jobId'
     | '/provider/dashboard'
+    | '/api/public/hooks/job-reminders'
     | '/api/public/webhooks/stripe-connect'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -511,9 +553,12 @@ export interface FileRouteTypes {
     | '/trust-safety'
     | '/admin'
     | '/bookings'
+    | '/calendar'
     | '/dashboard'
     | '/jobs'
     | '/messages'
+    | '/my-jobs'
+    | '/notifications'
     | '/onboarding'
     | '/post-job'
     | '/profile'
@@ -526,6 +571,7 @@ export interface FileRouteTypes {
     | '/providers/$providerId'
     | '/jobs/$jobId'
     | '/provider/dashboard'
+    | '/api/public/hooks/job-reminders'
     | '/api/public/webhooks/stripe-connect'
   id:
     | '__root__'
@@ -559,9 +605,12 @@ export interface FileRouteTypes {
     | '/trust-safety'
     | '/_authenticated/admin'
     | '/_authenticated/bookings'
+    | '/_authenticated/calendar'
     | '/_authenticated/dashboard'
     | '/_authenticated/jobs'
     | '/_authenticated/messages'
+    | '/_authenticated/my-jobs'
+    | '/_authenticated/notifications'
     | '/_authenticated/onboarding'
     | '/_authenticated/post-job'
     | '/_authenticated/profile'
@@ -574,6 +623,7 @@ export interface FileRouteTypes {
     | '/providers/$providerId'
     | '/_authenticated/jobs/$jobId'
     | '/_authenticated/provider/dashboard'
+    | '/api/public/hooks/job-reminders'
     | '/api/public/webhooks/stripe-connect'
   fileRoutesById: FileRoutesById
 }
@@ -606,6 +656,7 @@ export interface RootRouteChildren {
   ServerErrorRoute: typeof ServerErrorRoute
   TermsRoute: typeof TermsRoute
   TrustSafetyRoute: typeof TrustSafetyRoute
+  ApiPublicHooksJobRemindersRoute: typeof ApiPublicHooksJobRemindersRoute
   ApiPublicWebhooksStripeConnectRoute: typeof ApiPublicWebhooksStripeConnectRoute
 }
 
@@ -877,6 +928,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/notifications': {
+      id: '/_authenticated/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/my-jobs': {
+      id: '/_authenticated/my-jobs'
+      path: '/my-jobs'
+      fullPath: '/my-jobs'
+      preLoaderRoute: typeof AuthenticatedMyJobsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/messages': {
       id: '/_authenticated/messages'
       path: '/messages'
@@ -896,6 +961,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/calendar': {
+      id: '/_authenticated/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof AuthenticatedCalendarRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/bookings': {
@@ -933,6 +1005,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicWebhooksStripeConnectRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/job-reminders': {
+      id: '/api/public/hooks/job-reminders'
+      path: '/api/public/hooks/job-reminders'
+      fullPath: '/api/public/hooks/job-reminders'
+      preLoaderRoute: typeof ApiPublicHooksJobRemindersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -950,9 +1029,12 @@ const AuthenticatedJobsRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedBookingsRoute: typeof AuthenticatedBookingsRoute
+  AuthenticatedCalendarRoute: typeof AuthenticatedCalendarRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedJobsRoute: typeof AuthenticatedJobsRouteWithChildren
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRoute
+  AuthenticatedMyJobsRoute: typeof AuthenticatedMyJobsRoute
+  AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedPostJobRoute: typeof AuthenticatedPostJobRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
@@ -968,9 +1050,12 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedBookingsRoute: AuthenticatedBookingsRoute,
+  AuthenticatedCalendarRoute: AuthenticatedCalendarRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedJobsRoute: AuthenticatedJobsRouteWithChildren,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRoute,
+  AuthenticatedMyJobsRoute: AuthenticatedMyJobsRoute,
+  AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedPostJobRoute: AuthenticatedPostJobRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
@@ -1027,6 +1112,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServerErrorRoute: ServerErrorRoute,
   TermsRoute: TermsRoute,
   TrustSafetyRoute: TrustSafetyRoute,
+  ApiPublicHooksJobRemindersRoute: ApiPublicHooksJobRemindersRoute,
   ApiPublicWebhooksStripeConnectRoute: ApiPublicWebhooksStripeConnectRoute,
 }
 export const routeTree = rootRouteImport
