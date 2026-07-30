@@ -74,12 +74,7 @@ function ProviderDashboard() {
   const fields = providerCompletionFields(profile);
   const setupIncomplete = !!profile && profile.onboarding_status !== "complete";
 
-  // First login with an unfinished profile -> setup wizard.
-  useEffect(() => {
-    if (setupIncomplete) navigate({ to: PROVIDER_SETUP, replace: true });
-  }, [setupIncomplete, navigate]);
-
-  if (authLoading || redirecting || profileQuery.isLoading || setupIncomplete) {
+  if (authLoading || redirecting || profileQuery.isLoading) {
     return (
       <ProviderShell>
         <LoadingScreen />
