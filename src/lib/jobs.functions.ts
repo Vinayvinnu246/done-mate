@@ -354,10 +354,34 @@ export const updateQuoteStatus = createServerFn({ method: "POST" })
     if (error) throw error;
 
     if (data.status === "accepted") {
-      await supabase
+      const { assignProviderToJob, hasBookingConflict } = await import("./assignments.server");
+
+      const { data: jobRow } = await supabase
         .from("jobs")
-        .update({ status: "accepted" })
-        .eq("id", quote.job_id);
+        .select("scheduled_date, scheduled_start_datetime")
+        .eq("id", quote.job_id)
+        .maybeSingle();
+      const start = jobRow?.scheduled_start_datetime ?? jobRow?.scheduled_date ?? null;
+      if (start) {
+        const conflict = await hasBookingConflict(
+          quote.provider_id,
+          start,
+          quote.duration_minutes ?? 60,
+          quote.job_id,
+        );
+        if (conflict.conflict) {
+          await supabase.from("quotes").update({ status: "pending" }).eq("id", data.quote_id);
+          throw new Error("This provider already has another job scheduled during this time.");
+        }
+      }
+
+      await assignProviderToJob({
+        jobId: quote.job_id,
+        providerId: quote.provider_id,
+        price: quote.price,
+        durationMinutes: quote.duration_minutes,
+        actorId: userId,
+      });
 
       await supabase
         .from("quotes")
