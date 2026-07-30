@@ -55,6 +55,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedProviderDashboardRouteImport } from './routes/_authenticated/provider.dashboard'
 import { Route as AuthenticatedJobsJobIdRouteImport } from './routes/_authenticated/jobs/$jobId'
 import { Route as ApiPublicWebhooksStripeConnectRouteImport } from './routes/api/public/webhooks/stripe-connect'
+import { Route as ApiPublicHooksJobRemindersRouteImport } from './routes/api/public/hooks/job-reminders'
 
 const TrustSafetyRoute = TrustSafetyRouteImport.update({
   id: '/trust-safety',
@@ -288,6 +289,12 @@ const ApiPublicWebhooksStripeConnectRoute =
     path: '/api/public/webhooks/stripe-connect',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicHooksJobRemindersRoute =
+  ApiPublicHooksJobRemindersRouteImport.update({
+    id: '/api/public/hooks/job-reminders',
+    path: '/api/public/hooks/job-reminders',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -334,6 +341,7 @@ export interface FileRoutesByFullPath {
   '/providers/$providerId': typeof ProvidersProviderIdRoute
   '/jobs/$jobId': typeof AuthenticatedJobsJobIdRoute
   '/provider/dashboard': typeof AuthenticatedProviderDashboardRoute
+  '/api/public/hooks/job-reminders': typeof ApiPublicHooksJobRemindersRoute
   '/api/public/webhooks/stripe-connect': typeof ApiPublicWebhooksStripeConnectRoute
 }
 export interface FileRoutesByTo {
@@ -381,6 +389,7 @@ export interface FileRoutesByTo {
   '/providers/$providerId': typeof ProvidersProviderIdRoute
   '/jobs/$jobId': typeof AuthenticatedJobsJobIdRoute
   '/provider/dashboard': typeof AuthenticatedProviderDashboardRoute
+  '/api/public/hooks/job-reminders': typeof ApiPublicHooksJobRemindersRoute
   '/api/public/webhooks/stripe-connect': typeof ApiPublicWebhooksStripeConnectRoute
 }
 export interface FileRoutesById {
@@ -430,6 +439,7 @@ export interface FileRoutesById {
   '/providers/$providerId': typeof ProvidersProviderIdRoute
   '/_authenticated/jobs/$jobId': typeof AuthenticatedJobsJobIdRoute
   '/_authenticated/provider/dashboard': typeof AuthenticatedProviderDashboardRoute
+  '/api/public/hooks/job-reminders': typeof ApiPublicHooksJobRemindersRoute
   '/api/public/webhooks/stripe-connect': typeof ApiPublicWebhooksStripeConnectRoute
 }
 export interface FileRouteTypes {
@@ -479,6 +489,7 @@ export interface FileRouteTypes {
     | '/providers/$providerId'
     | '/jobs/$jobId'
     | '/provider/dashboard'
+    | '/api/public/hooks/job-reminders'
     | '/api/public/webhooks/stripe-connect'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -526,6 +537,7 @@ export interface FileRouteTypes {
     | '/providers/$providerId'
     | '/jobs/$jobId'
     | '/provider/dashboard'
+    | '/api/public/hooks/job-reminders'
     | '/api/public/webhooks/stripe-connect'
   id:
     | '__root__'
@@ -574,6 +586,7 @@ export interface FileRouteTypes {
     | '/providers/$providerId'
     | '/_authenticated/jobs/$jobId'
     | '/_authenticated/provider/dashboard'
+    | '/api/public/hooks/job-reminders'
     | '/api/public/webhooks/stripe-connect'
   fileRoutesById: FileRoutesById
 }
@@ -606,6 +619,7 @@ export interface RootRouteChildren {
   ServerErrorRoute: typeof ServerErrorRoute
   TermsRoute: typeof TermsRoute
   TrustSafetyRoute: typeof TrustSafetyRoute
+  ApiPublicHooksJobRemindersRoute: typeof ApiPublicHooksJobRemindersRoute
   ApiPublicWebhooksStripeConnectRoute: typeof ApiPublicWebhooksStripeConnectRoute
 }
 
@@ -933,6 +947,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicWebhooksStripeConnectRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/job-reminders': {
+      id: '/api/public/hooks/job-reminders'
+      path: '/api/public/hooks/job-reminders'
+      fullPath: '/api/public/hooks/job-reminders'
+      preLoaderRoute: typeof ApiPublicHooksJobRemindersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1027,6 +1048,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServerErrorRoute: ServerErrorRoute,
   TermsRoute: TermsRoute,
   TrustSafetyRoute: TrustSafetyRoute,
+  ApiPublicHooksJobRemindersRoute: ApiPublicHooksJobRemindersRoute,
   ApiPublicWebhooksStripeConnectRoute: ApiPublicWebhooksStripeConnectRoute,
 }
 export const routeTree = rootRouteImport
