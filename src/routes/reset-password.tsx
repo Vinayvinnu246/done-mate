@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
+import { BackButton } from "@/components/ui/back-button";
 
 export const Route = createFileRoute("/reset-password")({
   component: ResetPasswordPage,
@@ -85,6 +86,10 @@ function ResetPasswordPage() {
   return (
     <div className="min-h-screen bg-muted/30 px-6 py-12">
       <div className="mx-auto max-w-md">
+        <BackButton
+          fallbackTo="/auth"
+          className="mb-6 text-muted-foreground hover:text-foreground"
+        />
         <Link to="/" className="mb-8 inline-block">
           <img src={logoAsset.url} alt="DoneToday" width={180} height={60} className="h-12 w-auto" />
         </Link>

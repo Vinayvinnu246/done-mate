@@ -1,33 +1,58 @@
-import { useRouter, useCanGoBack, Link } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type BackButtonProps = {
+  /** Force a specific destination instead of browser history. */
   to?: string;
+  /** Where to go when there is no history to go back to. Defaults to "/". */
+  fallbackTo?: string;
   label?: string;
   className?: string;
 };
 
-export function BackButton({ to, label = "Back", className }: BackButtonProps) {
+export function BackButton({
+  to,
+  fallbackTo = "/",
+  label = "Back",
+  className,
+}: BackButtonProps) {
   const router = useRouter();
-  const canGoBack = useCanGoBack();
 
   const classes = cn(
     "inline-flex items-center gap-1.5 text-sm font-medium text-[#6b7b8c] hover:text-[#2e4053] transition-colors",
     className,
   );
 
-  if (to || !canGoBack) {
-    return (
-      <Link to={to ?? "/"} className={classes}>
-        <ArrowLeft className="w-4 h-4" />
-        {label}
-      </Link>
-    );
-  }
+  const handleClick = () => {
+    const target = to ?? fallbackTo;
+    if (to) {
+      router.navigate({ to });
+      return;
+    }
+
+    const hasHistory =
+      typeof window !== "undefined" && window.history.length > 1;
+
+    if (!hasHistory) {
+      router.navigate({ to: target });
+      return;
+    }
+
+    const from = window.location.pathname + window.location.search;
+    router.history.back();
+
+    // If nothing actually changed (blocked, redirect loop, or entry outside the
+    // app), fall back to a known-good route so the button always does something.
+    window.setTimeout(() => {
+      if (window.location.pathname + window.location.search === from) {
+        router.navigate({ to: target });
+      }
+    }, 250);
+  };
 
   return (
-    <button type="button" onClick={() => router.history.back()} className={classes}>
+    <button type="button" onClick={handleClick} className={classes}>
       <ArrowLeft className="w-4 h-4" />
       {label}
     </button>

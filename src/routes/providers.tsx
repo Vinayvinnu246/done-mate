@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BadgeCheck, MapPin, Search, Star } from "lucide-react";
+import { BackButton } from "@/components/ui/back-button";
 
 type ProvidersSearch = { q: string; category: string; city: string };
 
@@ -75,9 +76,7 @@ function ProvidersPage() {
     <div className="min-h-screen bg-[#FAFAF8]">
       <header className="bg-[#2e4053] text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-          <Link to="/" className="text-sm text-white/70 hover:text-white">
-            ← Back home
-          </Link>
+          <BackButton className="text-white/70 hover:text-white" />
           <h1 className="font-display text-3xl sm:text-4xl font-semibold mt-4">
             Find a trusted provider
           </h1>

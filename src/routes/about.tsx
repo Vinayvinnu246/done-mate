@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { COMPANY } from "@/lib/company";
+import { BackButton } from "@/components/ui/back-button";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -114,6 +115,9 @@ const TRUST = [
 function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
+      <div className="mx-auto max-w-6xl px-6 pt-6">
+        <BackButton />
+      </div>
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border/60 bg-gradient-to-b from-primary/10 via-background to-background">
         <div className="mx-auto max-w-4xl px-6 py-20 text-center md:py-28">
