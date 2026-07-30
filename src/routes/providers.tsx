@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { searchProviders } from "@/lib/providers.functions";
 import { getCategories } from "@/lib/jobs.functions";
+import { useBlockProvidersFromCustomerPages } from "@/hooks/use-role-guard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -42,6 +43,7 @@ function ProvidersPage() {
   const navigate = useNavigate({ from: "/providers" });
   const [q, setQ] = useState(search.q);
   const [city, setCity] = useState(search.city);
+  const redirectingProvider = useBlockProvidersFromCustomerPages();
 
   const { data: categories = [] } = useQuery({
     queryKey: ["categories"],
@@ -63,6 +65,10 @@ function ProvidersPage() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     navigate({ search: (prev: ProvidersSearch) => ({ ...prev, q, city }) });
+  }
+
+  if (redirectingProvider) {
+    return <div className="min-h-screen bg-[#FAFAF8]" />;
   }
 
   return (
@@ -166,7 +172,7 @@ function ProvidersPage() {
                       <p className="font-semibold text-[#2e4053] truncate">
                         {p.display_name ?? "DoneToday provider"}
                       </p>
-                      {p.verification_status === "approved" && (
+                      {p.verification_status === "verified" && (
                         <BadgeCheck className="h-4 w-4 text-[#59914c]" />
                       )}
                     </div>

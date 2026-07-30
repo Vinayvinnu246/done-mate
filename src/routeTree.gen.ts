@@ -52,6 +52,7 @@ import { Route as AuthenticatedJobsRouteImport } from './routes/_authenticated/j
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedBookingsRouteImport } from './routes/_authenticated/bookings'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedProviderDashboardRouteImport } from './routes/_authenticated/provider.dashboard'
 import { Route as AuthenticatedJobsJobIdRouteImport } from './routes/_authenticated/jobs/$jobId'
 import { Route as ApiPublicWebhooksStripeConnectRouteImport } from './routes/api/public/webhooks/stripe-connect'
 
@@ -270,6 +271,12 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedProviderDashboardRoute =
+  AuthenticatedProviderDashboardRouteImport.update({
+    id: '/provider/dashboard',
+    path: '/provider/dashboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedJobsJobIdRoute = AuthenticatedJobsJobIdRouteImport.update({
   id: '/$jobId',
   path: '/$jobId',
@@ -326,6 +333,7 @@ export interface FileRoutesByFullPath {
   '/wallet': typeof AuthenticatedWalletRoute
   '/providers/$providerId': typeof ProvidersProviderIdRoute
   '/jobs/$jobId': typeof AuthenticatedJobsJobIdRoute
+  '/provider/dashboard': typeof AuthenticatedProviderDashboardRoute
   '/api/public/webhooks/stripe-connect': typeof ApiPublicWebhooksStripeConnectRoute
 }
 export interface FileRoutesByTo {
@@ -372,6 +380,7 @@ export interface FileRoutesByTo {
   '/wallet': typeof AuthenticatedWalletRoute
   '/providers/$providerId': typeof ProvidersProviderIdRoute
   '/jobs/$jobId': typeof AuthenticatedJobsJobIdRoute
+  '/provider/dashboard': typeof AuthenticatedProviderDashboardRoute
   '/api/public/webhooks/stripe-connect': typeof ApiPublicWebhooksStripeConnectRoute
 }
 export interface FileRoutesById {
@@ -420,6 +429,7 @@ export interface FileRoutesById {
   '/_authenticated/wallet': typeof AuthenticatedWalletRoute
   '/providers/$providerId': typeof ProvidersProviderIdRoute
   '/_authenticated/jobs/$jobId': typeof AuthenticatedJobsJobIdRoute
+  '/_authenticated/provider/dashboard': typeof AuthenticatedProviderDashboardRoute
   '/api/public/webhooks/stripe-connect': typeof ApiPublicWebhooksStripeConnectRoute
 }
 export interface FileRouteTypes {
@@ -468,6 +478,7 @@ export interface FileRouteTypes {
     | '/wallet'
     | '/providers/$providerId'
     | '/jobs/$jobId'
+    | '/provider/dashboard'
     | '/api/public/webhooks/stripe-connect'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -514,6 +525,7 @@ export interface FileRouteTypes {
     | '/wallet'
     | '/providers/$providerId'
     | '/jobs/$jobId'
+    | '/provider/dashboard'
     | '/api/public/webhooks/stripe-connect'
   id:
     | '__root__'
@@ -561,6 +573,7 @@ export interface FileRouteTypes {
     | '/_authenticated/wallet'
     | '/providers/$providerId'
     | '/_authenticated/jobs/$jobId'
+    | '/_authenticated/provider/dashboard'
     | '/api/public/webhooks/stripe-connect'
   fileRoutesById: FileRoutesById
 }
@@ -899,6 +912,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/provider/dashboard': {
+      id: '/_authenticated/provider/dashboard'
+      path: '/provider/dashboard'
+      fullPath: '/provider/dashboard'
+      preLoaderRoute: typeof AuthenticatedProviderDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/jobs/$jobId': {
       id: '/_authenticated/jobs/$jobId'
       path: '/$jobId'
@@ -942,6 +962,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSupportRoute: typeof AuthenticatedSupportRoute
   AuthenticatedVerificationRoute: typeof AuthenticatedVerificationRoute
   AuthenticatedWalletRoute: typeof AuthenticatedWalletRoute
+  AuthenticatedProviderDashboardRoute: typeof AuthenticatedProviderDashboardRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -959,6 +980,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSupportRoute: AuthenticatedSupportRoute,
   AuthenticatedVerificationRoute: AuthenticatedVerificationRoute,
   AuthenticatedWalletRoute: AuthenticatedWalletRoute,
+  AuthenticatedProviderDashboardRoute: AuthenticatedProviderDashboardRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -1010,13 +1032,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

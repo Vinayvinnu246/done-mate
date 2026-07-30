@@ -115,7 +115,7 @@ function OnboardingPage() {
     mutationFn: submitProviderOnboarding,
     onSuccess: () => {
       toast.success("Onboarding submitted — verification is under review");
-      navigate({ to: "/dashboard" });
+      navigate({ to: "/provider/dashboard" });
     },
     onError: (e) => toast.error(e instanceof Error ? e.message : "Failed to submit"),
   });
@@ -141,7 +141,7 @@ function OnboardingPage() {
             Your verification status is <span className="font-medium capitalize">{providerQuery.data?.verification_status}</span>.
           </p>
           <div className="mt-6 flex gap-3 justify-center flex-wrap">
-            <Button className="rounded-full" onClick={() => navigate({ to: "/dashboard" })}>
+            <Button className="rounded-full" onClick={() => navigate({ to: "/provider/dashboard" })}>
               Go to dashboard
             </Button>
             <Button variant="outline" className="rounded-full" asChild>

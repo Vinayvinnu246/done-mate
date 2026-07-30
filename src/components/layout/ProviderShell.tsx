@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 import { BackButton } from "@/components/ui/back-button";
 
 const nav = [
-  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/provider/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/jobs", label: "Find jobs", icon: Search },
   { to: "/quotes", label: "Quotes", icon: FileText },
   { to: "/bookings", label: "Bookings", icon: CalendarCheck },
@@ -58,8 +58,8 @@ export function ProviderShell({ children }: { children: React.ReactNode }) {
           <nav className="rounded-2xl bg-white border border-[#E5E7EB] p-2 sticky top-20">
             {nav.map((item) => {
               const active =
-                item.to === "/dashboard"
-                  ? location.pathname === "/dashboard"
+                item.to === "/provider/dashboard"
+                  ? location.pathname === "/provider/dashboard"
                   : location.pathname.startsWith(item.to);
               const Icon = item.icon;
               return (

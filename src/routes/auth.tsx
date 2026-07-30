@@ -15,6 +15,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { homePathForUser } from "@/lib/role-routing";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
 
 export const Route = createFileRoute("/auth")({
@@ -56,9 +57,29 @@ function AuthPage() {
     ? { accent: "text-emerald-700", bg: "bg-emerald-50", label: "Provider", tagline: "Win more work with DoneToday." }
     : { accent: "text-primary", bg: "bg-primary/5", label: "Customer", tagline: "Book verified local pros in minutes." };
 
-  const goNext = () => {
-    if (nextPath) window.location.href = nextPath;
-    else navigate({ to: isProvider ? "/providers" : "/dashboard" });
+  // Role decides the landing page. Providers never land on the customer
+  // marketplace or the provider search page.
+  const goNext = async () => {
+    const { data: userData } = await supabase.auth.getUser();
+    const uid = userData.user?.id;
+
+    let destination = isProvider ? "/onboarding" : "/dashboard";
+
+    if (uid) {
+      const [{ data: profile }, { data: roleRows }] = await Promise.all([
+        supabase.from("profiles").select("type, onboarding_status").eq("user_id", uid).maybeSingle(),
+        supabase.from("user_roles").select("role").eq("user_id", uid),
+      ]);
+      const roles = (roleRows ?? []).map((r) => r.role as string);
+      destination = homePathForUser(profile ?? { type: role }, roles);
+
+      // Only honour ?next= for customers — providers always go to their portal.
+      if (nextPath && profile?.type !== "provider") destination = nextPath;
+    } else if (nextPath && !isProvider) {
+      destination = nextPath;
+    }
+
+    window.location.href = destination;
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -91,7 +112,7 @@ function AuthPage() {
         }
       }
 
-      goNext();
+      await goNext();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign in failed");
     } finally {
@@ -137,7 +158,7 @@ function AuthPage() {
       }
 
       if (data.session) {
-        goNext();
+        await goNext();
       } else {
         setSuccess("Check your email to confirm your account before signing in.");
       }
@@ -168,7 +189,7 @@ function AuthPage() {
 
       if (result.error) throw result.error;
       if (result.redirected) return;
-      goNext();
+      await goNext();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Google sign in failed");
       setLoading(false);

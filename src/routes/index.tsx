@@ -7,6 +7,7 @@ import heroImg from "@/assets/hero-provider.png.asset.json";
 import { Header } from "@/components/layout/Header";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { useAuth } from "@/hooks/use-auth";
+import { useBlockProvidersFromCustomerPages } from "@/hooks/use-role-guard";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -26,6 +27,11 @@ const categories = [
 
 function Index() {
   const { isAuthenticated } = useAuth();
+  const redirectingProvider = useBlockProvidersFromCustomerPages();
+
+  if (redirectingProvider) {
+    return <div className="min-h-screen bg-background" />;
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">

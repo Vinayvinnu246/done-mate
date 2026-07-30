@@ -63,7 +63,7 @@ function ProviderProfilePage() {
                 <h1 className="font-display text-3xl font-semibold text-[#2e4053]">
                   {provider.display_name ?? "DoneToday provider"}
                 </h1>
-                {provider.verification_status === "approved" && (
+                {provider.verification_status === "verified" && (
                   <BadgeCheck className="h-6 w-6 text-[#59914c]" />
                 )}
               </div>
