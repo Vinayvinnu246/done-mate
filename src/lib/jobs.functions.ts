@@ -117,6 +117,7 @@ export const getAvailableJobs = createServerFn({ method: "GET" })
       .select("*, category:categories(*), quotes(*)")
       .in("status", ["posted", "quoting"])
       .neq("customer_id", userId)
+      .gt("expires_at", new Date().toISOString())
       .order("created_at", { ascending: false });
 
     if (catIds.length > 0) query = query.in("category_id", catIds);
