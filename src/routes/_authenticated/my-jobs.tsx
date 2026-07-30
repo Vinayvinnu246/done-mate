@@ -475,8 +475,13 @@ function JobDetails({
   );
 
   const save = useMutation({
-    mutationFn: (vars: Parameters<typeof updateJobWorkDetails>[0]["data"]) =>
-      updateJobWorkDetails({ data: vars }),
+    mutationFn: (vars: {
+      job_id: string;
+      before_photos?: string[];
+      after_photos?: string[];
+      provider_notes?: string;
+      materials_info?: string;
+    }) => updateJobWorkDetails({ data: vars }),
     onSuccess: () => {
       onDone();
       toast.success("Saved");
