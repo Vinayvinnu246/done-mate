@@ -1,8 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { getAvailableJobs, getMyJobs } from "@/lib/jobs.functions";
 import { useAuth } from "@/hooks/use-auth";
 import { Calendar, MapPin, PoundSterling, Plus, Briefcase } from "lucide-react";
@@ -50,7 +59,8 @@ function JobsPage() {
 
   if (myJobsQuery.isLoading || availableJobsQuery.isLoading) return <LoadingScreen />;
 
-  const jobs = isProvider ? availableJobsQuery.data ?? [] : myJobsQuery.data ?? [];
+  const rawJobs = (isProvider ? availableJobsQuery.data ?? [] : myJobsQuery.data ?? []) as any[];
+  const jobs = isProvider ? filtered : rawJobs;
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] py-12">
