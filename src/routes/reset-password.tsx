@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
-import logoAsset from "@/assets/donetoday-logo.png.asset.json";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { BackButton } from "@/components/ui/back-button";
 
 export const Route = createFileRoute("/reset-password")({
@@ -91,7 +91,7 @@ function ResetPasswordPage() {
           className="mb-6 text-muted-foreground hover:text-foreground"
         />
         <Link to="/" className="mb-8 inline-block">
-          <img src={logoAsset.url} alt="DoneMate" width={180} height={60} className="h-12 w-auto" />
+          <BrandLogo size="md" />
         </Link>
 
         <h1 className="font-serif text-3xl text-foreground">

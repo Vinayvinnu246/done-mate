@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { homePathForUser } from "@/lib/role-routing";
-import logoAsset from "@/assets/donetoday-logo.png.asset.json";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { BackButton } from "@/components/ui/back-button";
 
 type AuthSearch = {
@@ -209,7 +209,7 @@ function AuthPage() {
         <div className="mb-10 md:mb-0 md:w-1/2">
           <BackButton className="mb-6 text-muted-foreground hover:text-foreground" />
           <Link to="/" className="mb-8 inline-block">
-            <img src={logoAsset.url} alt="DoneMate" width={180} height={60} className="h-12 w-auto" />
+            <BrandLogo size="md" />
           </Link>
           <div className={`inline-flex items-center gap-2 rounded-full ${theme.bg} px-3 py-1 text-xs font-semibold ${theme.accent}`}>
             {isProvider ? <Briefcase className="h-3.5 w-3.5" /> : <User className="h-3.5 w-3.5" />}
@@ -413,7 +413,7 @@ function RoleChooser({ mode, nextPath }: { mode: "login" | "signup"; nextPath?: 
     <div className="min-h-screen bg-muted/30">
       <div className="mx-auto max-w-3xl px-6 py-16">
         <Link to="/" className="mb-10 inline-block">
-          <img src={logoAsset.url} alt="DoneMate" width={180} height={60} className="h-12 w-auto" />
+          <BrandLogo size="md" />
         </Link>
         <h1 className="font-serif text-4xl text-foreground md:text-5xl">
           {mode === "signup" ? "Create your account" : "Welcome back"}

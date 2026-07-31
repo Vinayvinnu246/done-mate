@@ -14,7 +14,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { homePathForUser } from "@/lib/role-routing";
 import { setCustomerMode } from "@/hooks/use-role-guard";
-import logoAsset from "@/assets/donetoday-logo.png.asset.json";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 
 export function Header() {
   const { isAuthenticated, user, profile, roles, signOut } = useAuth();
@@ -59,13 +59,7 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Link to={logoTo} className="flex items-center">
-          <img
-            src={logoAsset.url}
-            alt="DoneMate"
-            width={160}
-            height={56}
-            className="h-12 w-auto"
-          />
+          <BrandLogo size="md" />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
