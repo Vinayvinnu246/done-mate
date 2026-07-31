@@ -43,7 +43,7 @@ function AuthPage() {
   const navigate = useNavigate();
   const search = useSearch({ from: "/auth" });
   const nextPath = search.next;
-  const [mode, setMode] = useState<"login" | "signup">(search.mode);
+  const [mode, setMode] = useState<"login" | "signup">(search.mode ?? "login");
   const role = search.role;
 
   const [email, setEmail] = useState("");
