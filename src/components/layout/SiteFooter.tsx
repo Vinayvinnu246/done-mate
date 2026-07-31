@@ -56,8 +56,8 @@ export function SiteFooter() {
         <div className="md:col-span-2">
           <BrandLogo size="md" />
           <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-            Trusted local professionals, on demand. Post a job, compare quotes, pay
-            securely — DoneMate.
+            Trusted Local Services, On Your Schedule. Post a job, compare quotes
+            and pay securely with DoneMate.
           </p>
           <div className="mt-6 flex items-center gap-3">
             {socials.map((s) => (

@@ -47,7 +47,7 @@ function Index() {
             </div>
             <h1 className="font-serif text-5xl leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl">
               Local pros,<br />
-              <span className="italic text-primary">DoneMate.</span>
+              <span className="italic text-primary">on your schedule.</span>
             </h1>
             <p className="mt-6 max-w-lg text-lg text-muted-foreground">
               Post a job in 60 seconds. Get real quotes from verified professionals nearby. Pay securely — only when the work is done.

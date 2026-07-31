@@ -61,7 +61,7 @@ const VALUES = [
   },
   {
     icon: Sparkles,
-    title: "Done today, not someday",
+    title: "On your schedule, not someday",
     text: "From leaky taps to overgrown gardens, we match you with available local pros who can show up the same day.",
   },
 ];

@@ -3,6 +3,7 @@
 export const COMPANY = {
   legalName: "EAGLERA LTD",
   tradingName: "DoneMate",
+  tagline: "Trusted Local Services, On Your Schedule.",
   address: "[COMPANY_ADDRESS]",
   registration: "[COMPANY_REGISTRATION_NUMBER]",
   vat: "[VAT_NUMBER]",
