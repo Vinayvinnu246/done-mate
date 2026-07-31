@@ -71,6 +71,11 @@ function Index() {
               </div>
               <Link
                 to={isAuthenticated ? "/post-job" : "/auth"}
+                search={
+                  isAuthenticated
+                    ? undefined
+                    : { mode: "signup" as const, role: "customer" as const, next: "/post-job" }
+                }
                 className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
               >
                 Get quotes <ArrowRight className="h-4 w-4" />
