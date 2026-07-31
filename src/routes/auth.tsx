@@ -19,8 +19,14 @@ import { homePathForUser } from "@/lib/role-routing";
 import logoAsset from "@/assets/donetoday-logo.png.asset.json";
 import { BackButton } from "@/components/ui/back-button";
 
+type AuthSearch = {
+  mode?: "login" | "signup";
+  role?: "customer" | "provider";
+  next?: string;
+};
+
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({
+  validateSearch: (s: Record<string, unknown>): AuthSearch => ({
     mode: s.mode === "signup" ? ("signup" as const) : ("login" as const),
     role: s.role === "customer" || s.role === "provider" ? (s.role as "customer" | "provider") : undefined,
     next:
