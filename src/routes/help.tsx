@@ -23,10 +23,10 @@ import { COMPANY } from "@/lib/company";
 export const Route = createFileRoute("/help")({
   head: () => ({
     meta: [
-      { title: "Help Centre — DoneToday" },
+      { title: "Help Centre — DoneMate" },
       { name: "description", content: "Search articles and browse guides for customers, pros, payments, bookings, quotes, verification, safety, disputes and account management." },
-      { property: "og:title", content: "DoneToday Help Centre" },
-      { property: "og:description", content: "Searchable help articles across every part of DoneToday." },
+      { property: "og:title", content: "DoneMate Help Centre" },
+      { property: "og:description", content: "Searchable help articles across every part of DoneMate." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -64,19 +64,19 @@ const categories: { id: CategoryId; label: string; icon: LucideIcon; blurb: stri
 const articles: Article[] = [
   // Customers
   { category: "customers", q: "How do I post a job?", a: "Tap 'Get a quote', describe the work, add a few photos and your postcode. Verified pros in your area will send quotes within minutes." },
-  { category: "customers", q: "How much does DoneToday cost customers?", a: "Posting a job and comparing quotes is completely free. You only pay the price agreed with your chosen pro." },
+  { category: "customers", q: "How much does DoneMate cost customers?", a: "Posting a job and comparing quotes is completely free. You only pay the price agreed with your chosen pro." },
   { category: "customers", q: "Can I message a pro before booking?", a: "Yes — every quote opens a secure in-app chat so you can ask questions, share extra photos or agree timings before you book." },
   { category: "customers", q: "How do I choose the right pro?", a: "Compare price, reputation tier (Bronze → Diamond), reviews, verified badges and response time. Higher tiers reflect consistent quality." },
 
   // Providers
-  { category: "providers", q: "How do I become a pro on DoneToday?", a: "Sign up as a pro, complete the onboarding wizard, upload your ID and insurance, and add the services you offer." },
+  { category: "providers", q: "How do I become a pro on DoneMate?", a: "Sign up as a pro, complete the onboarding wizard, upload your ID and insurance, and add the services you offer." },
   { category: "providers", q: "Can I offer multiple trades?", a: "Yes. Add as many trades as you're qualified for from Settings → Services. Each trade has its own rates, radius and qualifications." },
   { category: "providers", q: "How do I get more jobs?", a: "Complete your profile 100%, respond to quotes within an hour, keep availability up to date and collect reviews after every job." },
   { category: "providers", q: "How does the reputation tier work?", a: "Tiers are earned from completed jobs, average rating, response time and low cancellation rate. Higher tiers rank higher in search." },
 
   // Payments
   { category: "payments", q: "How are payments protected?", a: "Customer payments are held in escrow by our payment provider and only released once the job is marked complete." },
-  { category: "payments", q: "What fee does DoneToday charge?", a: "Providers pay a 15% platform fee on completed bookings. There are no listing fees, no monthly fees and no charges for customers." },
+  { category: "payments", q: "What fee does DoneMate charge?", a: "Providers pay a 15% platform fee on completed bookings. There are no listing fees, no monthly fees and no charges for customers." },
   { category: "payments", q: "When do providers get paid?", a: "Funds move to your available balance after a short hold and are paid to your linked bank account on your payout schedule (typically within 2 working days)." },
   { category: "payments", q: "Do you support VAT invoices?", a: "Yes. VAT-registered pros can add their VAT number in Settings and invoices will include VAT automatically." },
 
@@ -108,7 +108,7 @@ const articles: Article[] = [
   { category: "safety", q: "How do I stay safe on-site?", a: "Never share personal contact details before booking, keep all messages in-app, and ensure a second adult is present for at-home jobs where possible." },
   { category: "safety", q: "How do I report a safety concern?", a: "Use the Report a Problem form or email support immediately. For life-threatening emergencies, always call 999 first." },
   { category: "safety", q: "What is your safeguarding policy?", a: "We remove any user found to threaten, harass or endanger others. See the Safety Centre for our full standards." },
-  { category: "safety", q: "Are pros insured?", a: "Every pro must maintain public liability insurance to trade on DoneToday. Certificates are verified and re-checked before expiry." },
+  { category: "safety", q: "Are pros insured?", a: "Every pro must maintain public liability insurance to trade on DoneMate. Certificates are verified and re-checked before expiry." },
 
   // Account
   { category: "account", q: "How do I change my email or phone?", a: "Go to Settings → Profile. Changes may require re-verification for security." },

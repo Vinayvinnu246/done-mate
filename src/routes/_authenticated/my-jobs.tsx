@@ -51,13 +51,13 @@ export const Route = createFileRoute("/_authenticated/my-jobs")({
   component: MyJobsPage,
   head: () => ({
     meta: [
-      { title: "My Jobs · DoneToday Provider Portal" },
+      { title: "My Jobs · DoneMate Provider Portal" },
       {
         name: "description",
         content:
           "Manage every job assigned to you: confirm bookings, update live status, upload photos and track completion.",
       },
-      { property: "og:title", content: "My Jobs · DoneToday Provider Portal" },
+      { property: "og:title", content: "My Jobs · DoneMate Provider Portal" },
       {
         property: "og:description",
         content: "Track assigned jobs, live status updates and reminders in one place.",

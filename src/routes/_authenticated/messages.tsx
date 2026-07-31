@@ -10,5 +10,5 @@ export const Route = createFileRoute("/_authenticated/messages")({
       />
     </ProviderShell>
   ),
-  head: () => ({ meta: [{ title: "Messages · DoneToday" }] }),
+  head: () => ({ meta: [{ title: "Messages · DoneMate" }] }),
 });

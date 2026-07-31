@@ -15,8 +15,8 @@ export const Route = createFileRoute("/_authenticated/quotes")({
   component: QuotesPage,
   head: () => ({
     meta: [
-      { title: "My quotes · DoneToday" },
-      { name: "description", content: "Track quotes and counter-offers on DoneToday." },
+      { title: "My quotes · DoneMate" },
+      { name: "description", content: "Track quotes and counter-offers on DoneMate." },
     ],
   }),
 });

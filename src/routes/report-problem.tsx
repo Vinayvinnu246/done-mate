@@ -7,10 +7,10 @@ import { COMPANY } from "@/lib/company";
 export const Route = createFileRoute("/report-problem")({
   head: () => ({
     meta: [
-      { title: "Report a problem — DoneToday" },
-      { name: "description", content: "Report provider or customer misconduct, fraud, spam, technical issues, payment problems or safety concerns to DoneToday." },
+      { title: "Report a problem — DoneMate" },
+      { name: "description", content: "Report provider or customer misconduct, fraud, spam, technical issues, payment problems or safety concerns to DoneMate." },
       { property: "og:title", content: "Report a problem" },
-      { property: "og:description", content: "Tell the DoneToday safety team what happened." },
+      { property: "og:description", content: "Tell the DoneMate safety team what happened." },
       { property: "og:type", content: "website" },
     ],
   }),

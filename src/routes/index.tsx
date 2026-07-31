@@ -47,7 +47,7 @@ function Index() {
             </div>
             <h1 className="font-serif text-5xl leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl">
               Local pros,<br />
-              <span className="italic text-primary">done today.</span>
+              <span className="italic text-primary">DoneMate.</span>
             </h1>
             <p className="mt-6 max-w-lg text-lg text-muted-foreground">
               Post a job in 60 seconds. Get real quotes from verified professionals nearby. Pay securely — only when the work is done.
@@ -93,7 +93,7 @@ function Index() {
             <div className="relative overflow-hidden rounded-3xl bg-muted">
               <img
                 src={heroImg.url}
-                alt="Verified DoneToday professional"
+                alt="Verified DoneMate professional"
                 width={1024}
                 height={1024}
                 className="h-auto w-full object-contain"
@@ -176,7 +176,7 @@ function Index() {
             <div className="text-xs font-semibold uppercase tracking-wider text-accent">Trust & safety</div>
             <h2 className="mt-2 font-serif text-4xl tracking-tight md:text-5xl">Built for peace of mind.</h2>
             <p className="mt-6 max-w-md text-primary-foreground/70">
-              Every pro on DoneToday is ID-verified, insurance-checked and reviewed after every job. Your money stays protected until the work is signed off.
+              Every pro on DoneMate is ID-verified, insurance-checked and reviewed after every job. Your money stays protected until the work is signed off.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">

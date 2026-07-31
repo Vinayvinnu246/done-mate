@@ -26,8 +26,8 @@ export const Route = createFileRoute("/_authenticated/wallet")({
   }),
   head: () => ({
     meta: [
-      { title: "Wallet · DoneToday" },
-      { name: "description", content: "Track earnings, add a bank account and withdraw payouts on DoneToday." },
+      { title: "Wallet · DoneMate" },
+      { name: "description", content: "Track earnings, add a bank account and withdraw payouts on DoneMate." },
     ],
   }),
 });
@@ -175,7 +175,7 @@ function WalletPage() {
               <>
                 <p className="text-sm text-[#6b7b8c]">
                   Optionally connect Stripe Express for automatic secure payouts. You can also withdraw to the bank
-                  account you add below and DoneToday will process it manually.
+                  account you add below and DoneMate will process it manually.
                 </p>
                 <Button
                   className="rounded-full bg-[#635bff] hover:bg-[#5148e6]"

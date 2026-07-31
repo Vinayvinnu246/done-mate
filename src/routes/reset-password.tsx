@@ -91,7 +91,7 @@ function ResetPasswordPage() {
           className="mb-6 text-muted-foreground hover:text-foreground"
         />
         <Link to="/" className="mb-8 inline-block">
-          <img src={logoAsset.url} alt="DoneToday" width={180} height={60} className="h-12 w-auto" />
+          <img src={logoAsset.url} alt="DoneMate" width={180} height={60} className="h-12 w-auto" />
         </Link>
 
         <h1 className="font-serif text-3xl text-foreground">

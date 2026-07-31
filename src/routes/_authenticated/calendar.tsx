@@ -5,5 +5,5 @@ export const Route = createFileRoute("/_authenticated/calendar")({
     throw redirect({ to: "/my-jobs" });
   },
   component: () => null,
-  head: () => ({ meta: [{ title: "Calendar · DoneToday Provider Portal" }] }),
+  head: () => ({ meta: [{ title: "Calendar · DoneMate Provider Portal" }] }),
 });

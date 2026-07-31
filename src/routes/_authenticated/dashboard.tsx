@@ -163,7 +163,7 @@ function Dashboard() {
             <Card className="border-[#E5E7EB]">
               <CardHeader>
                 <CardTitle className="text-base">Quick actions</CardTitle>
-                <CardDescription>Get started with DoneToday</CardDescription>
+                <CardDescription>Get started with DoneMate</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
                 {!isProvider && (

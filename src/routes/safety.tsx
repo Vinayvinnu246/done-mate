@@ -6,9 +6,9 @@ import { LegalPage, Section } from "@/components/layout/LegalPage";
 export const Route = createFileRoute("/safety")({
   head: () => ({
     meta: [
-      { title: "Safety Centre — DoneToday" },
-      { name: "description", content: "Safety advice for customers and providers using DoneToday: meeting safely, verifying identity, secure payments and emergency guidance." },
-      { property: "og:title", content: "DoneToday Safety Centre" },
+      { title: "Safety Centre — DoneMate" },
+      { name: "description", content: "Safety advice for customers and providers using DoneMate: meeting safely, verifying identity, secure payments and emergency guidance." },
+      { property: "og:title", content: "DoneMate Safety Centre" },
       { property: "og:description", content: "Guidance to keep customers and providers safe." },
       { property: "og:type", content: "website" },
     ],
@@ -27,8 +27,8 @@ function SafetyPage() {
         <Grid
           items={[
             { icon: UserCheck, t: "Verify the provider", d: "Check the verification badges and reviews on their profile before booking." },
-            { icon: MessageSquare, t: "Keep chat in-app", d: "Use DoneToday messaging so we can help if anything goes wrong." },
-            { icon: CreditCard, t: "Pay only through DoneToday", d: "Never send money outside the platform. Escrow protects both sides." },
+            { icon: MessageSquare, t: "Keep chat in-app", d: "Use DoneMate messaging so we can help if anything goes wrong." },
+            { icon: CreditCard, t: "Pay only through DoneMate", d: "Never send money outside the platform. Escrow protects both sides." },
             { icon: ShieldCheck, t: "Meet safely", d: "For home visits, ask for photo ID on arrival and let a friend know." },
           ]}
         />
@@ -46,7 +46,7 @@ function SafetyPage() {
       <Section heading="Emergencies">
         <p>
           If you or someone else is in immediate danger, call the emergency services on <strong>999</strong> straight away.
-          Then let us know at <a href="mailto:support@donetoday.co.uk" className="text-primary underline">support@donetoday.co.uk</a> so we can support you.
+          Then let us know at <a href="mailto:support@donemate.co.uk" className="text-primary underline">support@donemate.co.uk</a> so we can support you.
         </p>
         <p>
           To report misconduct or a safety concern about a specific user, use the{" "}

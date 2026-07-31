@@ -5,9 +5,9 @@ import { LegalPage, Section } from "@/components/layout/LegalPage";
 export const Route = createFileRoute("/disputes")({
   head: () => ({
     meta: [
-      { title: "Disputes — DoneToday" },
-      { name: "description", content: "How to open a dispute on DoneToday, what evidence to include and how our team resolves issues fairly." },
-      { property: "og:title", content: "DoneToday Disputes" },
+      { title: "Disputes — DoneMate" },
+      { name: "description", content: "How to open a dispute on DoneMate, what evidence to include and how our team resolves issues fairly." },
+      { property: "og:title", content: "DoneMate Disputes" },
       { property: "og:description", content: "Fair dispute resolution for customers and providers." },
       { property: "og:type", content: "website" },
     ],
@@ -40,11 +40,11 @@ function DisputesPage() {
         </ol>
       </Section>
       <Section heading="How disputes are resolved">
-        <p>A DoneToday case handler reviews the evidence from both sides, the message history and any agreed scope of work. Outcomes may include full or partial refund, rework at no extra cost, or release of payment to the provider.</p>
+        <p>A DoneMate case handler reviews the evidence from both sides, the message history and any agreed scope of work. Outcomes may include full or partial refund, rework at no extra cost, or release of payment to the provider.</p>
         <p>While a dispute is open, funds held in escrow are frozen and will not be released until the case is closed.</p>
       </Section>
       <Section heading="Need help now?">
-        <p>Email <a href="mailto:support@donetoday.co.uk" className="text-primary underline">support@donetoday.co.uk</a> with your job reference and a short summary. We'll take it from there.</p>
+        <p>Email <a href="mailto:support@donemate.co.uk" className="text-primary underline">support@donemate.co.uk</a> with your job reference and a short summary. We'll take it from there.</p>
       </Section>
     </LegalPage>
   );

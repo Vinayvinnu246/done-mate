@@ -6,9 +6,9 @@ import { COMPANY, LEGAL_REVIEW_NOTE } from "@/lib/company";
 export const Route = createFileRoute("/dispute-resolution")({
   head: () => ({
     meta: [
-      { title: "Dispute Resolution — DoneToday" },
-      { name: "description", content: "How DoneToday investigates disputes between customers and providers, what evidence to submit and the possible outcomes." },
-      { property: "og:title", content: "DoneToday Dispute Resolution" },
+      { title: "Dispute Resolution — DoneMate" },
+      { name: "description", content: "How DoneMate investigates disputes between customers and providers, what evidence to submit and the possible outcomes." },
+      { property: "og:title", content: "DoneMate Dispute Resolution" },
       { property: "og:description", content: "Reporting, investigation, outcomes and appeals." },
       { property: "og:type", content: "website" },
     ],
@@ -31,7 +31,7 @@ function DisputeResolutionPage() {
         <p>Both parties can upload photos, videos, invoices, quotes and message history. Clear, timestamped evidence leads to faster outcomes.</p>
       </Section>
       <Section heading="3. Platform investigation">
-        <p>A DoneToday case handler reviews all evidence, the agreed scope of work and communication history. Funds in escrow are frozen while the case is open.</p>
+        <p>A DoneMate case handler reviews all evidence, the agreed scope of work and communication history. Funds in escrow are frozen while the case is open.</p>
       </Section>
       <Section heading="4. Possible outcomes">
         <ul className="list-disc space-y-1 pl-6">

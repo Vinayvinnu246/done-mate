@@ -6,11 +6,11 @@ import { COMPANY } from "@/lib/company";
 export const Route = createFileRoute("/server-error")({
   head: () => ({
     meta: [
-      { title: "Something went wrong — DoneToday" },
+      { title: "Something went wrong — DoneMate" },
       { name: "description", content: "This page didn't load. Try refreshing or head back home." },
       { name: "robots", content: "noindex" },
       { property: "og:title", content: "Something went wrong" },
-      { property: "og:description", content: "An unexpected error occurred on DoneToday." },
+      { property: "og:description", content: "An unexpected error occurred on DoneMate." },
       { property: "og:type", content: "website" },
     ],
   }),

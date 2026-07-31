@@ -2,12 +2,12 @@
 // Replace bracketed values with real details before launch.
 export const COMPANY = {
   legalName: "EAGLERA LTD",
-  tradingName: "DoneToday",
+  tradingName: "DoneMate",
   address: "[COMPANY_ADDRESS]",
   registration: "[COMPANY_REGISTRATION_NUMBER]",
   vat: "[VAT_NUMBER]",
   phone: "[TELEPHONE_NUMBER]",
-  supportEmail: "support@donetoday.co.uk",
+  supportEmail: "support@donemate.co.uk",
   privacyEmail: "[PRIVACY_EMAIL]",
   legalEmail: "[LEGAL_EMAIL]",
   businessEmail: "[BUSINESS_EMAIL]",

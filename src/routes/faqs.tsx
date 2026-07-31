@@ -6,9 +6,9 @@ import { LegalPage, Section } from "@/components/layout/LegalPage";
 export const Route = createFileRoute("/faqs")({
   head: () => ({
     meta: [
-      { title: "FAQs — DoneToday" },
-      { name: "description", content: "Answers to common questions about DoneToday: quotes, payments, providers, refunds and support." },
-      { property: "og:title", content: "DoneToday FAQs" },
+      { title: "FAQs — DoneMate" },
+      { name: "description", content: "Answers to common questions about DoneMate: quotes, payments, providers, refunds and support." },
+      { property: "og:title", content: "DoneMate FAQs" },
       { property: "og:description", content: "Common questions answered." },
       { property: "og:type", content: "website" },
     ],
@@ -20,9 +20,9 @@ const faqs = [
   { q: "How do I post a job?", a: "Tap 'Get a quote', describe what you need, add a few photos and your postcode. It takes about 60 seconds." },
   { q: "How do I receive quotes?", a: "Verified providers matching your service and area send quotes directly in-app. You'll be notified of each new quote." },
   { q: "How do providers get paid?", a: "Once you confirm the job is complete, funds are released from escrow to the provider's bank account within a couple of working days." },
-  { q: "How does DoneToday make money?", a: "DoneToday charges providers a 15% platform fee on completed bookings. Posting a job and receiving quotes is free for customers." },
+  { q: "How does DoneMate make money?", a: "DoneMate charges providers a 15% platform fee on completed bookings. Posting a job and receiving quotes is free for customers." },
   { q: "How do refunds work?", a: "If a job isn't completed or falls short of what was agreed, you can open a dispute. See our Refund Policy for full details." },
-  { q: "How do I contact support?", a: "Email support@donetoday.co.uk or use the Report a Problem form. We aim to respond within one working day." },
+  { q: "How do I contact support?", a: "Email support@donemate.co.uk or use the Report a Problem form. We aim to respond within one working day." },
   { q: "How do I become a provider?", a: "Sign up as a pro, complete the onboarding wizard, upload your ID and insurance, and add the services you offer." },
   { q: "What documents are required?", a: "Government ID, proof of address, public liability insurance, and any qualifications relevant to your trade (e.g. Gas Safe, NICEIC)." },
 ];
@@ -54,7 +54,7 @@ function FaqsPage() {
             </details>
           ))}
           {filtered.length === 0 && (
-            <p className="text-sm text-muted-foreground">No results. Try a different search or email support@donetoday.co.uk.</p>
+            <p className="text-sm text-muted-foreground">No results. Try a different search or email support@donemate.co.uk.</p>
           )}
         </div>
       </Section>

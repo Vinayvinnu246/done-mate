@@ -61,7 +61,7 @@ export function Header() {
         <Link to={logoTo} className="flex items-center">
           <img
             src={logoAsset.url}
-            alt="DoneToday"
+            alt="DoneMate"
             width={160}
             height={56}
             className="h-12 w-auto"

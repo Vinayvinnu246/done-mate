@@ -73,7 +73,7 @@ export function NotificationPreferences() {
         Notification preferences
       </h2>
       <p className="mt-1 text-sm text-[#6b7b8c]">
-        Choose how and when DoneToday alerts you about work.
+        Choose how and when DoneMate alerts you about work.
       </p>
 
       <div className="mt-6 grid gap-6 sm:grid-cols-2">

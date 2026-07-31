@@ -56,7 +56,7 @@ export function CookieConsent() {
           <div className="flex-1">
             <div className="text-sm font-semibold text-foreground">We use cookies</div>
             <p className="mt-1 text-xs text-muted-foreground">
-              We use essential cookies to run DoneToday and optional cookies to improve your
+              We use essential cookies to run DoneMate and optional cookies to improve your
               experience and measure how it's used. See our{" "}
               <Link to="/cookies" className="underline underline-offset-2 hover:text-foreground">
                 Cookie Policy

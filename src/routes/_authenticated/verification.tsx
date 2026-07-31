@@ -10,8 +10,8 @@ export const Route = createFileRoute("/_authenticated/verification")({
   component: VerificationPage,
   head: () => ({
     meta: [
-      { title: "Verification · DoneToday" },
-      { name: "description", content: "Track your DoneToday provider verification status." },
+      { title: "Verification · DoneMate" },
+      { name: "description", content: "Track your DoneMate provider verification status." },
     ],
   }),
 });
