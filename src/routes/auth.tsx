@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { homePathForUser } from "@/lib/role-routing";
-import logoAsset from "@/assets/donetoday-logo.png.asset.json";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { BackButton } from "@/components/ui/back-button";
 
 type AuthSearch = {
@@ -61,7 +61,7 @@ function AuthPage() {
 
   const isProvider = role === "provider";
   const theme = isProvider
-    ? { accent: "text-emerald-700", bg: "bg-emerald-50", label: "Provider", tagline: "Win more work with DoneToday." }
+    ? { accent: "text-emerald-700", bg: "bg-emerald-50", label: "Provider", tagline: "Win more work with DoneMate." }
     : { accent: "text-primary", bg: "bg-primary/5", label: "Customer", tagline: "Book verified local pros in minutes." };
 
   // Role decides the landing page. Providers never land on the customer
@@ -209,14 +209,14 @@ function AuthPage() {
         <div className="mb-10 md:mb-0 md:w-1/2">
           <BackButton className="mb-6 text-muted-foreground hover:text-foreground" />
           <Link to="/" className="mb-8 inline-block">
-            <img src={logoAsset.url} alt="DoneToday" width={180} height={60} className="h-12 w-auto" />
+            <BrandLogo size="md" />
           </Link>
           <div className={`inline-flex items-center gap-2 rounded-full ${theme.bg} px-3 py-1 text-xs font-semibold ${theme.accent}`}>
             {isProvider ? <Briefcase className="h-3.5 w-3.5" /> : <User className="h-3.5 w-3.5" />}
             {theme.label} portal
           </div>
           <h1 className="mt-4 font-serif text-4xl text-foreground md:text-5xl">
-            {isProvider ? "Grow your business." : "Local pros, done today."}
+            {isProvider ? "Grow your business." : "Local pros, DoneMate."}
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">{theme.tagline}</p>
           <Link
@@ -413,13 +413,13 @@ function RoleChooser({ mode, nextPath }: { mode: "login" | "signup"; nextPath?: 
     <div className="min-h-screen bg-muted/30">
       <div className="mx-auto max-w-3xl px-6 py-16">
         <Link to="/" className="mb-10 inline-block">
-          <img src={logoAsset.url} alt="DoneToday" width={180} height={60} className="h-12 w-auto" />
+          <BrandLogo size="md" />
         </Link>
         <h1 className="font-serif text-4xl text-foreground md:text-5xl">
           {mode === "signup" ? "Create your account" : "Welcome back"}
         </h1>
         <p className="mt-3 text-lg text-muted-foreground">
-          Choose how you use DoneToday to continue.
+          Choose how you use DoneMate to continue.
         </p>
 
         <div className="mt-8 grid gap-4 md:grid-cols-2">
@@ -464,7 +464,7 @@ function RoleChooser({ mode, nextPath }: { mode: "login" | "signup"; nextPath?: 
               <Link to="/auth" search={{ mode: "login" }} className="underline hover:text-foreground">Sign in</Link>
             </>
           ) : (
-            <>New to DoneToday?{" "}
+            <>New to DoneMate?{" "}
               <Link to="/auth" search={{ mode: "signup" }} className="underline hover:text-foreground">Create an account</Link>
             </>
           )}

@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { LinkProps } from "@tanstack/react-router";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
-import logoAsset from "@/assets/donetoday-logo.png.asset.json";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { COMPANY } from "@/lib/company";
 
 type Col = { h: string; l: { label: string; to: string; badge?: string }[] };
@@ -11,7 +11,7 @@ const columns: Col[] = [
   {
     h: "Company",
     l: [
-      { label: "About DoneToday", to: "/about" },
+      { label: "About DoneMate", to: "/about" },
       { label: "Careers", to: "/careers", badge: "Soon" },
       { label: "Contact us", to: "/contact" },
       { label: "Blog", to: "/blog", badge: "Soon" },
@@ -54,16 +54,10 @@ export function SiteFooter() {
     <footer className="border-t border-border bg-background">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-5">
         <div className="md:col-span-2">
-          <img
-            src={logoAsset.url}
-            alt="DoneToday"
-            width={160}
-            height={56}
-            className="h-12 w-auto"
-          />
+          <BrandLogo size="md" />
           <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-            Trusted local professionals, on demand. Post a job, compare quotes, pay
-            securely — done today.
+            Trusted Local Services, On Your Schedule. Post a job, compare quotes
+            and pay securely with DoneMate.
           </p>
           <div className="mt-6 flex items-center gap-3">
             {socials.map((s) => (

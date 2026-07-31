@@ -6,9 +6,9 @@ import { COMPANY, LEGAL_REVIEW_NOTE } from "@/lib/company";
 export const Route = createFileRoute("/refund-policy")({
   head: () => ({
     meta: [
-      { title: "Refund Policy — DoneToday" },
-      { name: "description", content: "How refunds work on DoneToday: escrow payments, cancellations by customers or providers, and the dispute process." },
-      { property: "og:title", content: "DoneToday Refund Policy" },
+      { title: "Refund Policy — DoneMate" },
+      { name: "description", content: "How refunds work on DoneMate: escrow payments, cancellations by customers or providers, and the dispute process." },
+      { property: "og:title", content: "DoneMate Refund Policy" },
       { property: "og:description", content: "Refunds, cancellations and escrow release rules." },
       { property: "og:type", content: "website" },
     ],
@@ -18,10 +18,10 @@ export const Route = createFileRoute("/refund-policy")({
 
 function RefundPage() {
   return (
-    <LegalPage eyebrow="Legal" title="Refund Policy" intro="This policy explains how refunds and cancellations are handled on DoneToday.">
+    <LegalPage eyebrow="Legal" title="Refund Policy" intro="This policy explains how refunds and cancellations are handled on DoneMate.">
       <p className="rounded-xl border border-border bg-muted/40 p-4 text-sm text-muted-foreground">{LEGAL_REVIEW_NOTE}</p>
       <Section heading="Platform fees">
-        <p>DoneToday charges providers a 15% platform fee on completed bookings. Platform fees are non-refundable except where required by law or where a job is cancelled by DoneToday.</p>
+        <p>DoneMate charges providers a 15% platform fee on completed bookings. Platform fees are non-refundable except where required by law or where a job is cancelled by DoneMate.</p>
       </Section>
       <Section heading="Payment release">
         <p>Customer payments are held in escrow until the job is marked complete. Funds are then released to the provider (net of fees) after a short hold period.</p>

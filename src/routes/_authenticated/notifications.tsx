@@ -7,9 +7,9 @@ export const Route = createFileRoute("/_authenticated/notifications")({
   component: NotificationsPage,
   head: () => ({
     meta: [
-      { title: "Notifications · DoneToday Provider Portal" },
+      { title: "Notifications · DoneMate Provider Portal" },
       { name: "description", content: "Job alerts, reminders and booking updates in one place." },
-      { property: "og:title", content: "Notifications · DoneToday" },
+      { property: "og:title", content: "Notifications · DoneMate" },
       { property: "og:description", content: "Job alerts, reminders and booking updates." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

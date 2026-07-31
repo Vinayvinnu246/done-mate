@@ -11,16 +11,16 @@ export const Route = createFileRoute("/providers/$providerId")({
   component: ProviderProfilePage,
   head: () => ({
     meta: [
-      { title: "Provider profile — DoneToday" },
+      { title: "Provider profile — DoneMate" },
       {
         name: "description",
         content:
-          "Verified DoneToday provider profile with specialties, experience and service area.",
+          "Verified DoneMate provider profile with specialties, experience and service area.",
       },
-      { property: "og:title", content: "Provider profile — DoneToday" },
+      { property: "og:title", content: "Provider profile — DoneMate" },
       {
         property: "og:description",
-        content: "Book a verified professional on DoneToday.",
+        content: "Book a verified professional on DoneMate.",
       },
       { property: "og:type", content: "profile" },
       { name: "twitter:card", content: "summary" },
@@ -59,7 +59,7 @@ function ProviderProfilePage() {
             <div className="flex-1">
               <div className="flex items-center gap-2">
                 <h1 className="font-display text-3xl font-semibold text-[#2e4053]">
-                  {provider.display_name ?? "DoneToday provider"}
+                  {provider.display_name ?? "DoneMate provider"}
                 </h1>
                 {provider.verification_status === "verified" && (
                   <BadgeCheck className="h-6 w-6 text-[#59914c]" />
@@ -68,7 +68,7 @@ function ProviderProfilePage() {
               <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-[#6b7b8c]">
                 <span className="flex items-center gap-1">
                   <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                  New on DoneToday
+                  New on DoneMate
                 </span>
                 {provider.years_experience != null && (
                   <span className="flex items-center gap-1">

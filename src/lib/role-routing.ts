@@ -1,5 +1,5 @@
 /**
- * Central role-based navigation rules for DoneToday.
+ * Central role-based navigation rules for DoneMate.
  * Customer -> customer marketplace, Provider -> provider dashboard, Admin -> admin.
  */
 

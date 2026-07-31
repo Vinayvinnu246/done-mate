@@ -6,9 +6,9 @@ import { COMPANY, LEGAL_REVIEW_NOTE } from "@/lib/company";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "UK GDPR Privacy Policy — DoneToday" },
-      { name: "description", content: "How EAGLERA LTD (trading as DoneToday) collects, uses, shares and protects your personal data under the UK GDPR and Data Protection Act 2018." },
-      { property: "og:title", content: "DoneToday UK GDPR Privacy Policy" },
+      { title: "UK GDPR Privacy Policy — DoneMate" },
+      { name: "description", content: "How EAGLERA LTD (trading as DoneMate) collects, uses, shares and protects your personal data under the UK GDPR and Data Protection Act 2018." },
+      { property: "og:title", content: "DoneMate UK GDPR Privacy Policy" },
       { property: "og:description", content: "Your data rights, our lawful bases, retention periods and how to contact us or the ICO." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -23,7 +23,7 @@ function PrivacyPage() {
     <LegalPage
       eyebrow="Legal"
       title="UK GDPR Privacy Policy"
-      intro="This policy explains how EAGLERA LTD (trading as DoneToday) collects, uses, shares, retains and protects your personal data, and the rights you have under the UK GDPR and the Data Protection Act 2018."
+      intro="This policy explains how EAGLERA LTD (trading as DoneMate) collects, uses, shares, retains and protects your personal data, and the rights you have under the UK GDPR and the Data Protection Act 2018."
     >
       <p className="rounded-xl border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
         Last updated: {lastUpdated}. {LEGAL_REVIEW_NOTE}
@@ -148,7 +148,7 @@ function PrivacyPage() {
       </Section>
 
       <Section heading="13. Children">
-        <p>DoneToday is not directed at children under 18. We do not knowingly collect personal data from children. If you believe a child has provided us data, please contact us to have it removed.</p>
+        <p>DoneMate is not directed at children under 18. We do not knowingly collect personal data from children. If you believe a child has provided us data, please contact us to have it removed.</p>
       </Section>
 
       <Section heading="14. Changes to this policy">

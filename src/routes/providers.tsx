@@ -21,17 +21,17 @@ export const Route = createFileRoute("/providers")({
   component: ProvidersPage,
   head: () => ({
     meta: [
-      { title: "Find trusted local providers — DoneToday" },
+      { title: "Find trusted local providers — DoneMate" },
       {
         name: "description",
         content:
-          "Browse verified cleaners, gardeners, plumbers, electricians and more on DoneToday. Compare providers by rating and specialty.",
+          "Browse verified cleaners, gardeners, plumbers, electricians and more on DoneMate. Compare providers by rating and specialty.",
       },
-      { property: "og:title", content: "Find trusted local providers — DoneToday" },
+      { property: "og:title", content: "Find trusted local providers — DoneMate" },
       {
         property: "og:description",
         content:
-          "Verified providers ready to quote on your next job. Browse by category on DoneToday.",
+          "Verified providers ready to quote on your next job. Browse by category on DoneMate.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -169,7 +169,7 @@ function ProvidersPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
                       <p className="font-semibold text-[#2e4053] truncate">
-                        {p.display_name ?? "DoneToday provider"}
+                        {p.display_name ?? "DoneMate provider"}
                       </p>
                       {p.verification_status === "verified" && (
                         <BadgeCheck className="h-4 w-4 text-[#59914c]" />

@@ -6,9 +6,9 @@ import { COMPANY } from "@/lib/company";
 export const Route = createFileRoute("/accessibility")({
   head: () => ({
     meta: [
-      { title: "Accessibility Statement — DoneToday" },
-      { name: "description", content: "How DoneToday works to be accessible to everyone: keyboard navigation, screen readers, colour contrast and how to contact us about accessibility." },
-      { property: "og:title", content: "DoneToday Accessibility Statement" },
+      { title: "Accessibility Statement — DoneMate" },
+      { name: "description", content: "How DoneMate works to be accessible to everyone: keyboard navigation, screen readers, colour contrast and how to contact us about accessibility." },
+      { property: "og:title", content: "DoneMate Accessibility Statement" },
       { property: "og:description", content: "Our commitment to an accessible marketplace." },
       { property: "og:type", content: "website" },
     ],
@@ -18,9 +18,9 @@ export const Route = createFileRoute("/accessibility")({
 
 function AccessibilityPage() {
   return (
-    <LegalPage eyebrow="Legal" title="Accessibility Statement" intro="We want DoneToday to be usable by as many people as possible. This statement explains our approach and how to contact us.">
+    <LegalPage eyebrow="Legal" title="Accessibility Statement" intro="We want DoneMate to be usable by as many people as possible. This statement explains our approach and how to contact us.">
       <Section heading="Our commitment">
-        <p>We aim to meet the Web Content Accessibility Guidelines (WCAG) 2.1 AA standard across the DoneToday website and app.</p>
+        <p>We aim to meet the Web Content Accessibility Guidelines (WCAG) 2.1 AA standard across the DoneMate website and app.</p>
       </Section>
       <Section heading="Keyboard navigation">
         <p>All interactive elements can be reached and activated using a keyboard. Focus states are visible on links, buttons and form controls.</p>

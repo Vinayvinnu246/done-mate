@@ -18,8 +18,8 @@ export const Route = createFileRoute("/_authenticated/bookings")({
   component: BookingsPage,
   head: () => ({
     meta: [
-      { title: "Bookings · DoneToday" },
-      { name: "description", content: "Manage accepted jobs and track progress on DoneToday." },
+      { title: "Bookings · DoneMate" },
+      { name: "description", content: "Manage accepted jobs and track progress on DoneMate." },
     ],
   }),
 });

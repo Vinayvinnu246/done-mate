@@ -17,8 +17,8 @@ export const Route = createFileRoute("/_authenticated/support")({
   component: SupportPage,
   head: () => ({
     meta: [
-      { title: "Support · DoneToday" },
-      { name: "description", content: "Contact DoneToday support, open tickets, and track disputes." },
+      { title: "Support · DoneMate" },
+      { name: "description", content: "Contact DoneMate support, open tickets, and track disputes." },
     ],
   }),
 });
@@ -125,7 +125,7 @@ function SupportPage() {
                 <p className="text-sm text-[#4a5563] mt-2 whitespace-pre-wrap">{t.message}</p>
                 {t.admin_reply && (
                   <div className="mt-3 rounded-lg bg-[#F7F9F5] border border-[#E5E7EB] p-3 text-sm text-[#2e4053]">
-                    <div className="text-xs font-semibold mb-1">DoneToday support</div>
+                    <div className="text-xs font-semibold mb-1">DoneMate support</div>
                     {t.admin_reply}
                   </div>
                 )}

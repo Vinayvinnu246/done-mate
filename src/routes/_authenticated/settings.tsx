@@ -7,7 +7,7 @@ import { NotificationPreferences } from "@/components/provider/NotificationPrefe
 
 export const Route = createFileRoute("/_authenticated/settings")({
   component: SettingsPage,
-  head: () => ({ meta: [{ title: "Settings · DoneToday" }] }),
+  head: () => ({ meta: [{ title: "Settings · DoneMate" }] }),
 });
 
 function SettingsPage() {

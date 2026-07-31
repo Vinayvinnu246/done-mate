@@ -6,10 +6,10 @@ import { COMPANY, LEGAL_REVIEW_NOTE } from "@/lib/company";
 export const Route = createFileRoute("/customer-terms")({
   head: () => ({
     meta: [
-      { title: "Customer Terms — DoneToday" },
-      { name: "description", content: "The terms that apply to customers on DoneToday: posting jobs, quotes, payments, refunds, reviews and disputes." },
-      { property: "og:title", content: "DoneToday Customer Terms" },
-      { property: "og:description", content: "Terms for customers using DoneToday." },
+      { title: "Customer Terms — DoneMate" },
+      { name: "description", content: "The terms that apply to customers on DoneMate: posting jobs, quotes, payments, refunds, reviews and disputes." },
+      { property: "og:title", content: "DoneMate Customer Terms" },
+      { property: "og:description", content: "Terms for customers using DoneMate." },
       { property: "og:type", content: "website" },
     ],
   }),
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/customer-terms")({
 
 function CustomerTermsPage() {
   return (
-    <LegalPage eyebrow="Legal" title="Customer Terms" intro={`These terms apply to customers using DoneToday, operated by ${COMPANY.legalName}.`}>
+    <LegalPage eyebrow="Legal" title="Customer Terms" intro={`These terms apply to customers using DoneMate, operated by ${COMPANY.legalName}.`}>
       <p className="rounded-xl border border-border bg-muted/40 p-4 text-sm text-muted-foreground">{LEGAL_REVIEW_NOTE}</p>
       <Section heading="1. Posting jobs">
         <p>Provide accurate details, photos and locations. Misleading listings may be removed.</p>
@@ -30,7 +30,7 @@ function CustomerTermsPage() {
         <p>You are responsible for reviewing provider profiles, reviews and verification badges before accepting a quote.</p>
       </Section>
       <Section heading="4. Payments">
-        <p>Payments are made through DoneToday and held in escrow until the job is complete. Paying providers outside the platform is not permitted and voids protection.</p>
+        <p>Payments are made through DoneMate and held in escrow until the job is complete. Paying providers outside the platform is not permitted and voids protection.</p>
       </Section>
       <Section heading="5. Refunds">
         <p>See our <a href="/refund-policy" className="text-primary underline">Refund Policy</a> for cancellations and dispute-based refunds.</p>

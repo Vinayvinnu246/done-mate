@@ -18,17 +18,17 @@ import { BackButton } from "@/components/ui/back-button";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About DoneToday — Local pros, done today" },
+      { title: "About DoneMate — Local pros, DoneMate" },
       {
         name: "description",
         content:
-          "DoneToday, operated by EAGLERA LTD, connects UK households with verified local professionals for cleaning, plumbing, gardening and more — real quotes, secure payments, honest reviews.",
+          "DoneMate, operated by EAGLERA LTD, connects UK households with verified local professionals for cleaning, plumbing, gardening and more — real quotes, secure payments, honest reviews.",
       },
-      { property: "og:title", content: "About DoneToday" },
+      { property: "og:title", content: "About DoneMate" },
       {
         property: "og:description",
         content:
-          "The story behind DoneToday, the UK marketplace for trusted local professionals.",
+          "The story behind DoneMate, the UK marketplace for trusted local professionals.",
       },
       { property: "og:type", content: "website" },
     ],
@@ -61,7 +61,7 @@ const VALUES = [
   },
   {
     icon: Sparkles,
-    title: "Done today, not someday",
+    title: "On your schedule, not someday",
     text: "From leaky taps to overgrown gardens, we match you with available local pros who can show up the same day.",
   },
 ];
@@ -84,7 +84,7 @@ const HOW_IT_WORKS = [
   },
   {
     icon: Clock,
-    title: "Get it done today",
+    title: "Get it DoneMate",
     text: "Track your pro's arrival in real time, message them directly, and release payment when the work is complete.",
   },
 ];
@@ -125,10 +125,10 @@ function AboutPage() {
             <MapPin className="h-4 w-4" /> United Kingdom
           </span>
           <h1 className="mt-6 text-4xl font-bold tracking-tight md:text-6xl">
-            Local pros, <span className="text-primary">done today.</span>
+            Local pros, <span className="text-primary">DoneMate.</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            DoneToday is a UK marketplace that helps households and businesses
+            DoneMate is a UK marketplace that helps households and businesses
             book verified local professionals in minutes — with real quotes,
             secure payments and honest reviews.
           </p>
@@ -156,7 +156,7 @@ function AboutPage() {
         <h2 className="text-2xl font-bold md:text-3xl">Our story</h2>
         <div className="mt-6 space-y-5 text-lg leading-relaxed text-muted-foreground">
           <p>
-            DoneToday started with a simple frustration: why is hiring a good
+            DoneMate started with a simple frustration: why is hiring a good
             tradesperson still a gamble? You ring around, leave voicemails, hope
             someone turns up, and haggle over a price you can't compare. It's
             2026 — getting help at home should feel as easy as ordering a taxi.
@@ -169,7 +169,7 @@ function AboutPage() {
             until the work is done.
           </p>
           <p>
-            Today DoneToday connects thousands of UK households with local pros
+            Today DoneMate connects thousands of UK households with local pros
             across 35+ trades — from plumbing and electrics to gardening,
             cleaning, carpentry and small builds. And we're just getting
             started.
@@ -261,7 +261,7 @@ function AboutPage() {
         <div className="mx-auto max-w-3xl px-6 py-20 text-center">
           <h2 className="text-2xl font-bold md:text-3xl">Who we are</h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            DoneToday is a trading name of <strong>{COMPANY.legalName}</strong>,
+            DoneMate is a trading name of <strong>{COMPANY.legalName}</strong>,
             a company registered in {COMPANY.jurisdiction}. We are headquartered
             in London and operate across the United Kingdom, with plans to
             expand across Europe and beyond.

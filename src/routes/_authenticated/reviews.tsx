@@ -10,8 +10,8 @@ export const Route = createFileRoute("/_authenticated/reviews")({
   component: ReviewsPage,
   head: () => ({
     meta: [
-      { title: "Reviews & reputation · DoneToday" },
-      { name: "description", content: "Ratings, reputation tier and customer testimonials on DoneToday." },
+      { title: "Reviews & reputation · DoneMate" },
+      { name: "description", content: "Ratings, reputation tier and customer testimonials on DoneMate." },
     ],
   }),
 });

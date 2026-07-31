@@ -6,9 +6,9 @@ import { COMPANY } from "@/lib/company";
 export const Route = createFileRoute("/delete-account")({
   head: () => ({
     meta: [
-      { title: "Delete your account — DoneToday" },
-      { name: "description", content: "How to delete your DoneToday account, what data we keep for legal reasons, and how long deletion takes." },
-      { property: "og:title", content: "Delete your DoneToday account" },
+      { title: "Delete your account — DoneMate" },
+      { name: "description", content: "How to delete your DoneMate account, what data we keep for legal reasons, and how long deletion takes." },
+      { property: "og:title", content: "Delete your DoneMate account" },
       { property: "og:description", content: "Account deletion, data retention and process." },
       { property: "og:type", content: "website" },
     ],
@@ -21,7 +21,7 @@ function DeleteAccountPage() {
     <LegalPage
       eyebrow="Account"
       title="Delete your account"
-      intro="You have the right to close your DoneToday account at any time. Here's how it works."
+      intro="You have the right to close your DoneMate account at any time. Here's how it works."
     >
       <Section heading="Before you delete">
         <ul className="list-disc space-y-1 pl-6">
