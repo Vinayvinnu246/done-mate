@@ -209,7 +209,7 @@ function Index() {
               <Link to="/auth" search={{ mode: "signup", role: "provider" }} className="inline-flex items-center gap-1.5 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                 Become a pro <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link to="/providers" className="inline-flex rounded-full border border-border bg-background px-6 py-3 text-sm font-medium hover:bg-muted">See earnings</Link>
+              <Link to="/providers" search={{ q: "", category: "", city: "" }} className="inline-flex rounded-full border border-border bg-background px-6 py-3 text-sm font-medium hover:bg-muted">See earnings</Link>
             </div>
           </div>
           <ul className="space-y-4 border-t border-border pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0">

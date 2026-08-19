@@ -156,6 +156,7 @@ function ProvidersPage() {
                 key={p.user_id}
                 to="/providers/$providerId"
                 params={{ providerId: p.user_id }}
+                search={{ q: "", category: "", city: "" }}
                 className="bg-white rounded-2xl p-5 border border-[#E5E7EB] hover:border-[#2e4053] hover:shadow-md transition"
               >
                 <div className="flex items-start gap-4">
