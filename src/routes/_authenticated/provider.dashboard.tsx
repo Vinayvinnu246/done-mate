@@ -230,7 +230,7 @@ function ProviderDashboard() {
               <Row label="Withdrawn" value={`£${(balances?.totalWithdrawn ?? 0).toFixed(2)}`} />
               <Row label="Payouts" value={payoutsEnabled ? "Ready" : "Add bank details"} />
               <Button variant="outline" className="w-full rounded-full" asChild>
-                <Link to="/wallet">Wallet & payouts</Link>
+                <Link to="/wallet" search={{ stripe: undefined }}>Wallet & payouts</Link>
               </Button>
             </CardContent>
           </Card>

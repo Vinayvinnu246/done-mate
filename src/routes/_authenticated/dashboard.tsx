@@ -184,7 +184,7 @@ function Dashboard() {
                 )}
                 {isProvider && (
                   <Button variant="outline" className="w-full justify-start rounded-full" asChild>
-                    <Link to="/wallet">
+                    <Link to="/wallet" search={{ stripe: undefined }}>
                       <WalletIcon className="h-4 w-4 mr-1.5" />
                       Wallet & payouts
                     </Link>
