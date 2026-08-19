@@ -22,7 +22,7 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isProvider = profile?.type === "provider";
   const homePath = homePathForUser(profile, roles);
-  const logoTo = isAuthenticated ? homePath : "/";
+  const logoTo = "/";
 
   const goHome = () => navigate({ to: homePath });
 
